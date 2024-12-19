@@ -1,8 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+:root {
+  --padding-container: 100px 0;
+}
 
+body {
+  font-family: "Roboto", serif;
+}
 
-body{
-    font-family: "Roboto", serif;
-
+.container {
+  width: 90%; /*Lo que ocupa el contenedor*/
+  max-width: 1200px; /*Ancho maximo*/
+  margin: 0 auto; /*Que el width se centre verticalmente, con auto hacia los lados*/
+  overflow: hidden; /*Todo lo que salga de este elemento, se esconda*/
+  background-color: white;
 }
