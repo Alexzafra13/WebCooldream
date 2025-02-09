@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web-Oficial-CoolDream</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <a href="index.html" class="logo">
+        <img
+          src="/img/logo_cooldream_blanco (1).png"
+          alt="Logo CoolDream"
+          style="width: 350px; height: auto"
+        />
+      </a>
+      <nav>
+        <ul>
+          <li><a href="tienda.html">Tienda</a></li>
+          <li><a href="#about">Conciertos</a></li>
+          <li><a href="#contact">Contacto</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="fullscreen-background"></div>
+        <!-- Fondo negro sin video -->
+      </section>
+    </main>
+
+    <div class="marquee">
+      <div class="marquee-content">
+        <span class="project-name" data-video="video/Invierno.mp4"
+          >Invierno</span
+        >
+        <span class="project-name" data-video="video/El_Desayuno.mp4"
+          >El Desayuno</span
+        >
+        <span class="project-name" data-video="video/Huellas.mp4">Huellas</span>
+        <span class="project-name" data-video="video/Loco_Maravilloso.mp4"
+          >Loco Maravilloso</span
+        >
+        <span class="project-name" data-video="video/Orbita_Lunar.mp4"
+          >Órbita Lunar</span
+        >
+        <span
+          class="project-name"
+          data-video="video/Momentos_Dificiles_De_Olvidar.mp4"
+          >Momentos Difíciles De Olvidar</span
+        >
+      </div>
+    </div>
+
+    <div class="fullscreen-video-container" id="fullscreen-video-container">
+      <video id="fullscreen-video" autoplay loop muted>
+        <source id="video-source" src="" type="video/mp4" />
+      </video>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 CoolDream</p>
+    </footer>
+
+    <script src="scripts.js"></script>
+  </body>
+</html>
