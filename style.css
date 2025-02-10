@@ -47,14 +47,12 @@ body {
   z-index: 1000;
   margin: 0 20px;
 }
-
 .navbar .logo {
   font-size: 1.5em;
   font-weight: bold;
   color: rgb(235, 206, 206);
   text-decoration: none;
 }
-
 .navbar ul {
   list-style: none;
   display: flex;
@@ -62,25 +60,21 @@ body {
   padding: 0;
   font-family: "Nougat", sans-serif;
 }
-
 .navbar ul li {
   margin: 0 15px;
 }
-
 .navbar ul li a {
   color: rgb(216, 203, 203);
   text-decoration: none;
   font-size: medium;
   transition: opacity 0.3s;
 }
-
 .navbar ul li a:hover {
   opacity: 0.7;
   text-decoration: underline;
   color: rgb(14, 162, 207);
   transition: opacity 0.3s, text-decoration 0.3s;
 }
-
 .navbar.with-video {
   opacity: 0.8;
   transition: opacity 0.3s ease;
@@ -96,7 +90,6 @@ body {
   align-items: center;
   text-align: center;
 }
-
 .fullscreen-background {
   position: absolute;
   top: 0;
@@ -114,20 +107,17 @@ body {
   gap: 20px;
   padding: 50px 20px;
 }
-
 .project {
   position: relative;
   width: 300px;
   height: 200px;
   overflow: hidden;
 }
-
 .project video {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
 .project h2 {
   position: absolute;
   bottom: 10px;
@@ -159,8 +149,6 @@ footer {
   padding: 20px 0;
   z-index: 1000;
 }
-
-/* Contenedor con desplazamiento infinito */
 .marquee-content {
   display: flex;
   gap: 80px;
@@ -205,7 +193,7 @@ footer {
   }
 }
 
-/* Video en pantalla completa */
+/* Video en pantalla completa con fundido */
 .fullscreen-video-container {
   position: fixed;
   top: 0;
@@ -219,7 +207,7 @@ footer {
   z-index: 999;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 .fullscreen-video-container.active {
   opacity: 1;
@@ -232,7 +220,7 @@ footer {
   object-fit: cover;
 }
 
-/* Media queries para hacerlo responsive */
+/* Media queries */
 @media (max-width: 768px) {
   .navbar {
     flex-direction: column;
@@ -264,4 +252,135 @@ footer {
     animation: marquee-scroll 15s linear infinite;
     animation-play-state: running;
   }
+}
+
+/* Estilos para la sección de contacto */
+.contact-section {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #111;
+}
+
+.contact-section h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.contact-section p {
+  font-size: 1.2em;
+  margin-bottom: 40px;
+  color: #ccc;
+}
+
+#contact-form {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 1em;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1em;
+  border: none;
+  border-radius: 4px;
+}
+
+button[type="submit"] {
+  background: #0e9ace;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1.2em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: #0b7aa1;
+}
+
+/* Estilos para la sección de la tienda */
+.store-section {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #111;
+}
+
+.store-section h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.store-section p {
+  font-size: 1.2em;
+  margin-bottom: 40px;
+  color: #ccc;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-item {
+  background-color: #222;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.product-item:hover {
+  transform: scale(1.03);
+}
+
+.product-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.product-item h2 {
+  font-size: 1.5em;
+  margin: 10px 0;
+  color: white;
+}
+
+.product-item p {
+  font-size: 1em;
+  color: #aaa;
+  margin-bottom: 15px;
+}
+
+.product-item button {
+  background-color: #0e9ace;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-item button:hover {
+  background-color: #0b7aa1;
 }

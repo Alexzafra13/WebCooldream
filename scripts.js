@@ -36,19 +36,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const videoFile = item.getAttribute("data-video");
       console.log("mouseenter:", videoFile);
       if (videoFile && videoFile.trim() !== "") {
-        // Retarda 300ms para evitar activaciones accidentales
         hoverTimer = setTimeout(() => {
           videoSource.src = videoFile;
           fullscreenVideo.load();
           fullscreenVideo.play().catch((error) => {
             console.error("Error al reproducir el video:", error);
           });
-          // Aplica el efecto de fundido (fade in)
+          // Activa el efecto de fundido (fade in) añadiendo la clase "active"
           fullscreenVideoContainer.classList.add("active");
           marqueeContent.style.animationPlayState = "paused";
           header.classList.add("with-video");
 
-          // Efecto "lift" letra a letra
+          // Efecto "lift" letra a letra en el título
           const letters = item.querySelectorAll(".letter");
           letters.forEach((letter, index) => {
             setTimeout(() => {
@@ -74,11 +73,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       fullscreenVideo.pause();
       fullscreenVideo.currentTime = 0;
-      // Aplica el fundido de salida (fade out)
       fullscreenVideoContainer.classList.remove("active");
       marqueeContent.style.animationPlayState = "running";
       header.classList.remove("with-video");
     });
+
+    // Fin de eventos hover
   });
 
   // Listener para el evento "resize" que oculta el video y reanuda el marquee
