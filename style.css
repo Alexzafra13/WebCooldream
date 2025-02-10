@@ -384,3 +384,75 @@ button[type="submit"]:hover {
 .product-item button:hover {
   background-color: #0b7aa1;
 }
+
+/* Estilos para la sección de Conciertos */
+.conciertos-section {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #111;
+}
+
+.conciertos-section h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.conciertos-section p {
+  font-size: 1.2em;
+  margin-bottom: 40px;
+  color: #ccc;
+}
+
+.concerts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.concert-card {
+  background-color: #222;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+.concert-card:hover {
+  transform: scale(1.05);
+}
+
+.concert-card h2 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.concert-card .date,
+.concert-card .location {
+  font-size: 1.1em;
+  margin-bottom: 10px;
+  color: #ccc;
+}
+
+.concert-card .description {
+  font-size: 1em;
+  margin-bottom: 15px;
+  color: #ddd;
+}
+
+.concert-card .btn {
+  display: inline-block;
+  background-color: #0e9ace;
+  color: #fff;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.concert-card .btn:hover {
+  background-color: #0b7aa1;
+}
