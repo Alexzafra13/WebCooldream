@@ -13,6 +13,12 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: "Tenada";
+  src: url("fonts/Tenada.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
 
 /* Efecto para las letras */
 .letter {
@@ -90,6 +96,7 @@ body {
   align-items: center;
   text-align: center;
 }
+/* Este sera por si quiero poner negro de fondo
 .fullscreen-background {
   position: absolute;
   top: 0;
@@ -97,8 +104,40 @@ body {
   width: 100%;
   height: 100%;
   background: black;
-}
+}*/
 
+/*Esta para poner una foto*/
+.fullscreen-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('/img/colour-accent-corporate-presentation-background.jpg') no-repeat center center;
+  background-size: cover;
+}
+/* Pseudo-elemento para el efecto de grano */
+.fullscreen-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: url('/img/Efecto\ grano.png') repeat; 
+  opacity: 0.2; /* Ajusta la opacidad para que el efecto sea sutil */
+  animation: grainAnimation 1s steps(10) infinite; /* Animación para dar movimiento al grano */
+}
+/* Animación para el grano */
+@keyframes grainAnimation {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, -100%);
+  }
+}
 /* Sección de proyectos */
 .projects {
   display: flex;
@@ -249,7 +288,7 @@ footer {
   .marquee-content {
     align-items: center;
     gap: 80px;
-    animation: marquee-scroll 15s linear infinite;
+    animation: marquee-scroll 20s linear infinite;
     animation-play-state: running;
   }
 }
