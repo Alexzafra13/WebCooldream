@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- NAVBAR -->
     <header class="navbar">
       <a href="index.html" class="logo">
         <img
@@ -24,18 +25,18 @@
       </nav>
     </header>
 
+    <!-- CONTENIDO PRINCIPAL -->
     <main>
       <section class="hero">
+        <!-- Imagen de fondo con pseudo-elemento de grano en CSS -->
         <div class="fullscreen-background"></div>
-        <!-- Fondo negro sin video -->
       </section>
     </main>
 
+    <!-- MARQUEE (fijo al fondo) -->
     <div class="marquee">
       <div class="marquee-content">
-        <span class="project-name" data-video="video/Invierno.mp4"
-          >Invierno</span
-        >
+        <span class="project-name" data-video="video/Invierno.mp4">Invierno</span>
         <span class="project-name" data-video="video/El_Desayuno.mp4"
           >El Desayuno</span
         >
@@ -46,24 +47,25 @@
         <span class="project-name" data-video="video/Orbita_Lunar.mp4"
           >Órbita Lunar</span
         >
-        <span
-          class="project-name"
-          data-video="video/Momentos_Dificiles_De_Olvidar.mp4"
+        <span class="project-name" data-video="video/Momentos_Dificiles_De_Olvidar.mp4"
           >Momentos Difíciles De Olvidar</span
         >
       </div>
     </div>
 
+    <!-- VIDEO EN PANTALLA COMPLETA (Hover) -->
     <div class="fullscreen-video-container" id="fullscreen-video-container">
       <video id="fullscreen-video" autoplay loop muted>
         <source id="video-source" src="" type="video/mp4" />
       </video>
     </div>
 
+    <!-- FOOTER -->
     <footer>
       <p>&copy; 2025 CoolDream</p>
     </footer>
 
+    <!-- SCRIPT PRINCIPAL -->
     <script src="scripts.js"></script>
   </body>
 </html>

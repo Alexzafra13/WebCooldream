@@ -1,5 +1,11 @@
+/* ---------- RESET BÁSICO ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-/* Fuente personalizada */
+/* ---------- FUENTES PERSONALIZADAS ---------- */
 @font-face {
   font-family: "Bebas Neue";
   src: url("fonts/BebasNeue-Regular.woff2") format("woff2");
@@ -12,60 +18,29 @@
   font-weight: normal;
   font-style: normal;
 }
-main {
-  padding-top: 100px; /* Ajusta según la altura de tu navbar */
-}
-/* Navbar en móviles */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    text-align: center;
-  }
-  .navbar ul {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-#contact-form {
-  max-width: 800px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
 
-/* Efecto para las letras */
-.letter {
-  display: inline-block;
-  vertical-align: middle;
-  transition: transform 0.3s ease;
-  margin: 0;
-  padding: 0;
-}
-.letter.lift {
-  transform: translateY(-10px);
-}
-
-/* Global */
+/* ---------- GLOBAL ---------- */
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
   background-color: #000;
   color: white;
+  overflow-x: hidden; /* Evitar scroll horizontal no deseado */
 }
 
-/* Navbar */
+/* ---------- NAVBAR ---------- */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: calc(100% - 40px);
+  margin: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  background: rgba(0, 0, 0, 0); /* Hacemos que el fondo sea visible */
+  background: rgba(0, 0, 0, 0);
+  padding: 20px;
   z-index: 1000;
-  transition: background 0.3s ease;
+  transition: top 0.3s;
 }
 .navbar .logo {
   font-size: 1.5em;
@@ -76,32 +51,26 @@ body {
 .navbar ul {
   list-style: none;
   display: flex;
-  margin: 0;
-  padding: 0;
+  gap: 15px;
   font-family: "Plumpfull", sans-serif;
-}
-.navbar ul li {
-  margin: 0 15px;
 }
 .navbar ul li a {
   color: rgb(216, 203, 203);
   text-decoration: none;
   font-size: medium;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, text-decoration 0.3s;
 }
 .navbar ul li a:hover {
   opacity: 0.7;
   text-decoration: underline;
   color: rgb(14, 162, 207);
-  transition: opacity 0.3s, text-decoration 0.3s;
 }
 .navbar.with-video {
   opacity: 0.8;
   transition: opacity 0.3s ease;
-  z-index: 1000;
 }
 
-/* Hero Section */
+/* ---------- HERO SECTION ---------- */
 .hero {
   position: relative;
   height: 100vh;
@@ -110,27 +79,16 @@ body {
   align-items: center;
   text-align: center;
 }
-/* Este sera por si quiero poner negro de fondo
 .fullscreen-background {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: black;
-}*/
-
-/*Esta para poner una foto*/
-.fullscreen-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('/img/colour-accent-corporate-presentation-background.jpg') no-repeat center center;
+  background: url("/img/colour-accent-corporate-presentation-background.jpg")
+    no-repeat center center;
   background-size: cover;
 }
-/* Pseudo-elemento para el efecto de grano */
 .fullscreen-background::before {
   content: "";
   position: absolute;
@@ -139,11 +97,10 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background: url('/img/Efecto\ grano.png') repeat; 
-  opacity: 0.2; /* Ajusta la opacidad para que el efecto sea sutil */
-  animation: grainAnimation 1s steps(10) infinite; /* Animación para dar movimiento al grano */
+  background: url("/img/Efecto grano.png") repeat;
+  opacity: 0.2;
+  animation: grainAnimation 1s steps(10) infinite;
 }
-/* Animación para el grano */
 @keyframes grainAnimation {
   0% {
     transform: translate(0, 0);
@@ -152,7 +109,82 @@ body {
     transform: translate(-100%, -100%);
   }
 }
-/* Sección de proyectos */
+
+/* ---------- MARQUEE ---------- */
+.marquee {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: 70px;
+  font-weight: bold;
+  white-space: nowrap;
+  padding: 20px 0;
+  background: transparent;
+  z-index: 1000;
+  overflow: hidden;
+}
+.marquee-content {
+  display: flex;
+  gap: 80px;
+  width: max-content;
+  animation: marquee-scroll 60s linear infinite;
+  animation-play-state: running;
+}
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(calc(var(--marquee-offset)));
+  }
+  to {
+    transform: translateX(calc(-1 * var(--marquee-width) + var(--marquee-offset)));
+  }
+}
+.project-name {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 65px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: inline-block;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.project-name:hover {
+  color: rgb(14, 162, 207);
+}
+.marquee-content.paused {
+  animation-play-state: paused;
+}
+:root {
+  --marquee-offset: 150px;
+}
+
+/* ---------- VIDEO PANTALLA COMPLETA (HOVER) ---------- */
+.fullscreen-video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+.fullscreen-video-container.active {
+  opacity: 1;
+  visibility: visible;
+}
+#fullscreen-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- SECCIÓN DE PROYECTOS (INDEX) ---------- */
 .projects {
   display: flex;
   flex-wrap: wrap;
@@ -181,172 +213,36 @@ body {
   border-radius: 5px;
 }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.7);
-}
-
-/* Marquee */
-.marquee {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: rgba(0, 0, 0, 0);
-  color: white;
-  font-size: 70px;
-  font-weight: bold;
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 20px 0;
-  z-index: 1000;
-}
-.marquee-content {
-  display: flex;
-  gap: 80px;
-  width: max-content;
-  animation: marquee-scroll 60s linear infinite;
-  animation-play-state: running;
-}
-.marquee-content.paused {
-  animation-play-state: paused;
-}
-
-.project-name {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 65px;
-  font-weight: bold;
-  color: white;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  display: inline-block;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-.project-name:hover {
-  color: rgb(14, 162, 207);
-}
-
-/* Variables para marquee */
-:root {
-  --marquee-offset: 150px;
-}
-
-/* Animación del marquee */
-@keyframes marquee-scroll {
-  from {
-    transform: translateX(calc(var(--marquee-offset)));
-  }
-  to {
-    transform: translateX(
-      calc(-1 * var(--marquee-width) + var(--marquee-offset))
-    );
-  }
-}
-
-/* Video en pantalla completa con fundido */
-.fullscreen-video-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-.fullscreen-video-container.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-#fullscreen-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Media queries */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    padding: 10px;
-    width: 100%;
-    margin: 0;
-  }
-  .navbar ul {
-    flex-direction: column;
-    gap: 10px;
-  }
-  .marquee {
-    font-size: 40px;
-    padding: 10px 0;
-  }
-  .marquee-content {
-    gap: 40px;
-    animation: marquee-scroll 60s linear infinite;
-  }
-}
-@media (min-width: 1200px) {
-  .marquee {
-    font-size: 90px;
-    padding: 20px 0;
-  }
-  .marquee-content {
-    align-items: center;
-    gap: 80px;
-    animation: marquee-scroll 20s linear infinite;
-    animation-play-state: running;
-  }
-}
-
-/* Sección de contacto */
+/* ---------- CONTACTO ---------- */
 .contact-section {
   padding: 60px 20px;
   text-align: center;
   background-color: #111;
-  color: #fff;
 }
-
 .contact-section h1 {
   font-size: 2.5em;
   margin-bottom: 20px;
+  color: #fff;
 }
-
 .contact-section p {
   font-size: 1.2em;
   margin-bottom: 40px;
   color: #ccc;
 }
-
-/* Formulario */
 #contact-form {
-  max-width: 800px;
-  margin: 0 auto; /* Centra el formulario */
-  text-align: left; /* Para alinear las etiquetas a la izquierda */
-  
-  /* Por defecto, en pantallas pequeñas, una sola columna */
-  display: grid;
-  grid-template-columns: 1fr; 
-  gap: 20px; /* Espacio entre filas */
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
 }
-
 .form-group {
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 20px;
 }
-
 .form-group label {
-  margin-bottom: 8px;
+  display: block;
   font-size: 1em;
+  margin-bottom: 5px;
+  color: #fff;
 }
-
 .form-group input,
 .form-group textarea {
   width: 100%;
@@ -356,8 +252,6 @@ footer {
   border-radius: 4px;
   box-sizing: border-box;
 }
-
-/* Botón */
 button[type="submit"] {
   background: #0e9ace;
   color: #fff;
@@ -372,43 +266,84 @@ button[type="submit"]:hover {
   background: #0b7aa1;
 }
 
-/* Clases que ocupan todo el ancho en pantallas grandes */
-.full-width {
-  grid-column: 1 / -1; /* Ocupa toda la fila */
+/* ---------- TIENDA ---------- */
+.store-section {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #111;
+}
+.store-section h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: white;
+}
+.store-section p {
+  font-size: 1.2em;
+  margin-bottom: 40px;
+  color: #ccc;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.product-item {
+  background-color: #222;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+.product-item:hover {
+  transform: scale(1.03);
+}
+.product-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.product-item h2 {
+  font-size: 1.5em;
+  margin: 10px 0;
+  color: white;
+}
+.product-item p {
+  font-size: 1em;
+  color: #aaa;
+  margin-bottom: 15px;
+}
+.product-item button {
+  background-color: #0e9ace;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.product-item button:hover {
+  background-color: #0b7aa1;
 }
 
-/* Responsividad con Grid en pantallas grandes */
-@media (min-width: 768px) {
-  #contact-form {
-    grid-template-columns: 1fr 1fr; /* Dos columnas en pantallas >= 768px */
-  }
-  
-  /* Ajusta el gap si quieres */
-  #contact-form {
-    gap: 20px 40px; /* 20px entre filas, 40px entre columnas */
-  }
-}
-
-
-/* Estilos para la sección de Conciertos */
+/* ---------- CONCIERTOS ---------- */
 .conciertos-section {
   padding: 60px 20px;
   text-align: center;
   background-color: #111;
 }
-
 .conciertos-section h1 {
   font-size: 2.5em;
   margin-bottom: 20px;
   color: #fff;
 }
-
 .conciertos-section p {
   font-size: 1.2em;
   margin-bottom: 40px;
   color: #ccc;
 }
-
 .concerts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -416,7 +351,6 @@ button[type="submit"]:hover {
   max-width: 1200px;
   margin: 0 auto;
 }
-
 .concert-card {
   background-color: #222;
   padding: 20px;
@@ -424,30 +358,25 @@ button[type="submit"]:hover {
   text-align: left;
   transition: transform 0.3s ease;
 }
-
 .concert-card:hover {
   transform: scale(1.05);
 }
-
 .concert-card h2 {
   font-size: 1.8em;
   margin-bottom: 10px;
   color: #fff;
 }
-
 .concert-card .date,
 .concert-card .location {
   font-size: 1.1em;
   margin-bottom: 10px;
   color: #ccc;
 }
-
 .concert-card .description {
   font-size: 1em;
   margin-bottom: 15px;
   color: #ddd;
 }
-
 .concert-card .btn {
   display: inline-block;
   background-color: #0e9ace;
@@ -457,7 +386,42 @@ button[type="submit"]:hover {
   border-radius: 4px;
   transition: background-color 0.3s ease;
 }
-
 .concert-card .btn:hover {
   background-color: #0b7aa1;
+}
+
+/* ---------- MEDIA QUERIES ---------- */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 10px;
+    width: 100%;
+    margin: 0;
+  }
+  .navbar ul {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .marquee {
+    font-size: 40px;
+    padding: 10px 0;
+  }
+  .marquee-content {
+    gap: 40px;
+    animation: marquee-scroll 60s linear infinite;
+  }
+}
+
+@media (min-width: 1200px) {
+  .marquee {
+    font-size: 90px;
+    padding: 20px 0;
+  }
+  .marquee-content {
+    align-items: center;
+    gap: 80px;
+    animation: marquee-scroll 20s linear infinite;
+    animation-play-state: running;
+  }
 }
