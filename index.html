@@ -3,69 +3,62 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Web-Oficial-CoolDream</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Mi Portafolio Creativo</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- NAVBAR -->
-    <header class="navbar">
-      <a href="index.html" class="logo">
-        <img
-          src="/img/logo_cooldream_blanco (1).png"
-          alt="Logo CoolDream"
-          style="width: 350px; height: auto"
-        />
-      </a>
-      <nav>
-        <ul>
-          <li><a href="tienda.html">Tienda</a></li>
-          <li><a href="conciertos.html">Conciertos</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
+    <!-- Navegación fija con logo -->
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <img src="/img/logo_cooldream_blanco (1).png" alt="Logo" />
+        </div>
+        <ul class="nav-links">
+          <li><a href="#inicio">Tienda</a></li>
+          <li><a href="#proyectos">Conciertos</a></li>
+          <li><a href="#contacto">Contacto</a></li>
         </ul>
       </nav>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main>
-      <section class="hero">
-        <!-- Imagen de fondo con pseudo-elemento de grano en CSS -->
-        <div class="fullscreen-background"></div>
-      </section>
-    </main>
+    <!-- Sección Hero (fondo principal) -->
+    <section id="inicio" class="hero">
+      <div class="hero-content">
+        <h1>Area de trabajo</h1>
+      </div>
+    </section>
 
-    <!-- MARQUEE (fijo al fondo) -->
+    <!-- Marquee con nombres de canciones en la parte inferior -->
     <div class="marquee">
       <div class="marquee-content">
-        <span class="project-name" data-video="video/Invierno.mp4">Invierno</span>
+        <span class="project-name" data-video="video/Invierno.mp4"
+          >Invierno</span
+        >
+        |
         <span class="project-name" data-video="video/El_Desayuno.mp4"
           >El Desayuno</span
         >
+        |
         <span class="project-name" data-video="video/Huellas.mp4">Huellas</span>
+        |
         <span class="project-name" data-video="video/Loco_Maravilloso.mp4"
           >Loco Maravilloso</span
         >
+        |
         <span class="project-name" data-video="video/Orbita_Lunar.mp4"
           >Órbita Lunar</span
         >
-        <span class="project-name" data-video="video/Momentos_Dificiles_De_Olvidar.mp4"
+        |
+        <span
+          class="project-name"
+          data-video="video/Momentos_Dificiles_De_Olvidar.mp4"
           >Momentos Difíciles De Olvidar</span
         >
       </div>
     </div>
 
-    <!-- VIDEO EN PANTALLA COMPLETA (Hover) -->
-    <div class="fullscreen-video-container" id="fullscreen-video-container">
-      <video id="fullscreen-video" autoplay loop muted>
-        <source id="video-source" src="" type="video/mp4" />
-      </video>
-    </div>
-
-    <!-- FOOTER -->
-    <footer>
-      <p>&copy; 2025 CoolDream</p>
-    </footer>
-
-    <!-- SCRIPT PRINCIPAL -->
-    <script src="scripts.js"></script>
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
