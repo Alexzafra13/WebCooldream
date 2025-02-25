@@ -24,10 +24,6 @@ html {
   font-size: 2rem;
 }
 
-.loader p {
-  margin: 0;
-}
-
 /* Ocultar contenido inicialmente */
 body:not(.loaded) header,
 body:not(.loaded) .hero,
@@ -82,67 +78,28 @@ body:not(.loaded) .marquee {
   color: white;
   text-decoration: none;
   font-size: 1rem;
+  position: relative; /* Para posicionar el subrallado */
+  overflow: hidden; /* Evitar que el subrallado se desborde */
 }
 
-.nav-links a:hover {
-  color: #096aaa;
+/* Subrallado animado */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px; /* Grosor del subrallado */
+  bottom: -5px; /* Distancia desde el texto */
+  left: 50%; /* Centrado inicial */
+  background-color: #ff6b6b; /* Color del subrallado, coincidente con el separador */
+  transition: width 0.3s ease, left 0.3s ease, transform 0.3s ease; /* Animación suave para simetría */
+  transform: translateX(-50%) scaleX(0); /* Centrar y escalar desde el centro */
 }
 
-/* Marquee en la parte inferior */
-.marquee {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 10px 0;
-  z-index: 1000;
-  overflow: hidden;
-  white-space: nowrap;
-  height: 60px;
-  transition: opacity 0.5s ease;
-}
-
-.marquee-content {
-  display: inline-block;
-  white-space: nowrap;
-}
-
-.separator {
-  color: #ff6b6b;
-  margin: 0 10px;
-  font-size: 2rem;
-  display: inline-block;
-}
-
-.project-name {
-  display: inline-block;
-  margin-right: 20px;
-  font-size: 2rem;
-  color: white;
-  transition: transform 0.3s ease, color 0.3s ease; /* Transición suave para el efecto */
-}
-
-.project-name:hover {
-  color: #ff6b6b;
-  transform: scaleX(1.2); /* Estira horizontalmente un 20% */
-}
-
-/* Contenedor del video */
-.video-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 999;
-  display: none;
-  background-color: black;
-}
-
-.video-container video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* Animación al pasar el ratón */
+.nav-links a:hover::after {
+  width: 100%; /* Expandir el subrallado al 100% del ancho del enlace */
+  transform: translateX(-50%) scaleX(1); /* Escalar simétricamente desde el centro */
+  left: 50%; /* Mantener centrado durante la expansión */
 }
 
 /* Media Queries para responsividad */
@@ -168,26 +125,15 @@ body:not(.loaded) .marquee {
     font-size: 0.9rem;
   }
 
-  .marquee {
-    height: 50px;
+  /* Ajustar el subrallado en tablets */
+  .nav-links a::after {
+    height: 1.5px; /* Subrallado más pequeño en tablets */
+    bottom: -3px; /* Ajustar posición */
   }
 
-  .separator {
-    font-size: 1.5rem;
-    margin: 0 8px;
-  }
-
-  .project-name {
-    font-size: 1.5rem;
-    margin-right: 15px;
-  }
-
-  .project-name:hover {
-    transform: scaleX(1.1); /* Efecto más sutil en tablets */
-  }
-
-  .loader {
-    font-size: 1.5rem;
+  .nav-links a:hover::after {
+    width: 100%; /* Mantener el ancho completo */
+    transform: translateX(-50%) scaleX(1); /* Escalar simétricamente */
   }
 }
 
@@ -216,25 +162,78 @@ body:not(.loaded) .marquee {
     font-size: 0.8rem;
   }
 
-  .marquee {
-    height: 40px;
+  /* Ajustar el subrallado en móviles */
+  .nav-links a::after {
+    height: 1px; /* Subrallado más pequeño en móviles */
+    bottom: -2px; /* Ajustar posición */
   }
 
-  .separator {
-    font-size: 1.2rem;
-    margin: 0 5px;
+  .nav-links a:hover::after {
+    width: 100%; /* Mantener el ancho completo en vertical */
+    transform: translateX(-50%) scaleX(1); /* Escalar simétricamente */
   }
+}
 
-  .project-name {
-    font-size: 1.2rem;
-    margin-right: 10px;
-  }
+/* Marquee en la parte inferior */
+.marquee {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px 0;
+  z-index: 1000;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 80px; /* Tamaño original del marquee */
+}
 
-  .project-name:hover {
-    transform: scaleX(1.05); /* Efecto aún más sutil en móviles */
-  }
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+}
 
-  .loader {
-    font-size: 1.2rem;
-  }
+.project-name {
+  display: inline-block;
+  margin-right: 30px; /* Espaciado original */
+  font-size: 3rem; /* Tamaño original de las letras */
+  color: white;
+  cursor: pointer;
+  position: relative; /* Para posicionar las letras dentro */
+}
+
+.project-name .letter {
+  display: inline-block;
+  transition: transform 0.2s ease; /* Suaviza el cambio de tamaño por letra */
+  position: relative; /* Para animaciones precisas */
+}
+
+/* Efecto base al pasar el ratón por el título completo */
+.project-name:hover .letter {
+  color: #ff6b6b; /* Cambia el color al pasar el ratón */
+}
+
+/* Separador */
+.separator {
+  color: #ff6b6b;
+  margin: 0 15px; /* Espaciado original */
+  font-size: 3rem; /* Tamaño original del separador */
+  display: inline-block;
+}
+
+/* Contenedor del video */
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  display: none;
+  background-color: black;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
