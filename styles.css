@@ -20,7 +20,7 @@ html {
   justify-content: center;
   align-items: center;
   z-index: 2000;
-  color: white;
+  color: #ff6b6b; /* Color rosa de Nike para coherencia */
   font-size: 2rem;
 }
 
@@ -47,6 +47,7 @@ body:not(.loaded) .marquee {
 .hero-content h1 {
   font-size: 3.5rem;
   margin-bottom: 1rem;
+  color: #ff6b6b; /* Rosa de Nike para el título */
 }
 
 /* Navegación fija */
@@ -79,27 +80,25 @@ body:not(.loaded) .marquee {
   text-decoration: none;
   font-size: 1rem;
   position: relative; /* Para posicionar el subrallado */
-  overflow: hidden; /* Evitar que el subrallado se desborde */
+  overflow: hidden; /* Evitar desbordamiento */
 }
 
 /* Subrallado animado */
 .nav-links a::after {
   content: "";
   position: absolute;
-  width: 0;
+  width: 0; /* Comienza con ancho 0 */
   height: 2px; /* Grosor del subrallado */
   bottom: -5px; /* Distancia desde el texto */
   left: 50%; /* Centrado inicial */
-  background-color: #ff6b6b; /* Color del subrallado, coincidente con el separador */
-  transition: width 0.3s ease, left 0.3s ease, transform 0.3s ease; /* Animación suave para simetría */
-  transform: translateX(-50%) scaleX(0); /* Centrar y escalar desde el centro */
+  background-color: #ff6b6b; /* Color rosa de Nike */
+  transition: width 0.3s ease; /* Animación suave del ancho */
+  transform: translateX(-50%); /* Centrar el subrallado */
 }
 
 /* Animación al pasar el ratón */
 .nav-links a:hover::after {
-  width: 100%; /* Expandir el subrallado al 100% del ancho del enlace */
-  transform: translateX(-50%) scaleX(1); /* Escalar simétricamente desde el centro */
-  left: 50%; /* Mantener centrado durante la expansión */
+  width: 100%; /* Expandir al 100% del ancho del enlace */
 }
 
 /* Media Queries para responsividad */
@@ -127,13 +126,8 @@ body:not(.loaded) .marquee {
 
   /* Ajustar el subrallado en tablets */
   .nav-links a::after {
-    height: 1.5px; /* Subrallado más pequeño en tablets */
+    height: 1.5px; /* Subrallado más delgado */
     bottom: -3px; /* Ajustar posición */
-  }
-
-  .nav-links a:hover::after {
-    width: 100%; /* Mantener el ancho completo */
-    transform: translateX(-50%) scaleX(1); /* Escalar simétricamente */
   }
 }
 
@@ -164,13 +158,8 @@ body:not(.loaded) .marquee {
 
   /* Ajustar el subrallado en móviles */
   .nav-links a::after {
-    height: 1px; /* Subrallado más pequeño en móviles */
+    height: 1px; /* Subrallado más delgado */
     bottom: -2px; /* Ajustar posición */
-  }
-
-  .nav-links a:hover::after {
-    width: 100%; /* Mantener el ancho completo en vertical */
-    transform: translateX(-50%) scaleX(1); /* Escalar simétricamente */
   }
 }
 
@@ -180,11 +169,11 @@ body:not(.loaded) .marquee {
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 10px 0;
+  padding: 15px 0; /* Más padding vertical para letras grandes */
   z-index: 1000;
   overflow: hidden;
   white-space: nowrap;
-  height: 80px; /* Tamaño original del marquee */
+  height: 120px; /* Aumentado para dar espacio a las letras más grandes */
 }
 
 .marquee-content {
@@ -194,30 +183,65 @@ body:not(.loaded) .marquee {
 
 .project-name {
   display: inline-block;
-  margin-right: 30px; /* Espaciado original */
-  font-size: 3rem; /* Tamaño original de las letras */
+  margin-right: 50px; /* Más espacio entre nombres */
+  font-size: 5rem; /* Letras aún más grandes en pantallas grandes */
   color: white;
   cursor: pointer;
-  position: relative; /* Para posicionar las letras dentro */
+  position: relative;
 }
 
 .project-name .letter {
   display: inline-block;
-  transition: transform 0.2s ease; /* Suaviza el cambio de tamaño por letra */
-  position: relative; /* Para animaciones precisas */
+  transition: transform 0.2s ease; /* Suaviza el efecto de escala */
+  position: relative;
 }
 
-/* Efecto base al pasar el ratón por el título completo */
 .project-name:hover .letter {
-  color: #ff6b6b; /* Cambia el color al pasar el ratón */
+  color: #ff6b6b; /* Rosa de Nike al pasar el ratón */
 }
 
 /* Separador */
 .separator {
-  color: #ff6b6b;
-  margin: 0 15px; /* Espaciado original */
-  font-size: 3rem; /* Tamaño original del separador */
+  color: #ff6b6b; /* Rosa de Nike */
+  margin: 0 25px; /* Más espacio para los separadores */
+  font-size: 5rem; /* Igualado al tamaño de las letras */
   display: inline-block;
+}
+
+/* Responsividad para tablets */
+@media (max-width: 768px) {
+  .marquee {
+    height: 90px; /* Reducido para tablets */
+    padding: 10px 0; /* Ajustado padding */
+  }
+
+  .project-name {
+    font-size: 3rem; /* Reducido proporcionalmente */
+    margin-right: 30px; /* Ajustado para mantener espaciado */
+  }
+
+  .separator {
+    font-size: 3rem; /* Reducido para tablets */
+    margin: 0 15px; /* Ajustado para mantener proporción */
+  }
+}
+
+/* Responsividad para móviles */
+@media (max-width: 480px) {
+  .marquee {
+    height: 70px; /* Reducido para móviles */
+    padding: 5px 0; /* Ajustado padding */
+  }
+
+  .project-name {
+    font-size: 2.5rem; /* Reducido para móviles */
+    margin-right: 20px; /* Ajustado para mantener espaciado */
+  }
+
+  .separator {
+    font-size: 2.5rem; /* Reducido para móviles */
+    margin: 0 10px; /* Ajustado para mantener proporción */
+  }
 }
 
 /* Contenedor del video */
