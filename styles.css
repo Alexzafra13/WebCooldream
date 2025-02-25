@@ -1,4 +1,4 @@
-/* Reset básico y eliminación del scroll */
+/* Reset y fondo negro */
 body,
 html {
   margin: 0;
@@ -6,6 +6,7 @@ html {
   height: 100vh;
   overflow: hidden;
   font-family: Arial, sans-serif;
+  background-color: #000000; /* Negro como base */
 }
 
 /* Pantalla de carga */
@@ -15,16 +16,16 @@ html {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #000;
+  background-color: #000000; /* Negro */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2000;
-  color: #ff6b6b; /* Color rosa de Nike para coherencia */
+  color: #0D98BA; /* Azul celeste claro */
   font-size: 2rem;
 }
 
-/* Ocultar contenido inicialmente */
+/* Ocultar contenido hasta que cargue */
 body:not(.loaded) header,
 body:not(.loaded) .hero,
 body:not(.loaded) .marquee {
@@ -32,14 +33,14 @@ body:not(.loaded) .marquee {
   visibility: hidden;
 }
 
-/* Estilos del Hero (fondo principal) */
+/* Estilos del Hero */
 .hero {
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #000;
-  color: white;
+  background: #000000; /* Negro */
+  color: #0D98BA; /* Azul celeste claro para el título */
   text-align: center;
   transition: opacity 0.5s ease;
 }
@@ -47,10 +48,10 @@ body:not(.loaded) .marquee {
 .hero-content h1 {
   font-size: 3.5rem;
   margin-bottom: 1rem;
-  color: #ff6b6b; /* Rosa de Nike para el título */
+  color: #0D98BA; /* Azul celeste claro */
 }
 
-/* Navegación fija */
+/* Navegación fija con fondo transparente */
 .navbar {
   position: fixed;
   top: 0;
@@ -60,11 +61,11 @@ body:not(.loaded) .marquee {
   align-items: center;
   padding: 20px;
   z-index: 1001;
-  transition: opacity 0.5s ease;
+  background-color: transparent; /* Fondo transparente */
 }
 
 .logo img {
-  height: 50px;
+  height: 70px; /* Aumentado de 50px a 70px para hacer el logo más grande */
   width: auto;
 }
 
@@ -76,29 +77,93 @@ body:not(.loaded) .marquee {
 }
 
 .nav-links a {
-  color: white;
+  color: #FFFFFF; /* Blanco para los enlaces */
   text-decoration: none;
   font-size: 1rem;
-  position: relative; /* Para posicionar el subrallado */
-  overflow: hidden; /* Evitar desbordamiento */
+  position: relative;
+  overflow: hidden;
 }
 
-/* Subrallado animado */
+/* Subrallado animado en azul claro */
 .nav-links a::after {
   content: "";
   position: absolute;
-  width: 0; /* Comienza con ancho 0 */
-  height: 2px; /* Grosor del subrallado */
-  bottom: -5px; /* Distancia desde el texto */
-  left: 50%; /* Centrado inicial */
-  background-color: #ff6b6b; /* Color rosa de Nike */
-  transition: width 0.3s ease; /* Animación suave del ancho */
-  transform: translateX(-50%); /* Centrar el subrallado */
+  width: 0;
+  height: 2px;
+  bottom: -5px;
+  left: 50%;
+  background-color: #0D98BA; /* Azul celeste claro */
+  transition: width 0.3s ease;
+  transform: translateX(-50%);
 }
 
-/* Animación al pasar el ratón */
 .nav-links a:hover::after {
-  width: 100%; /* Expandir al 100% del ancho del enlace */
+  width: 100%;
+}
+
+/* Marquee con fondo transparente */
+.marquee {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 0;
+  z-index: 1000;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 120px;
+  background-color: transparent; /* Fondo transparente */
+}
+
+.marquee-content {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.project-name {
+  display: inline-block;
+  margin-right: 50px;
+  font-size: 5rem;
+  color: #FFFFFF; /* Blanco para las letras por defecto */
+  cursor: pointer;
+  position: relative;
+}
+
+.project-name .letter {
+  display: inline-block;
+  transition: transform 0.2s ease, color 0.2s ease; /* Añadida transición para el color */
+  position: relative;
+}
+
+.project-name:hover .letter {
+  color: #0D98BA; /* Azul celeste claro al pasar el ratón */
+  text-shadow: 0 0 10px #0D98BA; /* Brillo azul opcional */
+}
+
+/* Separador */
+.separator {
+  color: #0D98BA; /* Azul celeste claro */
+  margin: 0 25px;
+  font-size: 5rem;
+  display: inline-block;
+}
+
+/* Contenedor del video */
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  display: none;
+  background-color: #000000; /* Negro */
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Media Queries para responsividad */
@@ -112,7 +177,7 @@ body:not(.loaded) .marquee {
   }
 
   .logo img {
-    height: 40px;
+    height: 60px; /* Ajustado para tablets */
   }
 
   .nav-links {
@@ -124,10 +189,19 @@ body:not(.loaded) .marquee {
     font-size: 0.9rem;
   }
 
-  /* Ajustar el subrallado en tablets */
-  .nav-links a::after {
-    height: 1.5px; /* Subrallado más delgado */
-    bottom: -3px; /* Ajustar posición */
+  .marquee {
+    height: 90px;
+    padding: 10px 0;
+  }
+
+  .project-name {
+    font-size: 3rem;
+    margin-right: 30px;
+  }
+
+  .separator {
+    font-size: 3rem;
+    margin: 0 15px;
   }
 }
 
@@ -136,128 +210,49 @@ body:not(.loaded) .marquee {
     font-size: 1.8rem;
   }
 
-  .navbar {
-    flex-direction: column;
-    padding: 10px;
-  }
+  @media (max-width: 480px) {
+    .navbar {
+      flex-direction: column;
+      align-items: center; /* Centrar horizontalmente */
+      padding: 10px;
+    }
+  
+    .logo {
+      display: flex;
+      justify-content: center; /* Centrar el logo horizontalmente */
+      margin-bottom: 10px; /* Espacio entre logo y enlaces */
+    }
+  
+    .logo img {
+      height: 50px; /* Ajustado para móviles */
+    }
+  
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Centrar los enlaces horizontalmente */
+      gap: 8px;
+      width: 100%; /* Ocupa todo el ancho disponible */
+    }
+  
+    .nav-links a {
+      font-size: 0.8rem;
+      text-align: center; /* Asegurar que el texto esté centrado */
+      width: 100%; /* Cada enlace ocupa todo el ancho */
+    }
 
-  .logo img {
-    height: 30px;
-  }
-
-  .nav-links {
-    flex-direction: column;
-    gap: 8px;
-    margin-right: 0;
-    text-align: center;
-  }
-
-  .nav-links a {
-    font-size: 0.8rem;
-  }
-
-  /* Ajustar el subrallado en móviles */
-  .nav-links a::after {
-    height: 1px; /* Subrallado más delgado */
-    bottom: -2px; /* Ajustar posición */
-  }
-}
-
-/* Marquee en la parte inferior */
-.marquee {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 15px 0; /* Más padding vertical para letras grandes */
-  z-index: 1000;
-  overflow: hidden;
-  white-space: nowrap;
-  height: 120px; /* Aumentado para dar espacio a las letras más grandes */
-}
-
-.marquee-content {
-  display: inline-block;
-  white-space: nowrap;
-}
-
-.project-name {
-  display: inline-block;
-  margin-right: 50px; /* Más espacio entre nombres */
-  font-size: 5rem; /* Letras aún más grandes en pantallas grandes */
-  color: white;
-  cursor: pointer;
-  position: relative;
-}
-
-.project-name .letter {
-  display: inline-block;
-  transition: transform 0.2s ease; /* Suaviza el efecto de escala */
-  position: relative;
-}
-
-.project-name:hover .letter {
-  color: #ff6b6b; /* Rosa de Nike al pasar el ratón */
-}
-
-/* Separador */
-.separator {
-  color: #ff6b6b; /* Rosa de Nike */
-  margin: 0 25px; /* Más espacio para los separadores */
-  font-size: 5rem; /* Igualado al tamaño de las letras */
-  display: inline-block;
-}
-
-/* Responsividad para tablets */
-@media (max-width: 768px) {
   .marquee {
-    height: 90px; /* Reducido para tablets */
-    padding: 10px 0; /* Ajustado padding */
+    height: 70px;
+    padding: 5px 0;
   }
 
   .project-name {
-    font-size: 3rem; /* Reducido proporcionalmente */
-    margin-right: 30px; /* Ajustado para mantener espaciado */
+    font-size: 2.5rem;
+    margin-right: 20px;
   }
 
   .separator {
-    font-size: 3rem; /* Reducido para tablets */
-    margin: 0 15px; /* Ajustado para mantener proporción */
+    font-size: 2.5rem;
+    margin: 0 10px;
   }
-}
-
-/* Responsividad para móviles */
-@media (max-width: 480px) {
-  .marquee {
-    height: 70px; /* Reducido para móviles */
-    padding: 5px 0; /* Ajustado padding */
-  }
-
-  .project-name {
-    font-size: 2.5rem; /* Reducido para móviles */
-    margin-right: 20px; /* Ajustado para mantener espaciado */
-  }
-
-  .separator {
-    font-size: 2.5rem; /* Reducido para móviles */
-    margin: 0 10px; /* Ajustado para mantener proporción */
-  }
-}
-
-/* Contenedor del video */
-.video-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 999;
-  display: none;
-  background-color: black;
-}
-
-.video-container video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
