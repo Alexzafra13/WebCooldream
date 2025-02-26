@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacto - CoolDream</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navegación fija con logo -->
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html">
+            <img
+              src="/img/logo_cooldream_blanco (1).png"
+              alt="Logo CoolDream"
+            />
+          </a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html#inicio">Tienda</a></li>
+          <li><a href="index.html#proyectos">Conciertos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Sección de Contacto -->
+    <section id="contacto" class="contacto">
+      <div class="contacto-content">
+        <h2>Contacto</h2>
+        <p>
+          Ponte en contacto con nosotros y te responderemos lo antes posible
+        </p>
+
+        <!-- Formulario de contacto -->
+        <form name="contacto" method="post" data-netlify="true">
+          <input type="hidden" name="form-name" value="contacto" />
+          <label for="nombre">Nombre:</label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            placeholder="Tu nombre"
+            required
+          />
+
+          <label for="email">Correo electrónico:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Tu correo"
+            required
+          />
+
+          <label for="mensaje">Mensaje:</label>
+          <textarea
+            id="mensaje"
+            name="mensaje"
+            placeholder="Escribe tu mensaje aquí"
+            required
+          ></textarea>
+
+          <button type="submit">Enviar Mensaje</button>
+        </form>
+
+        <!-- Información adicional de contacto -->
+        <div class="contacto-info">
+          <p><strong>Correo:</strong> cooldreammusic@gmail.com</p>
+          <p><strong>Síguenos:</strong></p>
+          <ul>
+            <li>
+              <a href="https://facebook.com/cooldream" target="_blank"
+                >Facebook</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.instagram.com/_cooldream_/?hl=es"
+                target="_blank"
+                >Instagram</a
+              >
+            </li>
+            <li>
+              <a href="https://x.com/_cooldream_" target="_blank">Twitter</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
