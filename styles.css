@@ -1,5 +1,6 @@
 /* =======================================
-   Definición de fuentes personalizadas
+   1. Fuentes Personalizadas
+   - Definición de fuentes usadas en el proyecto: "Bebas Neue" para el logo y títulos, "Plumpfull" para navegación.
 ======================================= */
 @font-face {
   font-family: "Bebas Neue";
@@ -16,25 +17,31 @@
 }
 
 /* =======================================
-   Estilos generales
+   2. Estilos Generales
+   - Configuración básica del body y html con fondo negro y texto blanco.
+   - Uso de grid para estructurar las secciones principales (navbar, hero, marquee).
 ======================================= */
 body,
 html {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  grid-template-areas:
-    "navbar"
-    "hero"
-    "marquee";
   height: 100vh;
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #000000; /* Fondo negro según la imagen */
+  color: #ffffff; /* Texto blanco por defecto */
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* Navbar, Contenido, Footer/Marquee */
+  grid-template-areas:
+    "navbar"
+    "hero"
+    "marquee";
 }
 
-/* Navegación */
+/* =======================================
+   3. Navegación (Encabezado)
+   - Estilos para el logo "CoolDream" y los enlaces de navegación.
+   - Efecto hover con línea turquesa (#0d98ba).
+======================================= */
 .navbar {
   grid-area: navbar;
   display: grid;
@@ -44,8 +51,8 @@ html {
   top: 0;
   width: 100%;
   padding: 20px;
+  background-color: #00000000; /* Fondo negro sólido para consistencia */
   z-index: 1001;
-  background-color: #00000000;
 }
 
 .logo {
@@ -53,13 +60,16 @@ html {
 }
 
 .logo img {
-  height: 70px;
+  height: 70px; /* Tamaño del logo según la imagen */
   width: auto;
 }
 
 .nav-links {
   display: grid;
-  grid-template-columns: repeat(3, auto);
+  grid-template-columns: repeat(
+    3,
+    auto
+  ); /* "Tienda", "Conciertos", "Contacto" */
   gap: 30px;
   justify-self: end;
   list-style: none;
@@ -67,13 +77,16 @@ html {
 }
 
 .nav-links a {
-  font-family: "Plumpfull", sans-serif;
-  color: #ffffff;
+  font-family: "Plumpfull", sans-serif; /* Fuente personalizada para navegación */
+  color: #ffffff; /* Blanco por defecto */
   text-decoration: none;
   font-size: 1.1rem;
   position: relative;
-  overflow: hidden;
   padding: 0 10px;
+}
+
+.nav-links a.active {
+  color: #0d98ba; /* Turquesa para el enlace activo */
 }
 
 .nav-links a::after {
@@ -83,20 +96,23 @@ html {
   height: 2px;
   bottom: -5px;
   left: 50%;
-  background-color: #0d98ba;
+  background-color: #0d98ba; /* Línea turquesa al hacer hover */
   transition: width 0.3s ease;
   transform: translateX(-50%);
 }
 
 .nav-links a:hover::after {
-  width: 100%;
+  width: 100%; /* Expande la línea al hacer hover */
 }
 
 .nav-links li:last-child {
-  margin-right: -10px; /* Ajuste solicitado */
+  margin-right: -10px; /* Ajuste solicitado en tu CSS */
 }
 
-/* Pantalla de carga */
+/* =======================================
+   4. Pantalla de Carga
+   - Estilos para el loader mientras carga la página.
+======================================= */
 .loader {
   position: fixed;
   top: 0;
@@ -108,7 +124,7 @@ html {
   justify-content: center;
   align-items: center;
   z-index: 2000;
-  color: #0d98ba;
+  color: #0d98ba; /* Turquesa para el texto del loader */
   font-size: 2rem;
 }
 
@@ -120,11 +136,14 @@ body:not(.loaded) .marquee {
   visibility: hidden;
 }
 
-/* Estilos del Hero */
+/* =======================================
+   5. Sección Hero (No visible en contacto.html, pero incluida por completitud)
+   - Estilos para la sección principal de otras páginas.
+======================================= */
 .hero {
   grid-area: hero;
   display: grid;
-  place-items: center; /* Centra horizontal y verticalmente */
+  place-items: center;
   height: 100vh;
   background: #000000;
   color: #0d98ba;
@@ -138,7 +157,10 @@ body:not(.loaded) .marquee {
   color: #0d98ba;
 }
 
-/* Marquee con fondo transparente */
+/* =======================================
+   6. Marquee (No visible en contacto.html, pero incluida por completitud)
+   - Estilos para la marquesina de proyectos.
+======================================= */
 .marquee {
   grid-area: marquee;
   position: fixed;
@@ -159,23 +181,21 @@ body:not(.loaded) .marquee {
   white-space: nowrap;
 }
 
-/* Estilos para los nombres de proyectos con Bebas Neue */
 .project-name {
-  font-family: "Bebas Neue", sans-serif; /* Aplicar fuente Bebas Neue */
+  font-family: "Bebas Neue", sans-serif;
   display: inline-block;
   margin-right: 50px;
   font-size: 5rem;
   color: #ffffff;
   cursor: pointer;
   position: relative;
-  letter-spacing: 2px; /* Opcional: espaciado entre letras */
-  text-transform: uppercase; /* Opcional: texto en mayúsculas */
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .project-name .letter {
   display: inline-block;
   transition: transform 0.2s ease, color 0.2s ease;
-  position: relative;
 }
 
 .project-name:hover .letter {
@@ -183,7 +203,6 @@ body:not(.loaded) .marquee {
   text-shadow: 0 0 10px #0d98ba;
 }
 
-/* Separador */
 .separator {
   color: #0d98ba;
   margin: 0 25px;
@@ -191,7 +210,10 @@ body:not(.loaded) .marquee {
   display: inline-block;
 }
 
-/* Contenedor del video */
+/* =======================================
+   7. Contenedor de Video (No visible en contacto.html, pero incluida por completitud)
+   - Estilos para videos de fondo.
+======================================= */
 .video-container {
   position: fixed;
   top: 0;
@@ -210,94 +232,144 @@ body:not(.loaded) .marquee {
 }
 
 /* =======================================
-   Estilos para contacto.html
+   8. Sección de Contacto
+   - Estilos específicos para contacto.html según la imagen.
 ======================================= */
 .contacto {
-  padding: 100px 20px;
+  padding: 100px 20px; /* Espaciado para separar del navbar */
   background-color: #000000;
   color: #ffffff;
   text-align: center;
-  min-height: 100vh;
+  min-height: 100vh; /* Ocupa toda la pantalla */
 }
 
 .contacto-content {
-  max-width: 800px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .contacto h2 {
-  font-size: 2.5rem;
+  font-size: 2.5rem; /* Título "Contacto" grande */
   margin-bottom: 20px;
-  color: #0d98ba;
+  color: #0d98ba; /* Turquesa según la imagen */
 }
 
 .contacto p {
   font-size: 1.2rem;
   margin-bottom: 40px;
+  color: #ffffff; /* Blanco para el texto introductorio */
 }
 
 .contacto form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  gap: 20px; /* Espaciado entre campos */
   margin-bottom: 40px;
+  max-width: 500px; /* Ancho máximo para el formulario */
+  width: 100%;
 }
 
 .contacto label {
   font-size: 1rem;
   text-align: left;
+  width: 100%;
+  color: #ffffff;
 }
 
 .contacto input,
 .contacto textarea {
   padding: 10px;
   font-size: 1rem;
-  background-color: #333333;
-  color: #ffffff;
-  border: 1px solid #0d98ba;
+  background-color: #333333; /* Gris oscuro para los campos */
+  color: #ffffff; /* Texto blanco dentro */
+  border: 1px solid #0d98ba; /* Bordes turquesa */
   border-radius: 5px;
+  width: 100%;
 }
 
 .contacto input::placeholder,
 .contacto textarea::placeholder {
-  color: #bbbbbb;
+  color: #bbbbbb; /* Gris claro para placeholders */
 }
 
 .contacto textarea {
-  height: 150px;
-  resize: vertical;
+  height: 150px; /* Altura para el campo de mensaje */
+  resize: vertical; /* Solo redimensionable verticalmente */
 }
 
-.contacto button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #0d98ba;
-  color: #ffffff;
+.contacto input:focus,
+.contacto textarea:focus {
+  outline: none;
+  box-shadow: 0 0 5px #0d98ba; /* Efecto al enfocar */
+}
+
+/* Estilo del botón "Enviar" */
+.btn {
+  width: 8em;
+  height: 2.3em;
+  margin: 0.5em 0;
+  background: #0d98ba; /* Fondo turquesa */
+  color: #ffffff; /* Texto blanco */
   border: none;
-  border-radius: 5px;
+  border-radius: 0.625em;
+  font-size: 20px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
-.contacto button:hover {
-  background-color: #0a7a9a;
+.btn:hover {
+  color: #0d98ba; /* Texto turquesa al hover */
 }
 
+.btn:after {
+  content: "";
+  background: #ffffff; /* Fondo blanco para el efecto */
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  transform: skewX(-45deg) scale(0, 1);
+  transition: all 0.5s;
+}
+
+.btn:hover:after {
+  transform: skewX(-45deg) scale(1, 1);
+}
+
+/* =======================================
+   9. Información de Contacto Adicional
+   - Estilos para el correo "cooldreammusic@gmail.com".
+======================================= */
 .contacto-info {
-  text-align: left;
+  text-align: center;
+  margin-top: 20px;
 }
 
-/* Estilos para botones de redes sociales */
-ul {
-  list-style: none;
+.contacto-info p {
+  font-size: 1.1rem;
+  color: #ffffff;
 }
 
+/* =======================================
+   10. Sección de Redes Sociales
+   - Estilos para los íconos de TikTok, Instagram, X, Spotify y YouTube.
+======================================= */
 .example-2 {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   padding: 0;
-  margin-top: 10px;
+  margin-top: 20px;
+  list-style: none;
 }
 
 .example-2 .icon-content {
@@ -334,13 +406,14 @@ ul {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  color: #4d4d4d;
-  background-color: #fff;
+  color: #4d4d4d; /* Gris oscuro para íconos */
+  background-color: #fff; /* Fondo blanco para los círculos */
   transition: all 0.3s ease-in-out;
 }
 
 .example-2 .icon-content a:hover {
   box-shadow: 3px 2px 45px 0px rgb(0 0 0 / 12%);
+  color: #ffffff; /* Ícono blanco al hover */
 }
 
 .example-2 .icon-content a svg {
@@ -348,10 +421,6 @@ ul {
   z-index: 1;
   width: 30px;
   height: 30px;
-}
-
-.example-2 .icon-content a:hover {
-  color: white;
 }
 
 .example-2 .icon-content a .filled {
@@ -365,13 +434,13 @@ ul {
 }
 
 .example-2 .icon-content a:hover .filled {
-  height: 100%;
+  height: 100%; /* Relleno al hacer hover */
 }
 
-/* Colores personalizados para cada red social */
+/* Colores personalizados por red social */
 .example-2 .icon-content a[data-social="tiktok"] .filled,
 .example-2 .icon-content a[data-social="tiktok"] ~ .tooltip {
-  background-color: #000000; /* Negro para TikTok */
+  background-color: #232424; /* Negro para TikTok */
 }
 
 .example-2 .icon-content a[data-social="instagram"] .filled,
@@ -384,33 +453,27 @@ ul {
     #c135b4,
     #e1306c,
     #fd1f1f
-  ); /* Gradiente original de Instagram */
+  ); /* Gradiente Instagram */
 }
 
 .example-2 .icon-content a[data-social="x"] .filled,
 .example-2 .icon-content a[data-social="x"] ~ .tooltip {
-  background-color: #0d98ba; /* Azul para X */
+  background-color: #0d98ba; /* Turquesa para X */
 }
 
 .example-2 .icon-content a[data-social="spotify"] .filled,
 .example-2 .icon-content a[data-social="spotify"] ~ .tooltip {
-  background-color: #1db954; /* Verde para Spotify */
+  background-color: #1db954; /* Verde Spotify */
 }
 
 .example-2 .icon-content a[data-social="youtube"] .filled,
 .example-2 .icon-content a[data-social="youtube"] ~ .tooltip {
-  background-color: #ff0000; /* Rojo para YouTube */
-}
-
-/* Efecto al enfocar los campos */
-.contacto input:focus,
-.contacto textarea:focus {
-  outline: none;
-  box-shadow: 0 0 5px #0d98ba;
+  background-color: #ff0000; /* Rojo YouTube */
 }
 
 /* =======================================
-   Media Queries para responsividad
+   11. Media Queries
+   - Ajustes para pantallas más pequeñas (responsividad).
 ======================================= */
 @media (max-width: 768px) {
   .navbar {
@@ -431,7 +494,7 @@ ul {
   }
 
   .contacto {
-    padding: 80px 15px;
+    padding: 50px 10px;
   }
 
   .contacto h2 {
@@ -447,8 +510,10 @@ ul {
     font-size: 0.9rem;
   }
 
-  .contacto button {
-    font-size: 0.9rem;
+  .btn {
+    font-size: 18px;
+    width: 7em;
+    height: 2.2em;
   }
 
   .example-2 {
@@ -464,8 +529,8 @@ ul {
   }
 
   .logo {
-    margin-bottom: 10px;
     justify-self: center;
+    margin-bottom: 10px;
   }
 
   .logo img {
@@ -476,7 +541,6 @@ ul {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(3, auto);
     gap: 15px;
-    width: 100%;
     justify-self: center;
     margin-right: 0;
   }
@@ -504,13 +568,10 @@ ul {
     font-size: 0.8rem;
   }
 
-  .contacto button {
-    font-size: 0.8rem;
-  }
-
-  .example-2 {
-    justify-content: center;
-    gap: 10px;
+  .btn {
+    font-size: 16px;
+    width: 7em;
+    height: 2em;
   }
 
   .example-2 .icon-content a {
