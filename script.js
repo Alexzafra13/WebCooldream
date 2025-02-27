@@ -146,11 +146,15 @@ function animateMarquee() {
   });
 }
 
+// Detectar si es un dispositivo táctil
+const isTouchDevice = "ontouchstart" in window || navigator.msMaxTouchPoints;
+
 // Eventos de video
 function addVideoEvents(elements, marqueeAnimation) {
   elements.forEach((project) => {
     let currentVideo = null;
-    project.addEventListener("mouseenter", () => {
+
+    const showVideo = () => {
       marqueeAnimation.pause();
       const videoSrc = project.getAttribute("data-video");
       if (videoSrc) {
@@ -177,14 +181,29 @@ function addVideoEvents(elements, marqueeAnimation) {
               .catch((err) => console.error("Error tras carga:", err));
         }
       }
-    });
-    project.addEventListener("mouseleave", () => {
+    };
+
+    const hideVideo = () => {
       if (currentVideo) {
         currentVideo.pause();
         videoContainer.style.display = "none";
       }
       marqueeAnimation.play();
-    });
+    };
+
+    if (isTouchDevice) {
+      project.addEventListener("click", (e) => {
+        e.preventDefault(); // Evita comportamientos no deseados
+        if (videoContainer.style.display === "block") {
+          hideVideo();
+        } else {
+          showVideo();
+        }
+      });
+    } else {
+      project.addEventListener("mouseenter", showVideo);
+      project.addEventListener("mouseleave", hideVideo);
+    }
   });
 }
 
@@ -193,8 +212,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const projectNames = document.querySelectorAll(".project-name");
   projectNames.forEach((name) => splitTextIntoLetters(name));
   preloadVideos(videoUrls, () => {
-    document.body.classList.add("loaded");
-    if (loader) loader.style.display = "none";
+    setTimeout(() => {
+      document.body.classList.add("loaded");
+      if (loader) loader.style.display = "none";
+    }, 500); // Retraso de 500ms para asegurar una transición suave
     const marqueeAnimation = animateMarquee();
     if (marquee) {
       marquee.addEventListener("mousemove", handleMouseMove);
@@ -205,5 +226,22 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       addVideoEvents(clonedProjects, marqueeAnimation);
     }
+  });
+});
+document.addEventListener("DOMContentLoaded", function () {
+  // Animación de entrada para la sección de contacto
+  gsap.from(".contacto-content", {
+    opacity: 0,
+    y: 50,
+    duration: 1,
+    ease: "power2.out",
+  });
+
+  // Lógica para el envío del formulario (ejemplo con Netlify)
+  const form = document.querySelector(".contacto-form");
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    // Aquí puedes agregar la lógica para enviar el formulario
+    console.log("Formulario enviado");
   });
 });

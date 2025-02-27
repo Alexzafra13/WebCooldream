@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: "Plumpfull";
-  src: url("fonts/Plumpfull.ttf") format("truetype");
+  src: url("fonts/Plumpfull.woff2") format("woff2"); /* Cambiado a WOFF2 */
   font-weight: normal;
   font-style: normal;
 }
@@ -20,9 +20,15 @@
 ======================================= */
 body,
 html {
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* Navbar, Hero, Marquee */
+  grid-template-areas:
+    "navbar"
+    "hero"
+    "marquee";
+  height: 100vh;
   margin: 0;
   padding: 0;
-  height: 100vh;
   font-family: Arial, sans-serif;
   background-color: #000000; /* Negro como base */
   color: #ffffff; /* Texto blanco */
@@ -30,15 +36,20 @@ html {
 
 /* Navegación (común a index.html y contacto.html) */
 .navbar {
+  grid-area: navbar;
+  display: grid;
+  grid-template-columns: auto 1fr; /* Logo a la izquierda, enlaces a la derecha */
+  align-items: center;
   position: fixed;
   top: 0;
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 20px;
   z-index: 1001;
   background-color: #00000000; /* Fondo negro para consistencia */
+}
+
+.logo {
+  justify-self: start; /* Alinea el logo a la izquierda */
 }
 
 .logo img {
@@ -47,9 +58,11 @@ html {
 }
 
 .nav-links {
-  list-style: none;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, auto); /* 3 columnas para Tienda, Conciertos, Contacto */
   gap: 30px; /* Espacio entre enlaces */
+  justify-self: end; /* Alinea los enlaces a la derecha */
+  list-style: none;
   margin-right: 40px;
 }
 
@@ -115,10 +128,10 @@ body:not(.loaded) .marquee {
 
 /* Estilos del Hero */
 .hero {
+  grid-area: hero;
+  display: grid;
+  place-items: center; /* Centra horizontal y verticalmente */
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background: #000000;
   color: #0d98ba;
   text-align: center;
@@ -133,20 +146,22 @@ body:not(.loaded) .marquee {
 
 /* Marquee con fondo transparente */
 .marquee {
+  grid-area: marquee;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   padding: 15px 0;
-  z-index: 1000;
   overflow: hidden;
   white-space: nowrap;
   height: 120px;
   background-color: transparent;
+  z-index: 1000;
 }
 
 .marquee-content {
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
   white-space: nowrap;
 }
 
@@ -375,29 +390,33 @@ body:not(.loaded) .marquee {
 @media (max-width: 480px) {
   /* Ajustes para la navegación */
   .navbar {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: 1fr; /* Una sola columna */
+    grid-template-rows: auto auto; /* Dos filas: logo y enlaces */
     padding: 10px;
   }
 
   .logo {
     margin-bottom: 10px;
+    justify-self: center; /* Centra el logo en móviles */
   }
 
   .logo img {
-    height: 50px; /* Ajustado para móviles */
+    height: 50px; /* Tamaño adecuado para móviles */
   }
 
   .nav-links {
-    flex-direction: column;
-    gap: 10px;
+    grid-template-columns: 1fr; /* Una columna para los enlaces */
+    grid-template-rows: repeat(3, auto); /* Tres filas para los enlaces */
+    gap: 15px;
     width: 100%;
+    justify-self: center; /* Centra los enlaces */
+    margin-right: 0; /* Elimina el margen derecho en móviles */
   }
 
   .nav-links a {
-    font-size: 0.9rem;
+    font-size: 1rem;
     text-align: center;
-    width: 100%;
+    padding: 10px 0; /* Más espacio para tocar */
   }
 
   /* Ajustes para index.html */
@@ -411,12 +430,12 @@ body:not(.loaded) .marquee {
   }
 
   .project-name {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-right: 20px;
   }
 
   .separator {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin: 0 10px;
   }
 
