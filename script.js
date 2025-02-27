@@ -207,15 +207,16 @@ function addVideoEvents(elements, marqueeAnimation) {
   });
 }
 
-// Iniciar la aplicación
+// Iniciar la aplicación con un solo evento DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
+  // Funcionalidad para index.html
   const projectNames = document.querySelectorAll(".project-name");
   projectNames.forEach((name) => splitTextIntoLetters(name));
   preloadVideos(videoUrls, () => {
     setTimeout(() => {
       document.body.classList.add("loaded");
       if (loader) loader.style.display = "none";
-    }, 500); // Retraso de 500ms para asegurar una transición suave
+    }, 500); // Retraso de 500ms para una transición suave
     const marqueeAnimation = animateMarquee();
     if (marquee) {
       marquee.addEventListener("mousemove", handleMouseMove);
@@ -227,21 +228,23 @@ document.addEventListener("DOMContentLoaded", () => {
       addVideoEvents(clonedProjects, marqueeAnimation);
     }
   });
-});
-document.addEventListener("DOMContentLoaded", function () {
-  // Animación de entrada para la sección de contacto
-  gsap.from(".contacto-content", {
-    opacity: 0,
-    y: 50,
-    duration: 1,
-    ease: "power2.out",
-  });
 
-  // Lógica para el envío del formulario (ejemplo con Netlify)
+  // Funcionalidad específica para contacto.html con verificación
+  if (document.querySelector(".contacto-content")) {
+    gsap.from(".contacto-content", {
+      opacity: 0,
+      y: 50,
+      duration: 1,
+      ease: "power2.out",
+    });
+  }
+
   const form = document.querySelector(".contacto-form");
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    // Aquí puedes agregar la lógica para enviar el formulario
-    console.log("Formulario enviado");
-  });
+  if (form) {
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      // Aquí puedes añadir la lógica para enviar el formulario (ejemplo con Netlify)
+      console.log("Formulario enviado");
+    });
+  }
 });
