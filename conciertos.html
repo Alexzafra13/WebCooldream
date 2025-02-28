@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Conciertos - CoolDream</title>
+  </head>
+  <body>
+    <!-- Navegación fija con logo -->
+    <header>
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html">
+            <img
+              src="/img/logo_cooldream_blanco (1).png"
+              alt="Logo CoolDream"
+            />
+          </a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="index.html#inicio">Tienda</a></li>
+          <li><a href="conciertos.html">Conciertos</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Sección de Conciertos -->
+    <section id="conciertos" class="conciertos">
+      <div class="conciertos-content">
+        <h2>Próximos Conciertos</h2>
+        <p>¡No te pierdas nuestras próximas actuaciones en vivo!</p>
+        <!-- Lista de conciertos futuros -->
+        <div class="conciertos-list">
+          <div class="concierto-item">
+            <h3>29 de Marzo - 2025</h3>
+            <p>Lugar: Teatro Principal, Burguillos Del Cerro</p>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6259.606765234736!2d-6.597732629093549!3d38.37360713381337!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0b1c1b6c6c6c6c!2sTeatro+Principal,+Burguillos+del+Cerro!5e0!3m2!1ses!2ses!4v1709079968!5m2!1ses!2ses"
+              width="300"
+              height="200"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+            ></iframe>
+            <div class="countdown" data-date="2025-03-29T20:00:00"></div>
+            <a href="#" class="btn-concierto">Comprar Entradas</a>
+          </div>
+          <div class="concierto-item">
+            <h3>22 de Diciembre - 2023</h3>
+            <p>Lugar: Arena Central, Otra Ciudad</p>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=..."
+              width="300"
+              height="200"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+            ></iframe>
+            <div class="countdown" data-date="2023-12-22T20:00:00"></div>
+            <a href="#" class="btn-concierto">Comprar Entradas</a>
+          </div>
+        </div>
+        <!-- Galería de conciertos pasados -->
+        <h2>Conciertos Pasados</h2>
+        <div class="galeria-conciertos">
+          <img src="img/concierto1.jpg" alt="Concierto pasado 1" />
+          <div
+            class="video-thumbnail"
+            data-video="https://www.youtube.com/embed/FBHnM8IcQHs"
+          >
+            <img
+              src="img/thumbnail_concierto.jpg"
+              alt="Video concierto pasado"
+            />
+            <div class="play-icon">▶</div>
+          </div>
+          <img src="img/concierto2.jpg" alt="Concierto pasado 2" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal para videos -->
+    <div class="modal" id="video-modal">
+      <iframe id="video-iframe" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+      // Contador regresivo para cada concierto
+      document.querySelectorAll(".countdown").forEach((countdown) => {
+        const eventDate = new Date(
+          countdown.getAttribute("data-date")
+        ).getTime();
+        const interval = setInterval(() => {
+          const now = new Date().getTime();
+          const distance = eventDate - now;
+          if (distance < 0) {
+            countdown.innerHTML = "¡El concierto ya pasó!";
+            clearInterval(interval);
+          } else {
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor(
+              (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+            );
+            const minutes = Math.floor(
+              (distance % (1000 * 60 * 60)) / (1000 * 60)
+            );
+            countdown.innerHTML = `${days}d ${hours}h ${minutes}m`;
+          }
+        }, 1000);
+      });
+
+      // Funciones para el modal de video
+      document.querySelectorAll(".video-thumbnail").forEach((thumbnail) => {
+        thumbnail.addEventListener("click", () => {
+          const videoUrl = thumbnail.getAttribute("data-video");
+          document.getElementById("video-iframe").src = videoUrl;
+          document.getElementById("video-modal").style.display = "flex";
+        });
+      });
+
+      document.getElementById("video-modal").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("video-modal")) {
+          document.getElementById("video-modal").style.display = "none";
+          document.getElementById("video-iframe").src = "";
+        }
+      });
+    </script>
+  </body>
+</html>
