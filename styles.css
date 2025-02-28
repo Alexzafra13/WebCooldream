@@ -638,6 +638,42 @@ body:not(.loaded) .marquee {
   animation: fadeInUp 0.6s ease forwards;
 }
 
+/* Contador cuenta atrás */
+.countdown-banner {
+  background-color: rgba(13, 151, 186, 0.075); /* Turquesa semitransparente */
+  border: 2px solid #0d98ba; /* Marco turquesa */
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.5rem;
+  color: #ffffff;
+  opacity: 0;
+  animation: fadeIn 1s ease forwards;
+}
+
+.countdown {
+  color: #e9a616;
+  font-weight: bold;
+  text-shadow: 0 0 5px #0d97ba50;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes fadeInUp {
   to {
     opacity: 1;
