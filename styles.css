@@ -48,13 +48,12 @@ html {
   grid-template-columns: auto 1fr;
   align-items: center;
   position: fixed;
-  top: 0;
+  top: 0; /* Visible por defecto */
   width: 100%;
   padding: 20px;
-  background-color: #00000000; /* Fondo negro sólido para consistencia */
   z-index: 1001;
+  transition: top 0.3s ease; /* Suave para scroll, pero no retrasa la carga */
 }
-
 .logo {
   justify-self: start;
 }
@@ -236,19 +235,19 @@ body:not(.loaded) .marquee {
    - Estilos específicos para contacto.html según la imagen.
 ======================================= */
 .contacto {
-  padding: 100px 20px; /* Espaciado para separar del navbar */
+  padding: 150px 20px 100px 20px; /* Más espacio arriba */
   background-color: #000000;
   color: #ffffff;
   text-align: center;
-  min-height: 100vh; /* Ocupa toda la pantalla */
+  min-height: 100vh; /* Asegura que ocupe toda la pantalla */
 }
 
 .contacto-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  justify-content: center; /* Centra verticalmente */
+  align-items: center; /* Centra horizontalmente */
+  min-height: calc(100vh - 70px); /* Resta la altura del encabezado */
 }
 
 .contacto h2 {

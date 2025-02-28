@@ -248,3 +248,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.classList.add('loaded');
+  document.querySelector('.navbar').style.top = '0';
+});
+/* Logica para el nav */
+let lastScrollTop = 0;
+const navbar = document.querySelector('.navbar');
+
+window.addEventListener('scroll', function() {
+  let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  
+  if (scrollTop > lastScrollTop && scrollTop > 0) {
+    navbar.style.top = `-${navbar.offsetHeight}px`;
+  } else if (scrollTop === 0) {
+    navbar.style.top = '0';
+  }
+  
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+});
