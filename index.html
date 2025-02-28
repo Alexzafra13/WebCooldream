@@ -4,31 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Web Oficial CoolDream</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tu CSS personalizado -->
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <!-- Pantalla de carga -->
     <!-- From Uiverse.io by andrew-demchenk0 --> 
-<div class="loader">
-  <div data-glitch="Loading..." class="glitch">Loading...</div>
-</div>
+    <div class="loader">
+      <div data-glitch="Loading..." class="glitch">Loading...</div>
+    </div>
 
-    <!-- Navegación fija con logo -->
+    <!-- Navegación fija con logo usando Bootstrap -->
     <header>
-      <nav class="navbar">
-        <div class="logo">
-          <a href="#inicio">
-            <img
-              src="/img/logo_cooldream_blanco (1).png"
-              alt="Logo CoolDream"
-            />
-          </a>
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+          <div class="logo">
+            <a class="navbar-brand" href="#inicio">
+              <img src="/img/logo_cooldream_blanco (1).png" alt="Logo CoolDream" height="70">
+            </a>
+          </div>
+          <button class="hamburger-menu" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#inicio">Tienda</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="conciertos.html">Conciertos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="contacto.html">Contacto</a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <ul class="nav-links">
-          <li><a href="#inicio">Tienda</a></li>
-          <li><a href="conciertos.html">Conciertos</a></li>
-          <li><a href="contacto.html">Contacto</a></li>
-        </ul>
       </nav>
     </header>
 
@@ -40,35 +55,39 @@
     <!-- Marquee con nombres de canciones en la parte inferior -->
     <div class="marquee">
       <div class="marquee-content">
-        <span class="project-name" data-video="video/Invierno.mp4"
-          >Invierno</span
-        >
+        <span class="project-name" data-video="video/Invierno.mp4">Invierno</span>
         <span class="separator">|</span>
-        <span class="project-name" data-video="video/El_Desayuno.mp4"
-          >El Desayuno</span
-        >
+        <span class="project-name" data-video="video/El_Desayuno.mp4">El Desayuno</span>
         <span class="separator">|</span>
         <span class="project-name" data-video="video/Huellas.mp4">Huellas</span>
         <span class="separator">|</span>
-        <span class="project-name" data-video="video/Loco_Maravilloso.mp4"
-          >Loco Maravilloso</span
-        >
+        <span class="project-name" data-video="video/Loco_Maravilloso.mp4">Loco Maravilloso</span>
         <span class="separator">|</span>
-        <span class="project-name" data-video="video/Orbita_Lunar.mp4"
-          >Órbita Lunar</span
-        >
+        <span class="project-name" data-video="video/Orbita_Lunar.mp4">Órbita Lunar</span>
         <span class="separator">|</span>
-        <span
-          class="project-name"
-          data-video="video/Momentos_Dificiles_De_Olvidar.mp4"
-          >Momentos Difíciles De Olvidar</span
-        >
+        <span class="project-name" data-video="video/Momentos_Dificiles_De_Olvidar.mp4">Momentos Difíciles De Olvidar</span>
         <span class="separator">|</span>
       </div>
     </div>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- Bootstrap JS (sin integrity para pruebas) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
+    <script>
+      // Asegúrate de que el botón hamburguesa funcione con Bootstrap
+      document.addEventListener('DOMContentLoaded', () => {
+        const hamburgerMenu = document.querySelector('.hamburger-menu');
+        const navbarNav = document.querySelector('#navbarNav');
+
+        if (hamburgerMenu) {
+          hamburgerMenu.addEventListener('click', () => {
+            hamburgerMenu.classList.toggle('active');
+            navbarNav.classList.toggle('collapse'); // Asegura que Bootstrap colapse/expanda el menú
+          });
+        }
+      });
+    </script>
   </body>
 </html>
