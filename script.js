@@ -7,13 +7,9 @@ document.body.appendChild(videoContainer);
 const marquee = document.querySelector(".marquee");
 const marqueeContent = document.querySelector(".marquee-content");
 const loader = document.querySelector(".loader");
-if (!marquee || !marqueeContent || !loader) {
-  console.error(
-    "Faltan elementos en el HTML: .marquee, .marquee-content o .loader"
-  );
-}
+const navbar = document.querySelector(".navbar");
 
-// Lista de videos a precargar
+// Lista de videos a precargar (solo para index.html)
 const videoUrls = [
   "video/Invierno.mp4",
   "video/El_Desayuno.mp4",
@@ -52,7 +48,7 @@ function preloadVideos(urls, callback) {
   });
 }
 
-// Dividir texto en letras individuales
+// Dividir texto en letras individuales (solo para index.html)
 function splitTextIntoLetters(element) {
   const text = element.textContent.trim();
   element.innerHTML = "";
@@ -88,7 +84,7 @@ function splitTextIntoLetters(element) {
   });
 }
 
-// Efecto dinámico por letra al mover el ratón
+// Efecto dinámico por letra al mover el ratón (solo para index.html)
 function handleMouseMove(e) {
   const mouseX = e.clientX;
   const projectNames = document.querySelectorAll(".project-name");
@@ -112,7 +108,7 @@ function handleMouseMove(e) {
   });
 }
 
-// Restablecer letras al salir del marquee
+// Restablecer letras al salir del marquee (solo para index.html)
 function handleMouseLeave() {
   const letters = document.querySelectorAll(".letter");
   letters.forEach((letter) => {
@@ -120,7 +116,7 @@ function handleMouseLeave() {
   });
 }
 
-// Animar el marquee infinito
+// Animar el marquee infinito (solo para index.html)
 function animateMarquee() {
   if (!marqueeContent) return;
   const marqueeWidth = marqueeContent.scrollWidth;
@@ -132,7 +128,7 @@ function animateMarquee() {
   marqueeContent.style.left = "0";
   cloneContent.style.position = "absolute";
   cloneContent.style.left = `${marqueeWidth}px`;
-  const baseDuration = 5; // Ajustado para un scroll más lento
+  const baseDuration = 5;
   const screenWidth = window.innerWidth;
   const duration = baseDuration * (marqueeWidth / screenWidth);
   return gsap.to([marqueeContent, cloneContent], {
@@ -149,7 +145,7 @@ function animateMarquee() {
 // Detectar si es un dispositivo táctil
 const isTouchDevice = "ontouchstart" in window || navigator.msMaxTouchPoints;
 
-// Eventos de video
+// Eventos de video (solo para index.html)
 function addVideoEvents(elements, marqueeAnimation) {
   elements.forEach((project) => {
     let currentVideo = null;
@@ -193,7 +189,7 @@ function addVideoEvents(elements, marqueeAnimation) {
 
     if (isTouchDevice) {
       project.addEventListener("click", (e) => {
-        e.preventDefault(); // Evita comportamientos no deseados
+        e.preventDefault();
         if (videoContainer.style.display === "block") {
           hideVideo();
         } else {
@@ -209,27 +205,35 @@ function addVideoEvents(elements, marqueeAnimation) {
 
 // Iniciar la aplicación con un solo evento DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
-  // Funcionalidad para index.html
-  const projectNames = document.querySelectorAll(".project-name");
-  projectNames.forEach((name) => splitTextIntoLetters(name));
-  preloadVideos(videoUrls, () => {
-    setTimeout(() => {
-      document.body.classList.add("loaded");
-      if (loader) loader.style.display = "none";
-    }, 500); // Retraso de 500ms para una transición suave
-    const marqueeAnimation = animateMarquee();
-    if (marquee) {
-      marquee.addEventListener("mousemove", handleMouseMove);
-      marquee.addEventListener("mouseleave", handleMouseLeave);
-      addVideoEvents(projectNames, marqueeAnimation);
-      const clonedProjects = document.querySelectorAll(
-        ".marquee .marquee-content:last-child .project-name"
-      );
-      addVideoEvents(clonedProjects, marqueeAnimation);
-    }
-  });
+  // Verificar si estamos en index.html (si existe .marquee)
+  if (document.querySelector(".marquee")) {
+    const projectNames = document.querySelectorAll(".project-name");
+    projectNames.forEach((name) => splitTextIntoLetters(name));
+    preloadVideos(videoUrls, () => {
+      setTimeout(() => {
+        document.body.classList.add("loaded");
+        if (loader) loader.style.display = "none";
+        if (navbar) navbar.style.top = "0"; // Mostrar navbar después de 500ms
+      }, 500);
+      const marqueeAnimation = animateMarquee();
+      if (marquee) {
+        marquee.addEventListener("mousemove", handleMouseMove);
+        marquee.addEventListener("mouseleave", handleMouseLeave);
+        addVideoEvents(projectNames, marqueeAnimation);
+        const clonedProjects = document.querySelectorAll(
+          ".marquee .marquee-content:last-child .project-name"
+        );
+        addVideoEvents(clonedProjects, marqueeAnimation);
+      }
+    });
+  } else {
+    // Para otras páginas como contacto.html
+    document.body.classList.add("loaded");
+    if (loader) loader.style.display = "none";
+    if (navbar) navbar.style.top = "0"; // Mostrar navbar inmediatamente
+  }
 
-  // Funcionalidad específica para contacto.html con verificación
+  // Funcionalidad específica para contacto.html
   if (document.querySelector(".contacto-content")) {
     gsap.from(".contacto-content", {
       opacity: 0,
@@ -243,28 +247,24 @@ document.addEventListener("DOMContentLoaded", () => {
   if (form) {
     form.addEventListener("submit", function (event) {
       event.preventDefault();
-      // Aquí puedes añadir la lógica para enviar el formulario (ejemplo con Netlify)
       console.log("Formulario enviado");
     });
   }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.body.classList.add('loaded');
-  document.querySelector('.navbar').style.top = '0';
-});
-/* Logica para el nav */
+// Lógica para ocultar y mostrar la navbar al hacer scroll
 let lastScrollTop = 0;
-const navbar = document.querySelector('.navbar');
-
-window.addEventListener('scroll', function() {
+window.addEventListener("scroll", function () {
+  if (!navbar) return;
   let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  
+
   if (scrollTop > lastScrollTop && scrollTop > 0) {
+    // Ocultar la navbar al hacer scroll hacia abajo
     navbar.style.top = `-${navbar.offsetHeight}px`;
   } else if (scrollTop === 0) {
-    navbar.style.top = '0';
+    // Mostrar la navbar solo cuando estamos en el tope
+    navbar.style.top = "0";
   }
-  
+
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 });
