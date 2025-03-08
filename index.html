@@ -17,6 +17,7 @@
     <!-- From Uiverse.io by andrew-demchenk0 -->
     <div class="loader">
       <div data-glitch="Loading..." class="glitch">Loading...</div>
+      <div class="loader-progress">0%</div>
     </div>
 
     <!-- Navegación fija con logo usando Bootstrap -->
@@ -48,13 +49,16 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link" href="#inicio">Tienda</a>
+                <a class="nav-link" href="tienda.html">Tienda</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="conciertos.html">Conciertos</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="contacto.html">Contacto</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="nosotros.html">Nosotros</a>
               </li>
             </ul>
           </div>
@@ -97,24 +101,13 @@
       </div>
     </div>
 
+    <!-- Contenedor para los videos (mantenido simple) -->
+    <div class="video-container"></div>
+
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <!-- Bootstrap JS (sin integrity para pruebas) -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
-    <script>
-      // Asegúrate de que el botón hamburguesa funcione con Bootstrap
-      document.addEventListener("DOMContentLoaded", () => {
-        const hamburgerMenu = document.querySelector(".hamburger-menu");
-        const navbarNav = document.querySelector("#navbarNav");
-
-        if (hamburgerMenu) {
-          hamburgerMenu.addEventListener("click", () => {
-            hamburgerMenu.classList.toggle("active");
-            navbarNav.classList.toggle("collapse"); // Asegura que Bootstrap colapse/expanda el menú
-          });
-        }
-      });
-    </script>
   </body>
 </html>

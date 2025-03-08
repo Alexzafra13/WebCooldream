@@ -31,6 +31,7 @@ html {
   background-position: center;
   background-repeat: no-repeat;
   color: #ffffff; /* Texto blanco por defecto */
+  background-color: rgb(230, 230, 230);
   display: grid;
   grid-template-rows: auto 1fr auto; /* Navbar, Contenido, Footer/Marquee */
   grid-template-areas:
@@ -38,6 +39,35 @@ html {
     "hero"
     "marquee";
 }
+
+/* Solución específica para páginas con scroll */
+.tienda-page {
+  background-color: #000000;
+}
+
+.tienda-page body,
+.tienda-page section,
+.tienda-page div,
+.tienda-page nav,
+.tienda-page header,
+.tienda-page footer {
+  background-color: #000000;
+}
+
+.nosotros-page {
+  background-color: #000000;
+}
+
+.nosotros-page body,
+.nosotros-page section,
+.nosotros-page div,
+.nosotros-page nav,
+.nosotros-page header,
+.nosotros-page footer {
+  background-color: #000000;
+}
+
+/* Agrega clases similares para otras páginas que necesiten scroll */
 
 /* =======================================
    3. Navegación (Encabezado)
@@ -245,6 +275,16 @@ body.loaded .hero {
   z-index: -2;
 }
 
+.loader-progress {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #0d98ba;
+  letter-spacing: 2px;
+}
+
 @keyframes glitch {
   0% {
     transform: translate(0);
@@ -380,6 +420,11 @@ body:not(.loaded) .marquee {
   display: inline-block;
 }
 
+.marquee-spacer {
+  display: inline-block;
+  width: 50px; /* Espacio entre el final y el inicio del marquee */
+}
+
 /* =======================================
    7. Contenedor de Video
 ======================================= */
@@ -398,6 +443,35 @@ body:not(.loaded) .marquee {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.video-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 40px;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 1000;
+  transition: color 0.3s ease;
+}
+
+.video-close:hover {
+  color: #0d98ba;
+}
+
+.video-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video-wrapper video {
+  max-width: 90%;
+  max-height: 80%;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
 }
 
 /* =======================================
@@ -960,4 +1034,753 @@ body:not(.loaded) .marquee {
     width: 24px;
     height: 24px;
   }
+}
+
+/* =======================================
+   Nuevo sistema de tarjetas de proyectos
+======================================= */
+.projects-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 998;
+  pointer-events: none;
+}
+
+.project-card:hover .project-image img {
+  transform: scale(1.05);
+}
+
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background-color: rgba(13, 152, 186, 0.8);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.play-button svg {
+  width: 30px;
+  height: 30px;
+}
+
+.play-button:hover {
+  background-color: #0d98ba;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.project-info {
+  padding: 20px;
+  color: #ffffff;
+}
+
+.project-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.8rem;
+  color: #0d98ba;
+}
+
+.project-date {
+  color: #aaaaaa;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.project-description {
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+.project-links {
+  display: flex;
+  gap: 15px;
+}
+
+.stream-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 8px 12px;
+  background-color: rgba(13, 152, 186, 0.2);
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.stream-link:hover {
+  background-color: rgba(13, 152, 186, 0.5);
+  color: #ffffff;
+}
+
+/* Media queries para tarjetas de proyectos */
+@media (max-width: 992px) {
+  .project-card {
+    width: 90%;
+  }
+
+  .project-info h3 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .play-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .play-button svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .project-info {
+    padding: 15px;
+  }
+
+  .project-info h3 {
+    font-size: 1.2rem;
+  }
+
+  .project-date {
+    font-size: 0.9rem;
+  }
+
+  .project-description {
+    font-size: 0.9rem;
+  }
+}
+
+/* =======================================
+   Estilos mejorados para Conciertos
+======================================= */
+.conciertos-filtros {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.filtro-btn {
+  padding: 8px 15px;
+  background-color: #333333;
+  color: #ffffff;
+  border: 1px solid #0d98ba;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filtro-btn:hover,
+.filtro-btn.active {
+  background-color: #0d98ba;
+  color: #ffffff;
+}
+
+.concierto-detalles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.detalles-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: rgba(13, 152, 186, 0.1);
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.detalles-item svg {
+  color: #0d98ba;
+}
+
+.concierto-pasado {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.concierto-pasado-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 8px;
+  transition: transform 0.3s ease;
+  transform: translateY(100%);
+}
+
+.concierto-pasado:hover .concierto-pasado-info {
+  transform: translateY(0);
+}
+
+.modal-content {
+  background-color: #000000;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #0d98ba;
+  width: 80%;
+  max-width: 800px;
+  position: relative;
+}
+
+.modal-close {
+  color: #0d98ba;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: #ffffff;
+}
+
+/* =======================================
+   Estilos para Sección Nosotros
+======================================= */
+.nosotros {
+  padding: 100px 20px 50px 20px;
+  background-color: #000000;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+.nosotros-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.nosotros h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #0d98ba;
+  text-align: center;
+}
+
+.nosotros h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #0d98ba;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.nosotros h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background-color: #0d98ba;
+}
+
+.nosotros-historia,
+.nosotros-miembros,
+.nosotros-estilo,
+.nosotros-discografia {
+  margin-bottom: 60px;
+}
+
+.nosotros p {
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.miembro {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.miembro-foto {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 15px;
+  overflow: hidden;
+  border: 3px solid #0d98ba;
+  border-radius: 50%;
+}
+
+.miembro-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.miembro:hover .miembro-foto img {
+  transform: scale(1.1);
+}
+
+.miembro h4 {
+  font-size: 1.3rem;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.miembro p {
+  color: #0d98ba;
+  margin-bottom: 10px;
+}
+
+.miembro-bio {
+  color: #bbbbbb !important;
+  font-size: 0.9rem;
+}
+
+.timeline {
+  position: relative;
+  max-width: 600px;
+  margin: 40px auto 0;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 20px;
+  width: 2px;
+  background-color: #0d98ba;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 30px;
+  padding-left: 50px;
+}
+
+.timeline-punto {
+  position: absolute;
+  left: 14px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #0d98ba;
+  top: 5px;
+}
+
+.timeline-contenido {
+  background-color: rgba(13, 152, 186, 0.1);
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.timeline-contenido h4 {
+  margin: 0 0 5px 0;
+  color: #0d98ba;
+}
+
+.timeline-contenido p {
+  margin: 0;
+  color: #ffffff;
+}
+
+/* =======================================
+   Estilos para Tienda
+======================================= */
+.tienda {
+  padding: 100px 20px 50px 20px;
+  background-color: #000000;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+.tienda-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tienda h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #0d98ba;
+  text-align: center;
+}
+
+.tienda p {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.producto-item {
+  background-color: #111111;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.producto-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(13, 152, 186, 0.2);
+}
+
+.producto-imagen {
+  position: relative;
+  overflow: hidden;
+  height: 0;
+  padding-bottom: 100%; /* Aspect ratio cuadrado */
+}
+
+.producto-imagen img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.producto-item:hover .producto-imagen img {
+  transform: scale(1.05);
+}
+
+.producto-overlay {
+  position: absolute;
+  bottom: -60px;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  transition: bottom 0.3s ease;
+}
+
+.producto-item:hover .producto-overlay {
+  bottom: 0;
+}
+
+.btn-agregar-carrito,
+.btn-vista-rapida {
+  background-color: #0d98ba;
+  color: #ffffff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-agregar-carrito:hover,
+.btn-vista-rapida:hover {
+  background-color: #0a7a9a;
+}
+
+.producto-info {
+  padding: 15px;
+}
+
+.producto-info h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.producto-precio {
+  font-size: 1.3rem;
+  color: #0d98ba;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.producto-descripcion {
+  font-size: 0.9rem;
+  color: #bbbbbb;
+  margin-bottom: 10px;
+}
+
+.opciones-talla {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.talla-opcion {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #0d98ba;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.talla-opcion:hover,
+.talla-opcion.selected {
+  background-color: #0d98ba;
+  color: #ffffff;
+}
+
+.tienda-info {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+
+.info-envio,
+.info-pago {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 250px;
+}
+
+.info-envio svg,
+.info-pago svg {
+  color: #0d98ba;
+  margin-bottom: 15px;
+}
+
+.info-envio h4,
+.info-pago h4 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.info-envio p,
+.info-pago p {
+  font-size: 0.9rem;
+  color: #bbbbbb;
+}
+
+/* Modal de Vista Rápida */
+.modal-producto {
+  display: none;
+  position: fixed;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  overflow: auto;
+}
+
+.modal-producto-contenido {
+  background-color: #111111;
+  margin: 5% auto;
+  padding: 30px;
+  width: 90%;
+  max-width: 900px;
+  border-radius: 10px;
+  border: 1px solid #0d98ba;
+  position: relative;
+}
+
+.modal-producto-cerrar {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  color: #0d98ba;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.modal-producto-cerrar:hover {
+  color: #ffffff;
+}
+
+.modal-producto-detalles {
+  color: #ffffff;
+}
+
+.modal-producto-detalles h3 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #0d98ba;
+}
+
+.modal-producto-cantidad {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.cantidad-selector {
+  display: flex;
+  align-items: center;
+  max-width: 120px;
+  margin-top: 10px;
+}
+
+.cantidad-btn {
+  width: 30px;
+  height: 30px;
+  background-color: #333333;
+  color: #ffffff;
+  border: 1px solid #0d98ba;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: background-color 0.3s ease;
+}
+
+.cantidad-btn:hover {
+  background-color: #0d98ba;
+}
+
+.cantidad-selector input {
+  width: 40px;
+  height: 30px;
+  text-align: center;
+  margin: 0 5px;
+  border: 1px solid #0d98ba;
+  background-color: #333333;
+  color: #ffffff;
+  border-radius: 5px;
+}
+
+.btn-agregar-carrito-modal {
+  background-color: #0d98ba;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.btn-agregar-carrito-modal:hover {
+  background-color: #0a7a9a;
+}
+
+/* Responsive para tienda */
+@media (max-width: 992px) {
+  .productos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .productos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+  }
+
+  .producto-info h3 {
+    font-size: 1.1rem;
+  }
+
+  .producto-precio {
+    font-size: 1.1rem;
+  }
+
+  .producto-overlay {
+    padding: 5px;
+    gap: 5px;
+  }
+
+  .btn-agregar-carrito,
+  .btn-vista-rapida {
+    padding: 5px 8px;
+    font-size: 0.8rem;
+  }
+
+  .modal-producto-contenido {
+    padding: 15px;
+    width: 95%;
+  }
+}
+d {
+  position: absolute;
+  width: 80%;
+  max-width: 800px;
+  background-color: rgba(0, 0, 0, 0.85);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.project-card.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.project-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-image {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* Aspect ratio 16:9 */
+  overflow: hidden;
+}
+
+.project-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* =======================================
+   Adiciones a tu archivo CSS existente
+   - Añade estas pequeñas mejoras a tu styles.css actual
+======================================= */
+
+/* Solo añade esto a tu CSS existente */
+.loader-progress {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #0d98ba;
+  letter-spacing: 2px;
 }

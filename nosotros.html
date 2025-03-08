@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es" class="nosotros-page">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nosotros - CoolDream</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Tu CSS personalizado -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Pantalla de carga -->
+    <div class="loader">
+      <div data-glitch="Loading..." class="glitch">Loading...</div>
+      <div class="loader-progress">0%</div>
+    </div>
+
+    <!-- Navegación fija con logo usando Bootstrap -->
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container-fluid">
+          <div class="logo">
+            <a class="navbar-brand" href="index.html">
+              <img
+                src="/img/logo_cooldream_blanco (1).png"
+                alt="Logo CoolDream"
+                height="70"
+              />
+            </a>
+          </div>
+          <button
+            class="hamburger-menu"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="tienda.html">Tienda</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="conciertos.html">Conciertos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="contacto.html">Contacto</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="nosotros.html">Nosotros</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Sección Nosotros -->
+    <section id="nosotros" class="nosotros">
+      <div class="container nosotros-content">
+        <h2>Sobre CoolDream</h2>
+
+        <!-- Historia de la banda -->
+        <div class="nosotros-historia">
+          <h3>Nuestra Historia</h3>
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <p>
+                CoolDream nace en 2015 con la idea de fusionar diversos géneros
+                musicales y crear un sonido único que trascienda las etiquetas
+                convencionales. Desde nuestro primer concierto en una pequeña
+                sala local hasta nuestras actuaciones en festivales, nos ha
+                movido la pasión por crear música auténtica que conecte con la
+                gente.
+              </p>
+              <p>
+                A lo largo de estos años, hemos lanzado varios singles y EP que
+                han ido definiendo nuestra evolución sonora, siempre manteniendo
+                nuestra esencia pero explorando nuevos territorios musicales.
+              </p>
+            </div>
+            <div class="col-md-6">
+              <img
+                src="/img/nosotros/historia.jpg"
+                alt="Historia de CoolDream"
+                class="img-fluid rounded"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Miembros de la banda -->
+        <div class="nosotros-miembros">
+          <h3>Miembros</h3>
+          <div class="row">
+            <div class="col-md-4 miembro">
+              <div class="miembro-foto">
+                <img
+                  src="/img/nosotros/miembro1.jpg"
+                  alt="Nombre Miembro 1"
+                  class="img-fluid rounded-circle"
+                />
+              </div>
+              <h4>Nombre Apellido</h4>
+              <p>Voz / Guitarra</p>
+              <p class="miembro-bio">
+                Fundador de CoolDream. Sus influencias van desde el rock
+                alternativo hasta la música electrónica, creando un estilo vocal
+                distintivo.
+              </p>
+            </div>
+            <div class="col-md-4 miembro">
+              <div class="miembro-foto">
+                <img
+                  src="/img/nosotros/miembro2.jpg"
+                  alt="Nombre Miembro 2"
+                  class="img-fluid rounded-circle"
+                />
+              </div>
+              <h4>Nombre Apellido</h4>
+              <p>Bajo / Coros</p>
+              <p class="miembro-bio">
+                Con una sólida formación en jazz, aporta líneas de bajo
+                complejas que son fundamentales en el sonido de la banda.
+              </p>
+            </div>
+            <div class="col-md-4 miembro">
+              <div class="miembro-foto">
+                <img
+                  src="/img/nosotros/miembro3.jpg"
+                  alt="Nombre Miembro 3"
+                  class="img-fluid rounded-circle"
+                />
+              </div>
+              <h4>Nombre Apellido</h4>
+              <p>Batería / Percusión</p>
+              <p class="miembro-bio">
+                Su experiencia en diversos géneros desde el funk hasta el rock
+                alternativo aporta ritmos únicos a las composiciones.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estilo musical e influencias -->
+        <div class="nosotros-estilo">
+          <h3>Estilo Musical</h3>
+          <div class="row align-items-center">
+            <div class="col-md-6 order-md-2">
+              <p>
+                Nuestra música se caracteriza por mezclar elementos de rock
+                alternativo, indie pop y toques electrónicos. Letras
+                introspectivas combinadas con melodías envolventes que buscan
+                conectar emocionalmente con el oyente.
+              </p>
+              <p>
+                Entre nuestras principales influencias se encuentran bandas como
+                Radiohead, Tame Impala, Arctic Monkeys y artistas nacionales
+                como Vetusta Morla o Love of Lesbian.
+              </p>
+            </div>
+            <div class="col-md-6 order-md-1">
+              <img
+                src="/img/nosotros/estilo.jpg"
+                alt="Estilo musical"
+                class="img-fluid rounded"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Discografía resumida -->
+        <div class="nosotros-discografia">
+          <h3>Discografía</h3>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-punto"></div>
+              <div class="timeline-contenido">
+                <h4>2023</h4>
+                <p>Single: "Momentos Difíciles De Olvidar"</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-punto"></div>
+              <div class="timeline-contenido">
+                <h4>2022</h4>
+                <p>EP: "Órbita Lunar" (4 canciones)</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-punto"></div>
+              <div class="timeline-contenido">
+                <h4>2021</h4>
+                <p>Single: "El Desayuno"</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-punto"></div>
+              <div class="timeline-contenido">
+                <h4>2019</h4>
+                <p>EP debut: "Primeros Pasos" (5 canciones)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
