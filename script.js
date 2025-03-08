@@ -20,6 +20,9 @@ const videoUrls = [
   "video/Momentos_Dificiles_De_Olvidar.mp4",
 ];
 
+// Imprimir videos a cargar para depurar
+console.log("Videos a cargar:", videoUrls);
+
 // Precargar videos y almacenarlos en caché con progreso
 const preloadVideosCache = {};
 function preloadVideos(urls, callback) {
@@ -95,76 +98,99 @@ function preloadVideos(urls, callback) {
   });
 }
 
-// Dividir texto en letras individuales (solo para index.html)
+// Función mejorada para dividir texto en letras individuales con espacios correctos
 function splitTextIntoLetters(element) {
   // No procesar si ya está procesado y tiene letras
   if (element.querySelectorAll(".letter").length > 0) return;
 
   const text = element.textContent.trim();
   element.innerHTML = "";
-  let currentWord = "";
-  text.split("").forEach((char, index) => {
-    if (char === " ") {
-      if (currentWord) {
-        const wordSpan = document.createElement("span");
-        wordSpan.className = "word";
-        wordSpan.innerHTML = currentWord
-          .split("")
-          .map((letter) => `<span class="letter">${letter}</span>`)
-          .join("");
-        element.appendChild(wordSpan);
-        currentWord = "";
-      }
+
+  // Crear contenedor para las letras
+  const lettersContainer = document.createElement("div");
+  lettersContainer.className = "letters-container";
+
+  // Dividir primero en palabras, luego en letras
+  const words = text.split(" ");
+
+  words.forEach((word, wordIndex) => {
+    // Dividir cada palabra en letras
+    word.split("").forEach((letter) => {
+      const letterSpan = document.createElement("span");
+      letterSpan.className = "letter";
+      letterSpan.textContent = letter;
+      letterSpan.style.display = "inline-block";
+      letterSpan.style.transition =
+        "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease";
+      lettersContainer.appendChild(letterSpan);
+    });
+
+    // Añadir espacio entre palabras (excepto después de la última palabra)
+    if (wordIndex < words.length - 1) {
       const spaceSpan = document.createElement("span");
-      spaceSpan.className = "space";
-      spaceSpan.innerHTML = " ";
-      element.appendChild(spaceSpan);
-    } else {
-      currentWord += char;
-      if (index === text.length - 1 && currentWord) {
-        const wordSpan = document.createElement("span");
-        wordSpan.className = "word";
-        wordSpan.innerHTML = currentWord
-          .split("")
-          .map((letter) => `<span class="letter">${letter}</span>`)
-          .join("");
-        element.appendChild(wordSpan);
-      }
+      spaceSpan.className = "letter space"; // Marcar como espacio
+      spaceSpan.innerHTML = "&nbsp;"; // Espacio no separable
+      spaceSpan.style.display = "inline-block";
+      lettersContainer.appendChild(spaceSpan);
     }
   });
+
+  element.appendChild(lettersContainer);
 }
 
-// Efecto dinámico por letra al mover el ratón (solo para index.html)
+// Función actualizada para evitar cortes en la animación de letras
 function handleMouseMove(e) {
   const mouseX = e.clientX;
   const projectNames = document.querySelectorAll(".project-name");
+
   projectNames.forEach((name) => {
     const letters = name.querySelectorAll(".letter");
-    if (letters.length === 0) return; // Saltar si no tiene letras procesadas
+    if (letters.length === 0) return;
 
     const rect = name.getBoundingClientRect();
-    const nameLeft = rect.left;
-    const nameWidth = rect.width;
-    letters.forEach((letter, index) => {
-      const letterCenter =
-        nameLeft + (index + 0.5) * (nameWidth / letters.length);
+
+    letters.forEach((letter) => {
+      const letterRect = letter.getBoundingClientRect();
+      const letterCenter = letterRect.left + letterRect.width / 2;
       const distance = Math.abs(mouseX - letterCenter);
       const maxDistance = 100;
-      if (distance < maxDistance) {
-        const scale = 1 + (1 - distance / maxDistance) * 0.5;
-        gsap.to(letter, { scale: scale, duration: 0.1, ease: "power2.out" });
+
+      if (distance < maxDistance && !letter.classList.contains("space")) {
+        // Calcular efectos con límites más seguros
+        const effect = 1 - distance / maxDistance;
+
+        // Limitar escala y rotación para evitar desbordamientos
+        const scale = 1 + 0.5 * effect; // Reducido de 0.8 a 0.5
+        const yOffset = -10 * effect; // Reducido de -15 a -10
+        const rotation = 5 * effect * (mouseX > letterCenter ? -1 : 1); // Reducido de 10 a 5
+
+        // Aplicar transformaciones
+        letter.style.transform = `translateY(${yOffset}px) scale(${scale}) rotate(${rotation}deg)`;
+        letter.style.color = "#0d98ba";
+        letter.style.textShadow = `0 0 8px rgba(13, 152, 186, 0.8)`;
+        letter.style.zIndex = "2"; // Asegurar que las letras activas estén por encima
+        letter.classList.add("active");
       } else {
-        gsap.to(letter, { scale: 1, duration: 0.1, ease: "power2.out" });
+        // Restaurar estado normal
+        letter.style.transform = "translateY(0) scale(1) rotate(0)";
+        letter.style.color = "";
+        letter.style.textShadow = "";
+        letter.style.zIndex = "1";
+        letter.classList.remove("active");
       }
     });
   });
 }
 
-// Restablecer letras al salir del marquee (solo para index.html)
+// Restablecer letras al salir del marquee
 function handleMouseLeave() {
   const letters = document.querySelectorAll(".letter");
   letters.forEach((letter) => {
-    gsap.to(letter, { scale: 1, duration: 0.1, ease: "power2.out" });
+    letter.style.transform = "translateY(0) scale(1) rotate(0)";
+    letter.style.color = "";
+    letter.style.textShadow = "";
+    letter.style.zIndex = "1";
+    letter.classList.remove("active");
   });
 }
 
@@ -174,130 +200,145 @@ function prepareMarquee() {
 
   // Añadir un separador extra al final si no existe
   const lastChild = marqueeContent.lastElementChild;
-  if (!lastChild || !lastChild.classList.contains("marquee-spacer")) {
+  if (!lastChild || !lastChild.classList.contains("separator")) {
     const endSpacer = document.createElement("span");
-    endSpacer.className = "marquee-spacer";
-    endSpacer.style.display = "inline-block";
-    endSpacer.style.width = "50px";
+    endSpacer.className = "separator";
+    endSpacer.textContent = "|";
     marqueeContent.appendChild(endSpacer);
   }
 }
 
-// Animar el marquee infinito (solo para index.html)
+// Animar el marquee - VERSIÓN MEJORADA SIN ESPACIOS VACÍOS
 function animateMarquee() {
   if (!marqueeContent) return;
 
-  // Preparar el marquee primero
+  // Preparar el marquee
   prepareMarquee();
 
-  // Asegúrate que el contenido original esté procesado correctamente
+  // Procesar texto en letras
   const projectNames = marqueeContent.querySelectorAll(".project-name");
   projectNames.forEach((name) => {
     splitTextIntoLetters(name);
   });
 
-  // Crea un clon del contenido
-  const cloneContent = marqueeContent.cloneNode(true);
+  // Crear contenedor principal
+  const marqueeWrapper = document.createElement("div");
+  marqueeWrapper.className = "marquee-wrapper";
+  marqueeWrapper.style.position = "relative";
+  marqueeWrapper.style.width = "100%";
+  marqueeWrapper.style.height = "100%";
+  marqueeWrapper.style.overflow = "hidden";
 
-  // Asegúrate que el contenido clonado está procesado también
-  const clonedProjectNames = cloneContent.querySelectorAll(".project-name");
-  clonedProjectNames.forEach((name) => {
+  // Crear dos tracks idénticos
+  const trackContainer = document.createElement("div");
+  trackContainer.className = "marquee-track-container";
+  trackContainer.style.display = "flex";
+  trackContainer.style.width = "200%"; // El doble de ancho para contener ambos tracks
+  trackContainer.style.height = "100%";
+
+  const originalTrack = document.createElement("div");
+  originalTrack.className = "marquee-track original";
+  originalTrack.style.display = "inline-flex";
+  originalTrack.style.height = "100%";
+  originalTrack.style.alignItems = "center";
+  originalTrack.style.whiteSpace = "nowrap";
+  originalTrack.style.flexShrink = "0"; // Importante para que mantenga su tamaño
+
+  // Mover el contenido al track original
+  while (marquee.firstChild) {
+    originalTrack.appendChild(marquee.firstChild);
+  }
+
+  // Clonar el track para la segunda mitad
+  const cloneTrack = originalTrack.cloneNode(true);
+  cloneTrack.className = "marquee-track clone";
+
+  // Procesar letras en el clon también
+  const cloneNames = cloneTrack.querySelectorAll(".project-name");
+  cloneNames.forEach((name) => {
     splitTextIntoLetters(name);
   });
 
-  // Añadir al marquee
-  marquee.appendChild(cloneContent);
+  // Agregar tracks al contenedor
+  trackContainer.appendChild(originalTrack);
+  trackContainer.appendChild(cloneTrack);
+  marqueeWrapper.appendChild(trackContainer);
+  marquee.appendChild(marqueeWrapper);
 
-  // Configurar para la animación
-  const marqueeWidth = marqueeContent.scrollWidth;
+  // Medir el ancho de un solo track
+  const trackWidth = originalTrack.offsetWidth;
 
-  marqueeContent.style.display = "inline-block";
-  cloneContent.style.display = "inline-block";
-  marqueeContent.style.position = "absolute";
-  marqueeContent.style.left = "0";
-  cloneContent.style.position = "absolute";
-  cloneContent.style.left = `${marqueeWidth}px`;
+  // Configurar la animación con GSAP
+  // La clave es usar porcentajes en lugar de valores absolutos
+  // para que la animación sea realmente fluida
+  const marqueeAnimation = gsap.timeline({ repeat: -1 });
 
-  // Calcular duración basada en el ancho
-  const baseDuration = 5;
-  const screenWidth = window.innerWidth;
-  const duration = baseDuration * (marqueeWidth / screenWidth);
+  marqueeAnimation.to(trackContainer, {
+    x: -trackWidth, // Mover exactamente el ancho de un track
+    duration: 50, // Duración en segundos (ajustar según necesidad)
+    ease: "none", // Sin aceleración para movimiento constante
 
-  // Animar con GSAP
-  return gsap.to([marqueeContent, cloneContent], {
-    x: `-=${marqueeWidth}`,
-    duration: duration,
-    ease: "linear",
-    repeat: -1,
-    modifiers: {
-      x: (x) => `${parseFloat(x) % marqueeWidth}px`,
-    },
+    // Esta función es clave para el scroll infinito sin saltos
     onRepeat: function () {
-      // Asegurarse de que todos los elementos estén procesados después de cada ciclo
-      document.querySelectorAll(".project-name").forEach((name) => {
-        if (name.querySelectorAll(".letter").length === 0) {
-          splitTextIntoLetters(name);
-        }
-      });
+      // Inmediatamente reposicionar al inicio sin animación
+      gsap.set(trackContainer, { x: 0 });
     },
   });
+
+  // Controles para la animación
+  return {
+    pause: function () {
+      marqueeAnimation.pause();
+    },
+    play: function () {
+      marqueeAnimation.play();
+    },
+  };
 }
 
-// Detectar si es un dispositivo táctil
-const isTouchDevice = "ontouchstart" in window || navigator.msMaxTouchPoints;
-
-// Eventos de video (solo para index.html)
+// Eventos de video simplificados
 function addVideoEvents(elements, marqueeAnimation) {
   elements.forEach((project) => {
     // Evitar añadir eventos múltiples veces
     if (project.hasAttribute("data-events-added")) return;
     project.setAttribute("data-events-added", "true");
 
-    let currentVideo = null;
-
+    // Simplificar el manejo de video
     const showVideo = () => {
       marqueeAnimation.pause();
       const videoSrc = project.getAttribute("data-video");
+      console.log("Mostrando video:", videoSrc);
+
       if (videoSrc) {
+        // Crear un video nuevo cada vez
+        const video = document.createElement("video");
+        video.src = videoSrc;
+        video.muted = true;
+        video.autoplay = true;
+        video.loop = true;
+        video.playsInline = true;
+
+        // Limpiar y mostrar el contenedor
         videoContainer.innerHTML = "";
+        videoContainer.appendChild(video);
         videoContainer.style.display = "block";
 
-        currentVideo =
-          preloadVideosCache[videoSrc] || document.createElement("video");
-        if (!preloadVideosCache[videoSrc]) {
-          currentVideo.src = videoSrc;
-          currentVideo.muted = true; // Mantener video silenciado como en original
-          currentVideo.controls = false; // Sin controles como en el original
-          currentVideo.preload = "auto";
-          currentVideo.load();
-        } else {
-          currentVideo.muted = true;
-          currentVideo.controls = false;
-        }
-
-        videoContainer.appendChild(currentVideo);
-
-        currentVideo.autoplay = true;
-        if (currentVideo.readyState >= 2) {
-          currentVideo
-            .play()
-            .catch((err) => console.error("Error al reproducir:", err));
-        } else {
-          currentVideo.onloadeddata = () =>
-            currentVideo
-              .play()
-              .catch((err) => console.error("Error tras carga:", err));
-        }
+        // Forzar reproducción
+        setTimeout(() => {
+          video.play().catch((e) => console.error("Error reproduciendo:", e));
+        }, 50);
       }
     };
 
     const hideVideo = () => {
-      if (currentVideo) {
-        currentVideo.pause();
-        videoContainer.style.display = "none";
-      }
+      videoContainer.style.display = "none";
+      videoContainer.innerHTML = "";
       marqueeAnimation.play();
     };
+
+    // Detectar si es un dispositivo táctil
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.msMaxTouchPoints > 0;
 
     if (isTouchDevice) {
       project.addEventListener("click", (e) => {
@@ -316,6 +357,11 @@ function addVideoEvents(elements, marqueeAnimation) {
   });
 }
 
+// Detectar si estamos en index.html
+const isIndexPage = () => {
+  return document.querySelector(".marquee") !== null;
+};
+
 // Iniciar la aplicación con un solo evento DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
   // Establecer un tiempo máximo para mostrar el cargador
@@ -326,10 +372,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 2000); // Máximo 2 segundos
 
   // Verificar si estamos en index.html (si existe .marquee)
-  if (document.querySelector(".marquee")) {
-    const projectNames = document.querySelectorAll(".project-name");
-    projectNames.forEach((name) => splitTextIntoLetters(name));
+  if (isIndexPage()) {
+    const marqueeAnimation = animateMarquee();
 
+    if (marquee) {
+      marquee.addEventListener("mousemove", handleMouseMove);
+      marquee.addEventListener("mouseleave", handleMouseLeave);
+
+      // Esperar un momento para que se estabilice el DOM
+      setTimeout(() => {
+        // Añadir eventos a todos los nombres de proyecto
+        const allProjectNames = document.querySelectorAll(".project-name");
+        addVideoEvents(allProjectNames, marqueeAnimation);
+      }, 200);
+    }
+
+    // Cargar videos después de configurar el marquee (para mejor rendimiento)
     preloadVideos(videoUrls, () => {
       clearTimeout(loaderTimeout); // Limpiar el timeout si la carga termina antes
 
@@ -338,25 +396,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (loader) loader.style.display = "none";
         if (navbar) navbar.style.top = "0"; // Mostrar navbar
       }, 500);
-
-      const marqueeAnimation = animateMarquee();
-
-      if (marquee) {
-        marquee.addEventListener("mousemove", handleMouseMove);
-        marquee.addEventListener("mouseleave", handleMouseLeave);
-
-        // Añadir eventos a todos los nombres de proyecto
-        const allProjectNames = document.querySelectorAll(".project-name");
-        addVideoEvents(allProjectNames, marqueeAnimation);
-
-        // Añadir eventos también a los clonados
-        setTimeout(() => {
-          const clonedNames = document.querySelectorAll(
-            ".marquee .marquee-content:last-child .project-name"
-          );
-          addVideoEvents(clonedNames, marqueeAnimation);
-        }, 100); // Pequeño retraso para asegurar que los clones estén listos
-      }
     });
   } else {
     // Para otras páginas como contacto.html, tienda.html, etc.

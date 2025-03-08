@@ -371,58 +371,111 @@ body:not(.loaded) .marquee {
 /* =======================================
    6. Marquee
 ======================================= */
+/* Estilos actualizados para el marquee - sin fondo */
 .marquee {
-  grid-area: marquee;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 15px 0;
+  height: 240px;
+  background-color: transparent; /* Fondo completamente transparente */
   overflow: hidden;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.marquee-track {
+  display: flex;
+  align-items: center;
   white-space: nowrap;
-  height: 120px;
-  background-color: transparent;
-  z-index: 1000;
 }
 
 .marquee-content {
-  display: flex;
-  flex-direction: row;
-  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  padding: 0 20px;
+  overflow: visible; /* Visible para permitir efectos de letras */
+  height: 160px;
 }
-
+/* Estilo para los nombres de proyectos */
 .project-name {
   font-family: "Bebas Neue", sans-serif;
-  display: inline-block;
-  margin-right: 50px;
-  font-size: 5rem;
+  font-size: 6.5rem; /* Reducir un poco el tamaño para mejor espaciado */
+  font-weight: bold;
   color: #ffffff;
+  margin: 0 40px;
+  padding: 0;
   cursor: pointer;
   position: relative;
-  letter-spacing: 2px;
+  display: inline-block;
   text-transform: uppercase;
+  letter-spacing: 5px; /* Aumentar espaciado entre letras */
+  transition: opacity 0.3s ease;
+  user-select: none; /* Evitar selección de texto */
 }
 
-.project-name .letter {
+/* Ajuste para palabras múltiples */
+.project-name span.space {
   display: inline-block;
-  transition: transform 0.2s ease, color 0.2s ease;
+  width: 0.5em; /* Añadir espacio entre palabras */
 }
 
+/* Contenedor para las letras individuales */
+.letters-container {
+  display: inline-block;
+  white-space: nowrap;
+  position: relative;
+  background: transparent !important;
+}
+
+/* Estilo para cada letra individual */
+.letter {
+  display: inline-block;
+  position: relative;
+  margin: 0 2px; /* Añadir pequeño margen entre letras */
+  padding: 0;
+  background: transparent !important; /* Forzar que no haya fondo */
+  backface-visibility: hidden;
+  transform-origin: bottom center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease,
+    text-shadow 0.3s ease;
+  will-change: transform, color, text-shadow;
+}
+
+/* Efecto hover para letras */
 .project-name:hover .letter {
-  color: #0d98ba;
-  text-shadow: 0 0 10px #0d98ba;
+  color: #0d98ba; /* Color turquesa al hacer hover */
 }
 
+/* Estilo para el separador entre proyectos */
 .separator {
+  font-size: 6rem;
   color: #0d98ba;
-  margin: 0 25px;
-  font-size: 5rem;
+  margin: 0 30px;
   display: inline-block;
+  transform: translateY(-5px); /* Alinear verticalmente */
+  opacity: 0.8;
+  user-select: none; /* Evitar selección de texto */
 }
 
-.marquee-spacer {
-  display: inline-block;
-  width: 50px; /* Espacio entre el final y el inicio del marquee */
+/* Efecto hover específico para los proyectos */
+.project-name:hover .letters-container {
+  color: #0d98ba;
+}
+
+/* Efecto hover para todo el marquee */
+.marquee:hover .project-name:not(:hover) {
+  opacity: 0.5; /* Atenúa los proyectos que no tienen hover */
+}
+
+/* Animación de luz para letras activas */
+.letter.active {
+  text-shadow: 0 0 15px rgba(13, 152, 186, 0.8),
+    0 0 25px rgba(13, 152, 186, 0.6);
 }
 
 /* =======================================
@@ -434,15 +487,44 @@ body:not(.loaded) .marquee {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 999;
+  z-index: 800; /* Por debajo del marquee (900) */
   display: none;
   background-color: #000000;
+  overflow: hidden;
 }
 
 .video-container video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+}
+
+/* Animaciones para videos */
+.video-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.video-fade-out {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 .video-close {
@@ -473,7 +555,6 @@ body:not(.loaded) .marquee {
   max-height: 80%;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
 }
-
 /* =======================================
    8. Sección de Contacto
 ======================================= */
