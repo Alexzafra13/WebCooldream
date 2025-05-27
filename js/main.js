@@ -168,6 +168,7 @@ let marqueeAnimationId = null;
 let marqueeVelocity = 0;
 let marqueeWidth = 0;
 let cloneWidth = 0;
+let isMarqueeHovered = false;
 
 // Inicializar marquee infinito
 function initInfiniteMarquee() {
@@ -186,7 +187,7 @@ function initInfiniteMarquee() {
     
     // Iniciar animación después de un delay
     setTimeout(() => {
-        if (!isMarqueeDragging) {
+        if (!isMarqueeDragging && !isMarqueeHovered) {
             startMarqueeAnimation();
         }
     }, 100);
@@ -239,18 +240,35 @@ function setupMarqueeEvents() {
     document.addEventListener('touchmove', dragMarquee, { passive: false });
     document.addEventListener('touchend', endMarqueeDrag);
     
+    // Hover events para pausar/reanudar
+    marqueeTrack.addEventListener('mouseenter', () => {
+        isMarqueeHovered = true;
+        stopMarqueeAnimation();
+    });
+    
+    marqueeTrack.addEventListener('mouseleave', () => {
+        isMarqueeHovered = false;
+        if (!isMarqueeDragging) {
+            setTimeout(() => {
+                if (!isMarqueeDragging && !isMarqueeHovered) {
+                    startMarqueeAnimation();
+                }
+            }, 100);
+        }
+    });
+    
     // Prevenir selección de texto
     marqueeTrack.addEventListener('selectstart', e => e.preventDefault());
 }
 
 // Animación automática del marquee
 function startMarqueeAnimation() {
-    if (isMarqueeDragging) return;
+    if (isMarqueeDragging || isMarqueeHovered) return;
     
     const speed = 0.5; // Velocidad de la animación
     
     function animate() {
-        if (!isMarqueeDragging) {
+        if (!isMarqueeDragging && !isMarqueeHovered) {
             marqueePosition -= speed;
             
             // Loop infinito: cuando llega al final de un clon, vuelve al inicio
@@ -259,7 +277,6 @@ function startMarqueeAnimation() {
             }
             
             marqueeTrack.style.transform = `translateX(${marqueePosition}px)`;
-            detectCenterItem();
             
             marqueeAnimationId = requestAnimationFrame(animate);
         }
@@ -298,7 +315,7 @@ function dragMarquee(e) {
     const deltaX = currentX - marqueeStartX;
     
     // Calcular velocidad para momentum
-    marqueeVelocity = deltaX - (marqueeVelocity || 0);
+    marqueeVelocity = deltaX;
     
     // Aplicar movimiento
     marqueePosition += deltaX * 0.8;
@@ -350,9 +367,9 @@ function applyMomentum() {
             
             requestAnimationFrame(animate);
         } else {
-            // Reanudar animación automática
+            // Reanudar animación automática si no está hover
             setTimeout(() => {
-                if (!isMarqueeDragging) {
+                if (!isMarqueeDragging && !isMarqueeHovered) {
                     startMarqueeAnimation();
                 }
             }, 1000);
@@ -410,9 +427,9 @@ function handleItemLeave() {
     if (!isMarqueeDragging) {
         clearTimeout(videoTimeout);
         videoTimeout = setTimeout(() => {
-            changeVideo('invierno');
+            detectCenterItem(); // Cambiar al video del item central
             videoTimeout = null;
-        }, 2000);
+        }, 500);
     }
 }
 
@@ -569,14 +586,14 @@ function endDrag() {
     // Aplicar momentum o snap
     const absVelocity = Math.abs(velocity);
     if (absVelocity > 0.5) {
-        applyMomentum();
+        applyMomentumCarousel();
     } else {
         snapToNearest();
     }
 }
 
-// Momentum scrolling simplificado
-function applyMomentum() {
+// Momentum scrolling para carousel
+function applyMomentumCarousel() {
     const deceleration = 0.92;
     
     function animate() {

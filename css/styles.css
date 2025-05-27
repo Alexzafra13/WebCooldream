@@ -309,14 +309,25 @@ nav ul a:hover::after {
     z-index: 10;
 }
 
+/* MARQUEE INFINITO - ESTILOS ACTUALIZADOS */
 .marquee-track {
     display: flex;
+    /* IMPORTANTE: NO USAR animation CSS aquí */
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
+    will-change: transform;
+    cursor: grab;
+    gap: 0; /* Sin espacios entre clones */
 }
 
-.marquee-track:hover {
-   /* animation-play-state: paused;*/
-}
+/* ELIMINAR estos estilos que interfieren */
+/* .marquee-track:hover {
+    animation-play-state: paused;
+} */
 
+/* Keyframe ya no se usa pero lo dejamos por si acaso */
 @keyframes marquee {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
@@ -327,6 +338,7 @@ nav ul a:hover::after {
     align-items: center;
     white-space: nowrap;
     padding-right: 50px;
+    flex-shrink: 0; /* Importante para los clones */
 }
 
 .marquee-item {
@@ -334,16 +346,20 @@ nav ul a:hover::after {
     font-weight: 700;
     color: var(--white);
     cursor: pointer;
-    transition: var(--transition-fast);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                opacity 0.3s ease,
+                color 0.3s ease;
     padding: 0 2rem;
     position: relative;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    transform-origin: center;
+    flex-shrink: 0;
 }
 
 .marquee-item:hover {
     color: var(--primary);
-    transform: scale(1.05);
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
 }
 
 .marquee-separator {
@@ -351,6 +367,15 @@ nav ul a:hover::after {
     opacity: 0.3;
     font-size: 1.5rem;
     margin: 0 1rem;
+}
+
+/* Estados del marquee durante drag */
+.marquee-track[style*="cursor: grabbing"] {
+    cursor: grabbing !important;
+}
+
+.marquee-track[style*="cursor: grabbing"] .marquee-item {
+    pointer-events: none;
 }
 
 /* =============================================
@@ -405,6 +430,8 @@ nav ul a:hover::after {
     scroll-snap-type: x mandatory;
     cursor: grab;
     user-select: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
 }
 
 .carousel-container::-webkit-scrollbar {
@@ -412,8 +439,12 @@ nav ul a:hover::after {
 }
 
 .carousel-container.dragging {
-    cursor: grabbing;
+    cursor: grabbing !important;
     scroll-behavior: auto;
+}
+
+.carousel-container.dragging .video-card {
+    transition: none !important;
 }
 
 /* Video Cards con efecto Field Day */
@@ -427,7 +458,23 @@ nav ul a:hover::after {
     cursor: pointer;
     position: relative;
     flex-shrink: 0;
-    scroll-snap-align: start;
+    scroll-snap-align: center;
+}
+
+/* Estados del carousel mejorado */
+.video-card.active {
+    transform: scale(1.02);
+    z-index: 10;
+}
+
+.video-card.prev {
+    transform: scale(0.95) translateX(20px);
+    opacity: 0.7;
+}
+
+.video-card.next {
+    transform: scale(0.95) translateX(-20px);
+    opacity: 0.7;
 }
 
 /* Efecto de iluminación superior con corte */
@@ -831,9 +878,14 @@ footer {
         font-size: 3.5rem;
     }
     
+    /* Marquee móvil mejorado */
     .marquee-item {
         font-size: 1.5rem;
-        padding: 0 1rem;
+        padding: 0.5rem 1.5rem;
+    }
+    
+    .bottom-marquee {
+        padding: 3rem 0;
     }
     
     .section-title {
@@ -861,6 +913,8 @@ footer {
     
     .video-card {
         min-width: 280px;
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
     }
     
     .video-card:first-child {
@@ -869,6 +923,17 @@ footer {
     
     .video-card:last-child {
         margin-right: 2rem;
+    }
+    
+    /* Indicadores más grandes */
+    .indicator {
+        width: 10px;
+        height: 10px;
+        margin: 0 4px;
+    }
+    
+    .indicator.active {
+        width: 36px;
     }
     
     .tour-item {
@@ -926,7 +991,7 @@ footer {
 }
 
 /* =============================================
-   10. UTILIDADES
+   10. UTILIDADES Y OPTIMIZACIONES
    ============================================= */
 .sr-only {
     position: absolute;
@@ -962,102 +1027,28 @@ button, .ticket-btn, .video-link, .social-link {
     overflow: hidden;
 }
 
-/* Marquee interactivo */
-.marquee-track {
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: pan-y;
-}
-
-.marquee-track[style*="cursor: grabbing"] .marquee-item {
-    pointer-events: none;
-}
-
-/* Estados del carousel mejorado */
-.video-card.active {
-    transform: scale(1.02);
-    z-index: 10;
-}
-
-.video-card.prev {
-    transform: scale(0.95) translateX(10px);
-    opacity: 0.7;
-}
-
-.video-card.next {
-    transform: scale(0.95) translateX(-10px);
-    opacity: 0.7;
-}
-
-/* Feedback visual mejorado */
-.carousel-container.dragging {
-    cursor: grabbing !important;
-}
-
-.carousel-container.dragging .video-card {
-    transition: none !important;
-}
-
-/* Optimizaciones para móvil */
-@media (max-width: 768px) {
-    /* Mejorar área táctil del marquee */
-    .marquee-item {
-        padding: 0.5rem 1.5rem;
-    }
-    
-    .bottom-marquee {
-        padding: 3rem 0;
-    }
-    
-    /* Optimizar carousel para gestos táctiles */
-    .carousel-container {
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        /* Prevenir bounce en iOS */
-        overscroll-behavior-x: contain;
-    }
-    
-    .video-card {
-        scroll-snap-align: center;
-        scroll-snap-stop: always;
-    }
-    
-    /* Indicadores más grandes para dedos */
-    .indicator {
-        width: 10px;
-        height: 10px;
-        margin: 0 4px;
-    }
-    
-    .indicator.active {
-        width: 36px;
-    }
-    
-    /* Mejorar contraste en móvil */
-    .video-card.active {
-        box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
-    }
-}
-
-/* Prevenir problemas de zoom en iOS */
-@media (max-width: 768px) {
-    input, select, textarea, button {
-        font-size: 16px !important;
-    }
-}
-
-/* Animación suave para cambios de estado */
-.video-card {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Mejorar rendimiento con GPU */
+/* Optimización de rendimiento */
 .carousel-container,
 .marquee-track {
     will-change: transform;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
+}
+
+/* Mejorar rendimiento de texto */
+.marquee-track,
+.marquee-item {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Prevenir zoom en iOS */
+@media (max-width: 768px) {
+    input, select, textarea, button {
+        font-size: 16px !important;
+    }
 }
 
 /* Accesibilidad mejorada */
@@ -1074,33 +1065,3 @@ button, .ticket-btn, .video-link, .social-link {
         scrollbar-width: none;
     }
 }
-
-/* =============================================
-   FIX PARA MARQUEE DRAG - NUEVOS ESTILOS
-   ============================================= */
-
-/* Configuración para drag del marquee */
-.marquee-track {
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: pan-y;
-    will-change: transform;
-    cursor: grab;
-}
-
-/* Transiciones suaves para los items */
-.marquee-item {
-    transition: transform 0.3s ease, opacity 0.3s ease, color 0.3s ease;
-    transform-origin: center;
-}
-
-/* Estados del marquee durante drag */
-.marquee-track[style*="cursor: grabbing"] {
-    cursor: grabbing !important;
-}
-
-.marquee-track[style*="cursor: grabbing"] .marquee-item {
-    pointer-events: none;
-}
-
