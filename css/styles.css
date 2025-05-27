@@ -1,0 +1,882 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=Bebas+Neue&display=swap');
+
+/* ===== VARIABLES ===== */
+:root {
+    --primary: #0080FF;
+    --secondary: #00D4FF;
+    --dark: #000000;
+    --dark-blue: #001529;
+    --medium-blue: #003D82;
+    --light-blue: #66B2FF;
+    --light: #FFFFFF;
+    --accent: #00FFFF;
+    --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
+    --gradient-dark: linear-gradient(135deg, var(--dark-blue), var(--medium-blue));
+}
+
+/* ===== RESET & BASE ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--dark);
+    color: var(--light);
+    overflow-x: hidden;
+}
+
+/* ===== LOADER ===== */
+.loader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader-content {
+    text-align: center;
+}
+
+.loader-logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 5rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: pulse 1.5s ease infinite;
+}
+
+.loader-bar {
+    width: 200px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 2rem auto;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.loader-progress {
+    height: 100%;
+    background: var(--gradient);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 2rem 4rem;
+    z-index: 1000;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+nav.scrolled {
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 1rem 4rem;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2rem;
+    color: var(--light);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+}
+
+/* Logo Image */
+.logo-img {
+    height: 70px;
+    width: auto;
+    transition: all 0.3s ease;
+}
+
+nav.scrolled .logo-img {
+    height: 40px;
+}
+
+.logo:hover .logo-img {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 3rem;
+}
+
+nav a {
+    color: var(--light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    width: 25px;
+    height: 3px;
+    background: var(--light);
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+/* ===== HERO SECTION ===== */
+.hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Video Background */
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.bg-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    object-fit: cover;
+}
+
+.bg-video.active {
+    opacity: 1;
+}
+
+/* Center Content */
+.hero-center {
+    text-align: center;
+    z-index: 10;
+    animation: fadeInUp 1s ease forwards;
+}
+
+.hero-logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(4rem, 10vw, 8rem);
+    letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+    color: var(--light);
+}
+
+.hero-tagline {
+    font-size: 1.2rem;
+    opacity: 0.7;
+    letter-spacing: 0.1em;
+}
+
+/* ===== BOTTOM MARQUEE (NO TOCAR) ===== */
+.bottom-marquee {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 2rem 0;
+    overflow: hidden;
+}
+
+.marquee-track {
+    display: flex;
+    animation: marquee 15s linear infinite;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+.marquee-content {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    padding-right: 50px;
+}
+
+.marquee-item {
+    font-family: 'Bebas Neue', cursive;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--light);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0 1rem;
+    position: relative;
+}
+
+.marquee-item::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.marquee-item:hover {
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+.marquee-item:hover::before {
+    width: 100%;
+}
+
+.marquee-separator {
+    color: var(--light);
+    opacity: 0.3;
+    font-size: 1.5rem;
+    margin: 0 1rem;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* ===== MUSIC SECTION ===== */
+.music-section {
+    padding: 8rem 4rem;
+    position: relative;
+    background: var(--dark);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-title {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 4rem;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.7;
+}
+
+/* ===== VIDEO CAROUSEL (MEJORADO) ===== */
+.video-carousel {
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 4rem;
+}
+
+.carousel-container {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) rgba(255, 255, 255, 0.1);
+    padding: 2rem 0 3rem 0; /* Más padding bottom para scrollbar */
+    margin: 0 -4rem; /* Compensar el padding del carousel */
+}
+
+/* Scrollbar personalizado */
+.carousel-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.carousel-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+.carousel-container::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary);
+}
+
+/* Video Cards Mejorado */
+.video-card {
+    min-width: 350px;
+    background: var(--gradient-dark);
+    border: 1px solid rgba(0, 128, 255, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0; /* Prevenir que se encojan */
+}
+
+/* Espaciado para prevenir cortes */
+.video-card:first-child {
+    margin-left: 4rem;
+}
+
+.video-card:last-child {
+    margin-right: 4rem;
+}
+
+.video-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 212, 255, 0.4);
+    border-color: var(--accent);
+    z-index: 10; /* Asegurar que esté por encima */
+}
+
+/* Video Thumbnail */
+.video-thumbnail {
+    width: 100%;
+    height: 200px;
+    background: var(--gradient);
+    position: relative;
+    overflow: hidden;
+}
+
+.video-thumbnail iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.video-thumbnail video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.play-overlay {
+    display: none; /* Oculto porque YouTube tiene su propio botón */
+}
+
+/* Video Info */
+.video-info {
+    padding: 1.5rem;
+}
+
+.video-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.video-stats {
+    display: flex;
+    gap: 2rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* Video Links */
+.video-links {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.video-link {
+    flex: 1;
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    color: var(--light);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.video-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.video-link.youtube:hover {
+    background: #FF0000;
+}
+
+.video-link.spotify:hover {
+    background: #1DB954;
+}
+
+.video-link svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ===== TOUR SECTION ===== */
+.tour-section {
+    padding: 8rem 4rem;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 128, 255, 0.05) 100%);
+}
+
+.tour-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    gap: 1rem;
+}
+
+.tour-item {
+    display: grid;
+    grid-template-columns: 150px 1fr auto;
+    align-items: center;
+    padding: 2rem;
+    background: rgba(0, 128, 255, 0.03);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.tour-item:hover {
+    background: rgba(0, 128, 255, 0.08);
+    transform: translateX(10px);
+}
+
+.tour-date {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 2rem;
+    color: var(--primary);
+}
+
+.tour-details h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.tour-location {
+    opacity: 0.7;
+}
+
+.ticket-btn {
+    padding: 0.8rem 2rem;
+    background: var(--gradient);
+    color: var(--dark);
+    border: none;
+    border-radius: 25px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.ticket-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+}
+
+.ticket-btn:disabled {
+    background: rgba(255, 255, 255, 0.2);
+    cursor: not-allowed;
+}
+
+.ticket-btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* ===== CONTACT SECTION ===== */
+.contact-section {
+    padding: 8rem 4rem;
+    text-align: center;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.social-link {
+    width: 60px;
+    height: 60px;
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: var(--primary);
+    color: var(--dark);
+    transform: translateY(-5px) rotate(360deg);
+}
+
+/* ===== FOOTER ===== */
+footer {
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(0, 128, 255, 0.1);
+    opacity: 0.7;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+    nav {
+        padding: 1rem 2rem;
+    }
+    
+    nav ul {
+        position: fixed;
+        right: -100%;
+        top: 70px;
+        flex-direction: column;
+        background: var(--dark);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        padding: 2rem 0;
+    }
+    
+    nav ul.active {
+        right: 0;
+    }
+    
+    .menu-toggle {
+        display: flex;
+    }
+    
+    .hero-logo {
+        font-size: 3rem;
+    }
+    
+    .marquee-item {
+        font-size: 1.5rem;
+    }
+    
+    .bottom-marquee {
+        padding: 1rem 0;
+    }
+    
+    .video-carousel {
+        padding: 0 2rem;
+    }
+    
+    .video-card {
+        min-width: 280px;
+    }
+    
+    .video-card:first-child {
+        margin-left: 2rem;
+    }
+    
+    .video-card:last-child {
+        margin-right: 2rem;
+    }
+    
+    .tour-item {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .section-title {
+        font-size: 3rem;
+    }
+    
+    .music-section,
+    .tour-section,
+    .contact-section {
+        padding: 4rem 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-logo {
+        font-size: 2.5rem;
+    }
+    
+    .marquee-item {
+        font-size: 1.2rem;
+    }
+    
+    .video-card {
+        min-width: 100%;
+        margin: 0 1rem;
+    }
+    
+    .social-links {
+        gap: 1.5rem;
+    }
+    
+    .social-link {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* ===== VIDEO CAROUSEL - DRAG & DROP MEJORADO ===== */
+.video-carousel {
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.carousel-wrapper {
+    position: relative;
+    padding: 0 60px;
+}
+
+.carousel-container {
+    display: flex;
+    gap: 2rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding: 2rem 0;
+    cursor: grab;
+    user-select: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+}
+
+.carousel-container::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-container.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+}
+
+.carousel-container.dragging .video-card {
+    pointer-events: none;
+}
+
+/* Video Cards con Snap */
+.video-card {
+    min-width: 350px;
+    scroll-snap-align: start;
+    background: var(--gradient-dark);
+    border: 1px solid rgba(0, 128, 255, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.video-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 212, 255, 0.4);
+    border-color: var(--accent);
+    z-index: 10;
+}
+
+/* Flechas de navegación */
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 100;
+    opacity: 0;
+}
+
+.video-carousel:hover .carousel-arrow {
+    opacity: 1;
+}
+
+.carousel-arrow:hover {
+    background: var(--primary);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-arrow.prev {
+    left: 10px;
+}
+
+.carousel-arrow.next {
+    right: 10px;
+}
+
+.carousel-arrow svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--light);
+}
+
+.carousel-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.carousel-arrow:disabled:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: translateY(-50%);
+}
+
+/* Indicadores de posición */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 1rem 0;
+    margin-top: 1rem;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    width: 24px;
+    border-radius: 4px;
+    background: var(--primary);
+}
+
+.indicator:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive para el carrusel mejorado */
+@media (max-width: 768px) {
+    .carousel-wrapper {
+        padding: 0 40px;
+    }
+    
+    .carousel-arrow {
+        width: 40px;
+        height: 40px;
+        opacity: 1;
+    }
+    
+    .carousel-arrow.prev {
+        left: 5px;
+    }
+    
+    .carousel-arrow.next {
+        right: 5px;
+    }
+    
+    .carousel-arrow svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-wrapper {
+        padding: 0;
+    }
+    
+    .carousel-arrow {
+        display: none;
+    }
+    
+    .video-card {
+        min-width: 85vw;
+    }
+}
