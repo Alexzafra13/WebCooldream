@@ -160,42 +160,108 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Marquee interactivo simple
+// Marquee interactivo mejorado
 let isMarqueeDragging = false;
 let marqueeStartX = 0;
-let marqueeAnimationPaused = false;
+let marqueeCurrentX = 0;
+let marqueeAnimationId = null;
 
-marqueeTrack.style.cursor = 'grab';
+// Obtener la posición actual del marquee
+function getMarqueePosition() {
+    const rect = marqueeTrack.getBoundingClientRect();
+    const parentRect = marqueeTrack.parentElement.getBoundingClientRect();
+    return rect.left - parentRect.left;
+}
 
-marqueeTrack.addEventListener('mousedown', startMarqueeDrag);
-marqueeTrack.addEventListener('touchstart', startMarqueeDrag, { passive: true });
-marqueeTrack.addEventListener('mousemove', dragMarquee);
-marqueeTrack.addEventListener('touchmove', dragMarquee, { passive: true });
-marqueeTrack.addEventListener('mouseup', endMarqueeDrag);
-marqueeTrack.addEventListener('touchend', endMarqueeDrag);
-marqueeTrack.addEventListener('mouseleave', endMarqueeDrag);
+// Aplicar drag al marquee
+function applyMarqueeDrag(deltaX) {
+    const currentPos = getMarqueePosition();
+    const newPos = currentPos + deltaX;
+    
+    // Aplicar la nueva posición
+    marqueeTrack.style.transform = `translateX(${newPos}px)`;
+    
+    // Detectar item central
+    detectCenterItem();
+}
+
+// Inicializar marquee
+function initMarquee() {
+    // Detener la animación CSS
+    marqueeTrack.style.animation = 'none';
+    
+    // Configurar eventos
+    marqueeTrack.style.cursor = 'grab';
+    
+    marqueeTrack.addEventListener('mousedown', startMarqueeDrag);
+    marqueeTrack.addEventListener('touchstart', startMarqueeDrag, { passive: false });
+    
+    document.addEventListener('mousemove', dragMarquee);
+    document.addEventListener('touchmove', dragMarquee, { passive: false });
+    
+    document.addEventListener('mouseup', endMarqueeDrag);
+    document.addEventListener('touchend', endMarqueeDrag);
+    
+    // Reanudar animación después de cargar
+    setTimeout(() => {
+        if (!isMarqueeDragging) {
+            startMarqueeAnimation();
+        }
+    }, 100);
+}
+
+// Animación manual del marquee
+let marqueePosition = 0;
+function startMarqueeAnimation() {
+    if (isMarqueeDragging) return;
+    
+    function animate() {
+        if (!isMarqueeDragging) {
+            marqueePosition -= 1; // Velocidad de la animación
+            marqueeTrack.style.transform = `translateX(${marqueePosition}px)`;
+            
+            // Reset cuando se sale de vista
+            const trackWidth = marqueeTrack.scrollWidth / 2;
+            if (Math.abs(marqueePosition) >= trackWidth) {
+                marqueePosition = 0;
+            }
+            
+            marqueeAnimationId = requestAnimationFrame(animate);
+        }
+    }
+    
+    animate();
+}
+
+function stopMarqueeAnimation() {
+    if (marqueeAnimationId) {
+        cancelAnimationFrame(marqueeAnimationId);
+        marqueeAnimationId = null;
+    }
+}
 
 function startMarqueeDrag(e) {
+    e.preventDefault();
     isMarqueeDragging = true;
-    marqueeStartX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-    marqueeTrack.style.animationPlayState = 'paused';
     marqueeTrack.style.cursor = 'grabbing';
-    marqueeAnimationPaused = true;
+    
+    // Detener animación
+    stopMarqueeAnimation();
+    
+    // Guardar posición inicial
+    marqueeStartX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    marqueePosition = getMarqueePosition();
 }
 
 function dragMarquee(e) {
     if (!isMarqueeDragging) return;
     
     const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-    const diff = currentX - marqueeStartX;
+    const deltaX = currentX - marqueeStartX;
     
-    // Mover el marquee
-    const currentTransform = window.getComputedStyle(marqueeTrack).transform;
-    const matrix = new DOMMatrix(currentTransform);
-    const currentTranslateX = matrix.m41;
-    
-    marqueeTrack.style.transform = `translateX(${currentTranslateX + diff * 0.5}px)`;
-    marqueeStartX = currentX;
+    // Aplicar el movimiento
+    const newPosition = marqueePosition + deltaX;
+    marqueeTrack.style.transform = `translateX(${newPosition}px)`;
     
     // Detectar item central
     detectCenterItem();
@@ -207,17 +273,13 @@ function endMarqueeDrag() {
     isMarqueeDragging = false;
     marqueeTrack.style.cursor = 'grab';
     
-    // Reanudar animación después de un delay
+    // Guardar posición actual
+    marqueePosition = getMarqueePosition();
+    
+    // Reanudar animación
     setTimeout(() => {
-        if (!isMarqueeDragging && marqueeAnimationPaused) {
-            marqueeTrack.style.transition = 'transform 0.5s ease';
-            marqueeTrack.style.transform = '';
-            
-            setTimeout(() => {
-                marqueeTrack.style.transition = '';
-                marqueeTrack.style.animationPlayState = 'running';
-                marqueeAnimationPaused = false;
-            }, 500);
+        if (!isMarqueeDragging) {
+            startMarqueeAnimation();
         }
     }, 100);
 }
@@ -236,6 +298,12 @@ function detectCenterItem() {
             closestDistance = distance;
             closestItem = item;
         }
+        
+        // Aplicar efectos visuales según distancia
+        const scale = Math.max(0.8, 1 - (distance / window.innerWidth) * 0.3);
+        const opacity = Math.max(0.5, 1 - (distance / window.innerWidth) * 0.5);
+        item.style.transform = `scale(${scale})`;
+        item.style.opacity = opacity;
     });
     
     if (closestItem && closestItem.dataset.video) {
@@ -262,6 +330,9 @@ marqueeItems.forEach(item => {
         }
     });
 });
+
+// Inicializar marquee cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', initMarquee);
 
 // =============================================
 // 4. CAROUSEL DE VIDEOS MEJORADO
