@@ -962,3 +962,116 @@ button, .ticket-btn, .video-link, .social-link {
     position: relative;
     overflow: hidden;
 }
+
+/* Marquee interactivo */
+.marquee-track {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: pan-y;
+}
+
+.marquee-track[style*="cursor: grabbing"] .marquee-item {
+    pointer-events: none;
+}
+
+/* Estados del carousel mejorado */
+.video-card.active {
+    transform: scale(1.02);
+    z-index: 10;
+}
+
+.video-card.prev {
+    transform: scale(0.95) translateX(10px);
+    opacity: 0.7;
+}
+
+.video-card.next {
+    transform: scale(0.95) translateX(-10px);
+    opacity: 0.7;
+}
+
+/* Feedback visual mejorado */
+.carousel-container.dragging {
+    cursor: grabbing !important;
+}
+
+.carousel-container.dragging .video-card {
+    transition: none !important;
+}
+
+/* Optimizaciones para móvil */
+@media (max-width: 768px) {
+    /* Mejorar área táctil del marquee */
+    .marquee-item {
+        padding: 0.5rem 1.5rem;
+    }
+    
+    .bottom-marquee {
+        padding: 3rem 0;
+    }
+    
+    /* Optimizar carousel para gestos táctiles */
+    .carousel-container {
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        /* Prevenir bounce en iOS */
+        overscroll-behavior-x: contain;
+    }
+    
+    .video-card {
+        scroll-snap-align: center;
+        scroll-snap-stop: always;
+    }
+    
+    /* Indicadores más grandes para dedos */
+    .indicator {
+        width: 10px;
+        height: 10px;
+        margin: 0 4px;
+    }
+    
+    .indicator.active {
+        width: 36px;
+    }
+    
+    /* Mejorar contraste en móvil */
+    .video-card.active {
+        box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+    }
+}
+
+/* Prevenir problemas de zoom en iOS */
+@media (max-width: 768px) {
+    input, select, textarea, button {
+        font-size: 16px !important;
+    }
+}
+
+/* Animación suave para cambios de estado */
+.video-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mejorar rendimiento con GPU */
+.carousel-container,
+.marquee-track {
+    will-change: transform;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* Accesibilidad mejorada */
+.carousel-arrow:focus-visible,
+.indicator:focus-visible,
+.marquee-item:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* Fix para Firefox */
+@-moz-document url-prefix() {
+    .carousel-container {
+        scrollbar-width: none;
+    }
+}

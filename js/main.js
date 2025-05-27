@@ -1,5 +1,5 @@
 // =============================================
-// COOLDREAM - JavaScript Principal
+// COOLDREAM - JavaScript Principal Optimizado
 // =============================================
 
 // =============================================
@@ -100,8 +100,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // =============================================
-// 3. VIDEO BACKGROUND & MARQUEE
+// 3. VIDEO BACKGROUND & MARQUEE MEJORADO
 // =============================================
+const marqueeTrack = document.querySelector('.marquee-track');
 const marqueeItems = document.querySelectorAll('.marquee-item');
 const bgVideos = document.querySelectorAll('.bg-video');
 let currentVideo = 'invierno';
@@ -159,24 +160,111 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Eventos hover marquee
+// Marquee interactivo simple
+let isMarqueeDragging = false;
+let marqueeStartX = 0;
+let marqueeAnimationPaused = false;
+
+marqueeTrack.style.cursor = 'grab';
+
+marqueeTrack.addEventListener('mousedown', startMarqueeDrag);
+marqueeTrack.addEventListener('touchstart', startMarqueeDrag, { passive: true });
+marqueeTrack.addEventListener('mousemove', dragMarquee);
+marqueeTrack.addEventListener('touchmove', dragMarquee, { passive: true });
+marqueeTrack.addEventListener('mouseup', endMarqueeDrag);
+marqueeTrack.addEventListener('touchend', endMarqueeDrag);
+marqueeTrack.addEventListener('mouseleave', endMarqueeDrag);
+
+function startMarqueeDrag(e) {
+    isMarqueeDragging = true;
+    marqueeStartX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    marqueeTrack.style.animationPlayState = 'paused';
+    marqueeTrack.style.cursor = 'grabbing';
+    marqueeAnimationPaused = true;
+}
+
+function dragMarquee(e) {
+    if (!isMarqueeDragging) return;
+    
+    const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    const diff = currentX - marqueeStartX;
+    
+    // Mover el marquee
+    const currentTransform = window.getComputedStyle(marqueeTrack).transform;
+    const matrix = new DOMMatrix(currentTransform);
+    const currentTranslateX = matrix.m41;
+    
+    marqueeTrack.style.transform = `translateX(${currentTranslateX + diff * 0.5}px)`;
+    marqueeStartX = currentX;
+    
+    // Detectar item central
+    detectCenterItem();
+}
+
+function endMarqueeDrag() {
+    if (!isMarqueeDragging) return;
+    
+    isMarqueeDragging = false;
+    marqueeTrack.style.cursor = 'grab';
+    
+    // Reanudar animación después de un delay
+    setTimeout(() => {
+        if (!isMarqueeDragging && marqueeAnimationPaused) {
+            marqueeTrack.style.transition = 'transform 0.5s ease';
+            marqueeTrack.style.transform = '';
+            
+            setTimeout(() => {
+                marqueeTrack.style.transition = '';
+                marqueeTrack.style.animationPlayState = 'running';
+                marqueeAnimationPaused = false;
+            }, 500);
+        }
+    }, 100);
+}
+
+function detectCenterItem() {
+    const centerX = window.innerWidth / 2;
+    let closestItem = null;
+    let closestDistance = Infinity;
+    
+    marqueeItems.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        const itemCenterX = rect.left + rect.width / 2;
+        const distance = Math.abs(itemCenterX - centerX);
+        
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestItem = item;
+        }
+    });
+    
+    if (closestItem && closestItem.dataset.video) {
+        changeVideo(closestItem.dataset.video);
+    }
+}
+
+// Eventos hover marquee (mantener funcionalidad original)
 marqueeItems.forEach(item => {
     item.addEventListener('mouseenter', function() {
-        const videoName = this.dataset.video;
-        clearTimeout(videoTimeout);
-        changeVideo(videoName);
+        if (!isMarqueeDragging) {
+            const videoName = this.dataset.video;
+            clearTimeout(videoTimeout);
+            changeVideo(videoName);
+        }
     });
     
     item.addEventListener('mouseleave', function() {
-        clearTimeout(videoTimeout);
-        videoTimeout = setTimeout(() => {
-            changeVideo('invierno');
-        }, 2000);
+        if (!isMarqueeDragging) {
+            clearTimeout(videoTimeout);
+            videoTimeout = setTimeout(() => {
+                changeVideo('invierno');
+            }, 2000);
+        }
     });
 });
 
 // =============================================
-// 4. CAROUSEL DE VIDEOS
+// 4. CAROUSEL DE VIDEOS MEJORADO
 // =============================================
 const carousel = document.querySelector('.carousel-container');
 const prevBtn = document.getElementById('prevBtn');
@@ -184,12 +272,13 @@ const nextBtn = document.getElementById('nextBtn');
 const indicators = document.getElementById('indicators');
 const cards = document.querySelectorAll('.video-card');
 
-// Variables para drag
+// Variables para drag mejorado
 let isDown = false;
 let startX;
 let scrollLeft;
-let momentumID;
 let velocity = 0;
+let momentumID;
+let startTime;
 
 // Crear indicadores
 cards.forEach((_, index) => {
@@ -200,152 +289,173 @@ cards.forEach((_, index) => {
     indicators.appendChild(indicator);
 });
 
-// Función para actualizar indicadores
-function updateIndicators() {
-    const scrollPosition = carousel.scrollLeft;
-    const cardWidth = cards[0].offsetWidth + 32; // width + gap
-    const activeIndex = Math.round(scrollPosition / cardWidth);
+// Función mejorada para scroll a una tarjeta específica
+function scrollToCard(index) {
+    const card = cards[index];
+    if (!card) return;
     
-    document.querySelectorAll('.indicator').forEach((indicator, index) => {
-        indicator.classList.toggle('active', index === activeIndex);
+    const cardRect = card.getBoundingClientRect();
+    const containerRect = carousel.getBoundingClientRect();
+    const cardCenter = cardRect.left + cardRect.width / 2;
+    const containerCenter = containerRect.left + containerRect.width / 2;
+    const offset = cardCenter - containerCenter;
+    
+    carousel.scrollTo({
+        left: carousel.scrollLeft + offset,
+        behavior: 'smooth'
+    });
+    
+    updateActiveCard(index);
+}
+
+// Actualizar card activa
+function updateActiveCard(index) {
+    cards.forEach((card, i) => {
+        card.classList.toggle('active', i === index);
+        card.classList.toggle('prev', i < index);
+        card.classList.toggle('next', i > index);
+    });
+    
+    document.querySelectorAll('.indicator').forEach((indicator, i) => {
+        indicator.classList.toggle('active', i === index);
     });
 }
 
-// Función para scroll a una tarjeta específica
-function scrollToCard(index) {
-    const cardWidth = cards[0].offsetWidth + 32;
-    carousel.scrollTo({
-        left: index * cardWidth,
-        behavior: 'smooth'
+// Detectar card más cercana al centro
+function getNearestCard() {
+    const containerRect = carousel.getBoundingClientRect();
+    const containerCenter = containerRect.left + containerRect.width / 2;
+    
+    let nearestIndex = 0;
+    let nearestDistance = Infinity;
+    
+    cards.forEach((card, index) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distance = Math.abs(cardCenter - containerCenter);
+        
+        if (distance < nearestDistance) {
+            nearestDistance = distance;
+            nearestIndex = index;
+        }
     });
+    
+    return nearestIndex;
 }
 
 // Navegación con flechas
 if (prevBtn && nextBtn) {
     prevBtn.addEventListener('click', () => {
-        const cardWidth = cards[0].offsetWidth + 32;
-        const currentPosition = carousel.scrollLeft;
-        const currentIndex = Math.round(currentPosition / cardWidth);
-        if (currentIndex > 0) {
-            scrollToCard(currentIndex - 1);
-        }
+        const currentIndex = getNearestCard();
+        if (currentIndex > 0) scrollToCard(currentIndex - 1);
     });
 
     nextBtn.addEventListener('click', () => {
-        const cardWidth = cards[0].offsetWidth + 32;
-        const currentPosition = carousel.scrollLeft;
-        const currentIndex = Math.round(currentPosition / cardWidth);
-        if (currentIndex < cards.length - 1) {
-            scrollToCard(currentIndex + 1);
-        }
+        const currentIndex = getNearestCard();
+        if (currentIndex < cards.length - 1) scrollToCard(currentIndex + 1);
     });
 }
 
 // Actualizar estado de botones
 function updateButtons() {
-    const scrollPosition = carousel.scrollLeft;
-    const maxScroll = carousel.scrollWidth - carousel.clientWidth;
-    
+    const currentIndex = getNearestCard();
     if (prevBtn && nextBtn) {
-        prevBtn.disabled = scrollPosition <= 0;
-        nextBtn.disabled = scrollPosition >= maxScroll - 10;
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === cards.length - 1;
     }
 }
 
-// Drag functionality
-carousel.addEventListener('mousedown', (e) => {
+// Drag mejorado para móvil y desktop
+carousel.addEventListener('mousedown', startDrag);
+carousel.addEventListener('touchstart', startDrag, { passive: false });
+carousel.addEventListener('mousemove', drag);
+carousel.addEventListener('touchmove', drag, { passive: false });
+carousel.addEventListener('mouseup', endDrag);
+carousel.addEventListener('touchend', endDrag);
+carousel.addEventListener('mouseleave', endDrag);
+
+function startDrag(e) {
     isDown = true;
     carousel.classList.add('dragging');
-    startX = e.pageX - carousel.offsetLeft;
+    startX = (e.type.includes('touch') ? e.touches[0].pageX : e.pageX) - carousel.offsetLeft;
     scrollLeft = carousel.scrollLeft;
-    cancelMomentumTracking();
-});
-
-carousel.addEventListener('mouseleave', () => {
-    isDown = false;
-    carousel.classList.remove('dragging');
-});
-
-carousel.addEventListener('mouseup', () => {
-    isDown = false;
-    carousel.classList.remove('dragging');
-    beginMomentumTracking();
-});
-
-carousel.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 2;
-    const prevScrollLeft = carousel.scrollLeft;
-    carousel.scrollLeft = scrollLeft - walk;
-    velocity = carousel.scrollLeft - prevScrollLeft;
-});
-
-// Touch support
-let touchStartX = 0;
-let touchScrollLeft = 0;
-
-carousel.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].pageX - carousel.offsetLeft;
-    touchScrollLeft = carousel.scrollLeft;
-    cancelMomentumTracking();
-}, { passive: true });
-
-carousel.addEventListener('touchmove', (e) => {
-    const x = e.touches[0].pageX - carousel.offsetLeft;
-    const walk = (x - touchStartX) * 2;
-    const prevScrollLeft = carousel.scrollLeft;
-    carousel.scrollLeft = touchScrollLeft - walk;
-    velocity = carousel.scrollLeft - prevScrollLeft;
-}, { passive: true });
-
-carousel.addEventListener('touchend', () => {
-    beginMomentumTracking();
-}, { passive: true });
-
-// Momentum scrolling
-function beginMomentumTracking() {
-    cancelMomentumTracking();
-    momentumID = requestAnimationFrame(momentumLoop);
-}
-
-function cancelMomentumTracking() {
+    startTime = Date.now();
     cancelAnimationFrame(momentumID);
+    
+    // Prevenir comportamiento por defecto en móvil
+    if (e.type === 'touchstart') {
+        e.preventDefault();
+    }
 }
 
-function momentumLoop() {
-    carousel.scrollLeft += velocity;
-    velocity *= 0.95;
-    if (Math.abs(velocity) > 0.5) {
-        momentumID = requestAnimationFrame(momentumLoop);
-    } else {
-        // Snap to nearest card
-        const cardWidth = cards[0].offsetWidth + 32;
-        const targetIndex = Math.round(carousel.scrollLeft / cardWidth);
-        scrollToCard(targetIndex);
+function drag(e) {
+    if (!isDown) return;
+    
+    // Prevenir scroll vertical en móvil
+    if (e.type === 'touchmove') {
+        e.preventDefault();
     }
+    
+    const x = (e.type.includes('touch') ? e.touches[0].pageX : e.pageX) - carousel.offsetLeft;
+    const walk = (startX - x) * 1.5;
+    carousel.scrollLeft = scrollLeft + walk;
+    
+    // Calcular velocidad
+    velocity = walk / (Date.now() - startTime);
+}
+
+function endDrag() {
+    if (!isDown) return;
+    
+    isDown = false;
+    carousel.classList.remove('dragging');
+    
+    // Aplicar momentum o snap
+    const absVelocity = Math.abs(velocity);
+    if (absVelocity > 0.5) {
+        applyMomentum();
+    } else {
+        snapToNearest();
+    }
+}
+
+// Momentum scrolling simplificado
+function applyMomentum() {
+    const deceleration = 0.92;
+    
+    function animate() {
+        if (Math.abs(velocity) > 0.1) {
+            carousel.scrollLeft += velocity * 20;
+            velocity *= deceleration;
+            momentumID = requestAnimationFrame(animate);
+        } else {
+            snapToNearest();
+        }
+    }
+    
+    animate();
+}
+
+// Snap a la card más cercana
+function snapToNearest() {
+    const nearestIndex = getNearestCard();
+    scrollToCard(nearestIndex);
 }
 
 // Event listeners para actualizar UI
 carousel.addEventListener('scroll', () => {
-    updateIndicators();
     updateButtons();
-});
-
-// Navegación con teclado
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' && nextBtn) {
-        nextBtn.click();
-    } else if (e.key === 'ArrowLeft' && prevBtn) {
-        prevBtn.click();
-    }
+    const nearestIndex = getNearestCard();
+    updateActiveCard(nearestIndex);
 });
 
 // Wheel para scroll horizontal
 carousel.addEventListener('wheel', (e) => {
     e.preventDefault();
     carousel.scrollLeft += e.deltaY;
+    
+    clearTimeout(carousel.wheelTimeout);
+    carousel.wheelTimeout = setTimeout(snapToNearest, 150);
 }, { passive: false });
 
 // =============================================
@@ -445,7 +555,7 @@ rippleElements.forEach(element => {
 document.addEventListener('DOMContentLoaded', () => {
     // Inicializar componentes
     updateButtons();
-    updateIndicators();
+    snapToNearest();
     
     // Prevenir zoom en móviles
     document.addEventListener('gesturestart', function (e) {
@@ -453,5 +563,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Log de inicialización
-    console.log('CoolDream website initialized');
+    console.log('CoolDream website initialized - Optimized version');
 });
