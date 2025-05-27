@@ -100,7 +100,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // =============================================
-// 3. VIDEO BACKGROUND & MARQUEE MEJORADO
+// 3. VIDEO BACKGROUND & MARQUEE INFINITO
 // =============================================
 const marqueeTrack = document.querySelector('.marquee-track');
 const marqueeItems = document.querySelectorAll('.marquee-item');
@@ -160,71 +160,106 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Marquee interactivo mejorado
+// === MARQUEE INFINITO MEJORADO ===
 let isMarqueeDragging = false;
 let marqueeStartX = 0;
-let marqueeCurrentX = 0;
+let marqueePosition = 0;
 let marqueeAnimationId = null;
+let marqueeVelocity = 0;
+let marqueeWidth = 0;
+let cloneWidth = 0;
 
-// Obtener la posición actual del marquee
-function getMarqueePosition() {
-    const rect = marqueeTrack.getBoundingClientRect();
-    const parentRect = marqueeTrack.parentElement.getBoundingClientRect();
-    return rect.left - parentRect.left;
-}
-
-// Aplicar drag al marquee
-function applyMarqueeDrag(deltaX) {
-    const currentPos = getMarqueePosition();
-    const newPos = currentPos + deltaX;
-    
-    // Aplicar la nueva posición
-    marqueeTrack.style.transform = `translateX(${newPos}px)`;
-    
-    // Detectar item central
-    detectCenterItem();
-}
-
-// Inicializar marquee
-function initMarquee() {
+// Inicializar marquee infinito
+function initInfiniteMarquee() {
     // Detener la animación CSS
     marqueeTrack.style.animation = 'none';
-    
-    // Configurar eventos
     marqueeTrack.style.cursor = 'grab';
     
-    marqueeTrack.addEventListener('mousedown', startMarqueeDrag);
-    marqueeTrack.addEventListener('touchstart', startMarqueeDrag, { passive: false });
+    // Crear clones para efecto infinito
+    createMarqueeClones();
     
-    document.addEventListener('mousemove', dragMarquee);
-    document.addEventListener('touchmove', dragMarquee, { passive: false });
+    // Configurar eventos
+    setupMarqueeEvents();
     
-    document.addEventListener('mouseup', endMarqueeDrag);
-    document.addEventListener('touchend', endMarqueeDrag);
+    // Calcular anchos
+    updateMarqueeWidths();
     
-    // Reanudar animación después de cargar
+    // Iniciar animación después de un delay
     setTimeout(() => {
         if (!isMarqueeDragging) {
             startMarqueeAnimation();
         }
     }, 100);
+    
+    // Actualizar anchos al cambiar tamaño de ventana
+    window.addEventListener('resize', updateMarqueeWidths);
 }
 
-// Animación manual del marquee
-let marqueePosition = 0;
+// Crear clones del contenido para loop infinito
+function createMarqueeClones() {
+    // Obtener el contenido original (primer .marquee-content)
+    const originalContent = marqueeTrack.querySelector('.marquee-content');
+    
+    // Si ya hay clones, no crear más
+    if (marqueeTrack.querySelectorAll('.marquee-content').length > 2) return;
+    
+    // Crear 2 clones adicionales para un total de 3
+    for (let i = 0; i < 2; i++) {
+        const clone = originalContent.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        marqueeTrack.appendChild(clone);
+    }
+    
+    // Actualizar la referencia a todos los items (incluyendo clones)
+    const allItems = marqueeTrack.querySelectorAll('.marquee-item');
+    
+    // Añadir eventos a todos los items
+    allItems.forEach(item => {
+        item.addEventListener('mouseenter', handleItemHover);
+        item.addEventListener('mouseleave', handleItemLeave);
+    });
+}
+
+// Calcular anchos del marquee
+function updateMarqueeWidths() {
+    const firstContent = marqueeTrack.querySelector('.marquee-content');
+    cloneWidth = firstContent.offsetWidth;
+    marqueeWidth = cloneWidth * 3; // 3 copias del contenido
+}
+
+// Configurar eventos del marquee
+function setupMarqueeEvents() {
+    // Mouse events
+    marqueeTrack.addEventListener('mousedown', startMarqueeDrag);
+    document.addEventListener('mousemove', dragMarquee);
+    document.addEventListener('mouseup', endMarqueeDrag);
+    
+    // Touch events
+    marqueeTrack.addEventListener('touchstart', startMarqueeDrag, { passive: false });
+    document.addEventListener('touchmove', dragMarquee, { passive: false });
+    document.addEventListener('touchend', endMarqueeDrag);
+    
+    // Prevenir selección de texto
+    marqueeTrack.addEventListener('selectstart', e => e.preventDefault());
+}
+
+// Animación automática del marquee
 function startMarqueeAnimation() {
     if (isMarqueeDragging) return;
     
+    const speed = 0.5; // Velocidad de la animación
+    
     function animate() {
         if (!isMarqueeDragging) {
-            marqueePosition -= 1; // Velocidad de la animación
-            marqueeTrack.style.transform = `translateX(${marqueePosition}px)`;
+            marqueePosition -= speed;
             
-            // Reset cuando se sale de vista
-            const trackWidth = marqueeTrack.scrollWidth / 2;
-            if (Math.abs(marqueePosition) >= trackWidth) {
-                marqueePosition = 0;
+            // Loop infinito: cuando llega al final de un clon, vuelve al inicio
+            if (Math.abs(marqueePosition) >= cloneWidth) {
+                marqueePosition += cloneWidth;
             }
+            
+            marqueeTrack.style.transform = `translateX(${marqueePosition}px)`;
+            detectCenterItem();
             
             marqueeAnimationId = requestAnimationFrame(animate);
         }
@@ -233,6 +268,7 @@ function startMarqueeAnimation() {
     animate();
 }
 
+// Detener animación
 function stopMarqueeAnimation() {
     if (marqueeAnimationId) {
         cancelAnimationFrame(marqueeAnimationId);
@@ -240,6 +276,7 @@ function stopMarqueeAnimation() {
     }
 }
 
+// Iniciar drag
 function startMarqueeDrag(e) {
     e.preventDefault();
     isMarqueeDragging = true;
@@ -250,46 +287,89 @@ function startMarqueeDrag(e) {
     
     // Guardar posición inicial
     marqueeStartX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-    marqueePosition = getMarqueePosition();
+    marqueeVelocity = 0;
 }
 
+// Arrastrar marquee
 function dragMarquee(e) {
     if (!isMarqueeDragging) return;
     
     const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
     const deltaX = currentX - marqueeStartX;
     
-    // Aplicar el movimiento
-    const newPosition = marqueePosition + deltaX;
-    marqueeTrack.style.transform = `translateX(${newPosition}px)`;
+    // Calcular velocidad para momentum
+    marqueeVelocity = deltaX - (marqueeVelocity || 0);
+    
+    // Aplicar movimiento
+    marqueePosition += deltaX * 0.8;
+    
+    // Loop infinito durante el drag
+    if (marqueePosition > 0) {
+        marqueePosition -= cloneWidth;
+    } else if (marqueePosition < -cloneWidth * 2) {
+        marqueePosition += cloneWidth;
+    }
+    
+    marqueeTrack.style.transform = `translateX(${marqueePosition}px)`;
+    marqueeStartX = currentX;
     
     // Detectar item central
     detectCenterItem();
 }
 
+// Terminar drag
 function endMarqueeDrag() {
     if (!isMarqueeDragging) return;
     
     isMarqueeDragging = false;
     marqueeTrack.style.cursor = 'grab';
     
-    // Guardar posición actual
-    marqueePosition = getMarqueePosition();
-    
-    // Reanudar animación
-    setTimeout(() => {
-        if (!isMarqueeDragging) {
-            startMarqueeAnimation();
-        }
-    }, 100);
+    // Aplicar momentum
+    applyMomentum();
 }
 
+// Aplicar momentum después del drag
+function applyMomentum() {
+    let velocity = marqueeVelocity * 0.5;
+    const deceleration = 0.95;
+    
+    function animate() {
+        if (Math.abs(velocity) > 0.1) {
+            marqueePosition += velocity;
+            velocity *= deceleration;
+            
+            // Loop infinito
+            if (marqueePosition > 0) {
+                marqueePosition -= cloneWidth;
+            } else if (marqueePosition < -cloneWidth * 2) {
+                marqueePosition += cloneWidth;
+            }
+            
+            marqueeTrack.style.transform = `translateX(${marqueePosition}px)`;
+            detectCenterItem();
+            
+            requestAnimationFrame(animate);
+        } else {
+            // Reanudar animación automática
+            setTimeout(() => {
+                if (!isMarqueeDragging) {
+                    startMarqueeAnimation();
+                }
+            }, 1000);
+        }
+    }
+    
+    animate();
+}
+
+// Detectar item central y aplicar efectos
 function detectCenterItem() {
     const centerX = window.innerWidth / 2;
+    const allItems = marqueeTrack.querySelectorAll('.marquee-item');
     let closestItem = null;
     let closestDistance = Infinity;
     
-    marqueeItems.forEach(item => {
+    allItems.forEach(item => {
         const rect = item.getBoundingClientRect();
         const itemCenterX = rect.left + rect.width / 2;
         const distance = Math.abs(itemCenterX - centerX);
@@ -301,38 +381,43 @@ function detectCenterItem() {
         
         // Aplicar efectos visuales según distancia
         const scale = Math.max(0.8, 1 - (distance / window.innerWidth) * 0.3);
-        const opacity = Math.max(0.5, 1 - (distance / window.innerWidth) * 0.5);
+        const opacity = Math.max(0.6, 1 - (distance / window.innerWidth) * 0.4);
+        
         item.style.transform = `scale(${scale})`;
         item.style.opacity = opacity;
     });
     
+    // Cambiar video según el item central
     if (closestItem && closestItem.dataset.video) {
-        changeVideo(closestItem.dataset.video);
+        const videoName = closestItem.dataset.video;
+        if (!videoTimeout) {
+            changeVideo(videoName);
+        }
     }
 }
 
-// Eventos hover marquee (mantener funcionalidad original)
-marqueeItems.forEach(item => {
-    item.addEventListener('mouseenter', function() {
-        if (!isMarqueeDragging) {
-            const videoName = this.dataset.video;
-            clearTimeout(videoTimeout);
-            changeVideo(videoName);
-        }
-    });
-    
-    item.addEventListener('mouseleave', function() {
-        if (!isMarqueeDragging) {
-            clearTimeout(videoTimeout);
-            videoTimeout = setTimeout(() => {
-                changeVideo('invierno');
-            }, 2000);
-        }
-    });
-});
+// Manejar hover en items
+function handleItemHover(e) {
+    if (!isMarqueeDragging) {
+        const videoName = e.currentTarget.dataset.video;
+        clearTimeout(videoTimeout);
+        videoTimeout = null;
+        changeVideo(videoName);
+    }
+}
 
-// Inicializar marquee cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', initMarquee);
+function handleItemLeave() {
+    if (!isMarqueeDragging) {
+        clearTimeout(videoTimeout);
+        videoTimeout = setTimeout(() => {
+            changeVideo('invierno');
+            videoTimeout = null;
+        }, 2000);
+    }
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', initInfiniteMarquee);
 
 // =============================================
 // 4. CAROUSEL DE VIDEOS MEJORADO
