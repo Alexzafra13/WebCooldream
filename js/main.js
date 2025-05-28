@@ -6,24 +6,20 @@
 // 1. LOADER
 // =============================================
 window.addEventListener('load', () => {
-    let progress = 0;
-    const loaderProgress = document.getElementById('loaderProgress');
     const loader = document.getElementById('loader');
     
-    const loadInterval = setInterval(() => {
-        progress += Math.random() * 15;
-        if (progress > 100) progress = 100;
+    // Simular tiempo de carga con animación
+    setTimeout(() => {
+        loader.classList.add('hidden');
+        document.body.style.overflow = 'visible';
         
-        loaderProgress.style.width = progress + '%';
-        
-        if (progress >= 100) {
-            clearInterval(loadInterval);
-            setTimeout(() => {
-                loader.classList.add('hidden');
-                document.body.style.overflow = 'visible';
-            }, 300);
-        }
-    }, 100);
+        // Iniciar animaciones después de que el loader desaparezca
+        document.querySelectorAll('.section-header, .video-card, .tour-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            observer.observe(el);
+        });
+    }, 2000); // 2 segundos para mostrar la animación completa
 });
 
 // =============================================
