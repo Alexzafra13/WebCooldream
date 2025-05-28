@@ -95,12 +95,15 @@ if (menuToggle) {
         toggleMenu(false);
     });
     
-    // Cerrar menú al hacer click en un enlace
-    navUl.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', () => {
+  // Cerrar menú al hacer click en un enlace
+navUl.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+        // Solo cerrar si es un enlace del menú principal
+        if (link.closest('li') && !link.closest('.mobile-menu-social')) {
             toggleMenu(false);
-        });
+        }
     });
+});
     
     // Agregar clase activa al enlace actual
     function setActiveLink() {
