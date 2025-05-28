@@ -437,7 +437,7 @@ function handleItemLeave() {
 document.addEventListener('DOMContentLoaded', initInfiniteMarquee);
 
 // =============================================
-// 4. CAROUSEL DE VIDEOS MEJORADO
+// 4. CAROUSEL DE VIDEOS MEJORADO (CON FIX MÓVIL)
 // =============================================
 const carousel = document.querySelector('.carousel-container');
 const prevBtn = document.getElementById('prevBtn');
@@ -452,6 +452,7 @@ let scrollLeft;
 let velocity = 0;
 let momentumID;
 let startTime;
+let hasMoved = false;
 
 // Crear indicadores
 cards.forEach((_, index) => {
@@ -540,7 +541,7 @@ function updateButtons() {
 
 // Drag mejorado para móvil y desktop
 carousel.addEventListener('mousedown', startDrag);
-carousel.addEventListener('touchstart', startDrag, { passive: false });
+carousel.addEventListener('touchstart', startDrag, { passive: true });
 carousel.addEventListener('mousemove', drag);
 carousel.addEventListener('touchmove', drag, { passive: false });
 carousel.addEventListener('mouseup', endDrag);
@@ -548,40 +549,59 @@ carousel.addEventListener('touchend', endDrag);
 carousel.addEventListener('mouseleave', endDrag);
 
 function startDrag(e) {
+    // No iniciar drag si el target es un enlace o está dentro de un enlace
+    if (e.target.closest('.video-link')) {
+        return;
+    }
+    
     isDown = true;
+    hasMoved = false;
     carousel.classList.add('dragging');
     startX = (e.type.includes('touch') ? e.touches[0].pageX : e.pageX) - carousel.offsetLeft;
     scrollLeft = carousel.scrollLeft;
     startTime = Date.now();
     cancelAnimationFrame(momentumID);
-    
-    // Prevenir comportamiento por defecto en móvil
-    if (e.type === 'touchstart') {
-        e.preventDefault();
-    }
 }
 
 function drag(e) {
     if (!isDown) return;
     
-    // Prevenir scroll vertical en móvil
-    if (e.type === 'touchmove') {
-        e.preventDefault();
+    // No drag si es un enlace
+    if (e.target.closest('.video-link')) {
+        isDown = false;
+        carousel.classList.remove('dragging');
+        return;
     }
     
     const x = (e.type.includes('touch') ? e.touches[0].pageX : e.pageX) - carousel.offsetLeft;
     const walk = (startX - x) * 1.5;
+    
+    // Detectar si hubo movimiento significativo
+    if (Math.abs(walk) > 5) {
+        hasMoved = true;
+        
+        // Solo prevenir default si realmente estamos arrastrando
+        if (e.type === 'touchmove' && hasMoved) {
+            e.preventDefault();
+        }
+    }
+    
     carousel.scrollLeft = scrollLeft + walk;
     
     // Calcular velocidad
     velocity = walk / (Date.now() - startTime);
 }
 
-function endDrag() {
+function endDrag(e) {
     if (!isDown) return;
     
     isDown = false;
     carousel.classList.remove('dragging');
+    
+    // Si no hubo movimiento significativo, permitir el click
+    if (!hasMoved) {
+        return;
+    }
     
     // Aplicar momentum o snap
     const absVelocity = Math.abs(velocity);
@@ -630,6 +650,67 @@ carousel.addEventListener('wheel', (e) => {
     clearTimeout(carousel.wheelTimeout);
     carousel.wheelTimeout = setTimeout(snapToNearest, 150);
 }, { passive: false });
+
+// Fix específico para los enlaces en móvil
+document.querySelectorAll('.video-link').forEach(link => {
+    let tapStartTime;
+    let tapStartX;
+    let tapStartY;
+    let isTap = false;
+    
+    // Detectar inicio del toque
+    link.addEventListener('touchstart', (e) => {
+        tapStartTime = Date.now();
+        tapStartX = e.touches[0].clientX;
+        tapStartY = e.touches[0].clientY;
+        isTap = true;
+        
+        // Prevenir que el carousel inicie el drag
+        e.stopPropagation();
+    }, { passive: true });
+    
+    // Detectar movimiento (para cancelar si es drag)
+    link.addEventListener('touchmove', (e) => {
+        const moveX = e.touches[0].clientX;
+        const moveY = e.touches[0].clientY;
+        const diffX = Math.abs(moveX - tapStartX);
+        const diffY = Math.abs(moveY - tapStartY);
+        
+        // Si se mueve más de 10px, no es un tap
+        if (diffX > 10 || diffY > 10) {
+            isTap = false;
+        }
+    }, { passive: true });
+    
+    // Manejar el final del toque
+    link.addEventListener('touchend', (e) => {
+        const tapDuration = Date.now() - tapStartTime;
+        
+        // Si fue un tap rápido (menos de 300ms) y no hubo movimiento
+        if (isTap && tapDuration < 300) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Pequeño delay para asegurar que no interfiera con el drag
+            setTimeout(() => {
+                window.open(link.href, '_blank');
+            }, 50);
+        }
+    });
+    
+    // Prevenir el comportamiento por defecto del click si hubo drag
+    link.addEventListener('click', (e) => {
+        if (hasMoved || carousel.classList.contains('dragging')) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    });
+    
+    // Asegurar que funcionen en desktop
+    link.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+    });
+});
 
 // =============================================
 // 5. ANIMACIONES SCROLL
@@ -723,12 +804,41 @@ rippleElements.forEach(element => {
 });
 
 // =============================================
-// 7. INICIALIZACIÓN
+// 7. GESTIÓN DE CONCIERTOS
+// =============================================
+function initConcerts() {
+    const concertsList = document.getElementById('concertsList');
+    const noConcerts = document.getElementById('noConcerts');
+    const concertItems = concertsList.querySelectorAll('.concert-item');
+    
+    // Si no hay conciertos, mostrar mensaje
+    if (concertItems.length === 0) {
+        concertsList.style.display = 'none';
+        noConcerts.style.display = 'block';
+    }
+    
+    // Filtrar conciertos pasados (opcional)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    concertItems.forEach(item => {
+        const concertDate = new Date(item.dataset.date);
+        if (concertDate < today) {
+            item.classList.add('past');
+            // Opcional: mover al final o ocultar
+            // item.style.display = 'none';
+        }
+    });
+}
+
+// =============================================
+// 8. INICIALIZACIÓN
 // =============================================
 document.addEventListener('DOMContentLoaded', () => {
     // Inicializar componentes
     updateButtons();
     snapToNearest();
+    initConcerts();
     
     // Prevenir zoom en móviles
     document.addEventListener('gesturestart', function (e) {
@@ -736,5 +846,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Log de inicialización
-    console.log('CoolDream website initialized - Optimized version');
+    console.log('CoolDream website initialized - Final version');
 });

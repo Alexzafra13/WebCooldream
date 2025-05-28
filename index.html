@@ -11,7 +11,7 @@
     <!-- Loader -->
     <div class="loader" id="loader">
         <div class="loader-content">
-            <h1 class="loader-logo">CARGANDO</h1>
+            <h1 class="loader-logo">COOLDREAM</h1>
             <div class="loader-bar">
                 <div class="loader-progress" id="loaderProgress"></div>
             </div>
@@ -60,6 +60,10 @@
             </video>
         </div>
         
+        <div class="hero-center">
+           <!-- <h1 class="hero-logo">COOLDREAM</h1>
+            <p class="hero-tagline">Nueva música disponible</p>-->
+        </div>
         
         <div class="bottom-marquee">
             <div class="marquee-track">
@@ -321,23 +325,86 @@
         </div>
     </section>
     
-    <!-- Tour Section -->
+    <!-- Tour Section - Minimalista y Mantenible -->
     <section class="tour-section" id="tour">
         <div class="section-header">
             <h2 class="section-title">PRÓXIMAS FECHAS</h2>
             <p class="section-subtitle">No te pierdas nuestros próximos conciertos</p>
         </div>
         
-        <div class="tour-grid">
-            <div class="tour-item">
-                <div class="tour-date">15 AGOSTO</div>
-                <div class="tour-details">
-                    <h3>Concentración Motera</h3>
-                    <p class="tour-location">Aceuchal, España</p>
+        <div class="tour-container">
+            <!-- Lista de conciertos -->
+            <div class="concerts-list" id="concertsList">
+                <!-- Concierto 1 - Próximo -->
+                <div class="concert-item upcoming" data-date="2025-08-15">
+                    <div class="concert-date">
+                        <span class="day">15</span>
+                        <span class="month">AGO</span>
+                        <span class="year">2025</span>
+                    </div>
+                    <div class="concert-info">
+                        <h3 class="concert-venue">Concentración Motera</h3>
+                        <p class="concert-location">Aceuchal, España</p>
+                    </div>
+                    <div class="concert-status">
+                        <a href="#" class="ticket-link available" target="_blank">
+                            Entradas
+                        </a>
+                    </div>
                 </div>
-                <button class="ticket-btn">Entradas</button>
+                
+                <!-- Para añadir más conciertos, copia el bloque anterior y modifica:
+                     - data-date: formato YYYY-MM-DD
+                     - Contenido de date, venue, location
+                     - Clases del ticket-link: available, sold-out, o soon
+                -->
+                
+                <!-- Ejemplo de concierto agotado -->
+                <!--
+                <div class="concert-item upcoming" data-date="2025-09-20">
+                    <div class="concert-date">
+                        <span class="day">20</span>
+                        <span class="month">SEP</span>
+                        <span class="year">2025</span>
+                    </div>
+                    <div class="concert-info">
+                        <h3 class="concert-venue">Palau Sant Jordi</h3>
+                        <p class="concert-location">Barcelona, España</p>
+                    </div>
+                    <div class="concert-status">
+                        <span class="ticket-link sold-out">
+                            Agotado
+                        </span>
+                    </div>
+                </div>
+                -->
+                
+                <!-- Ejemplo de concierto próximamente -->
+                <!--
+                <div class="concert-item upcoming" data-date="2025-10-15">
+                    <div class="concert-date">
+                        <span class="day">15</span>
+                        <span class="month">OCT</span>
+                        <span class="year">2025</span>
+                    </div>
+                    <div class="concert-info">
+                        <h3 class="concert-venue">WiZink Center</h3>
+                        <p class="concert-location">Madrid, España</p>
+                    </div>
+                    <div class="concert-status">
+                        <span class="ticket-link soon">
+                            Próximamente
+                        </span>
+                    </div>
+                </div>
+                -->
             </div>
             
+            <!-- Mensaje cuando no hay conciertos -->
+            <div class="no-concerts" id="noConcerts" style="display: none;">
+                <p>No hay conciertos programados en este momento.</p>
+                <p class="follow-text">Síguenos en redes sociales para estar al día.</p>
+            </div>
         </div>
     </section>
     

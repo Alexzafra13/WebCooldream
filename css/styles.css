@@ -309,28 +309,17 @@ nav ul a:hover::after {
     z-index: 10;
 }
 
-/* MARQUEE INFINITO - ESTILOS ACTUALIZADOS */
+/* MARQUEE INFINITO - NO USAR ANIMACIÓN CSS */
 .marquee-track {
     display: flex;
-    /* IMPORTANTE: NO USAR animation CSS aquí */
+    /* NO USAR: animation: marquee 20s linear infinite; */
     user-select: none;
     -webkit-user-select: none;
     -webkit-tap-highlight-color: transparent;
     touch-action: pan-y;
     will-change: transform;
     cursor: grab;
-    gap: 0; /* Sin espacios entre clones */
-}
-
-/* ELIMINAR estos estilos que interfieren */
-/* .marquee-track:hover {
-    animation-play-state: paused;
-} */
-
-/* Keyframe ya no se usa pero lo dejamos por si acaso */
-@keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    gap: 0;
 }
 
 .marquee-content {
@@ -338,7 +327,7 @@ nav ul a:hover::after {
     align-items: center;
     white-space: nowrap;
     padding-right: 50px;
-    flex-shrink: 0; /* Importante para los clones */
+    flex-shrink: 0;
 }
 
 .marquee-item {
@@ -612,6 +601,9 @@ nav ul a:hover::after {
     font-size: 0.875rem;
     font-weight: 500;
     transition: var(--transition-fast);
+    position: relative;
+    z-index: 10;
+    touch-action: manipulation;
 }
 
 .video-link:hover {
@@ -633,6 +625,7 @@ nav ul a:hover::after {
 .video-link svg {
     width: 18px;
     height: 18px;
+    pointer-events: none;
 }
 
 /* Carousel Controls */
@@ -708,73 +701,176 @@ nav ul a:hover::after {
 }
 
 /* =============================================
-   6. TOUR SECTION
+   6. TOUR SECTION - MINIMALISTA
    ============================================= */
 .tour-section {
     padding: 8rem 4rem;
     background: linear-gradient(180deg, transparent 0%, rgba(0, 128, 255, 0.02) 100%);
 }
 
-.tour-grid {
-    max-width: 1200px;
+.tour-container {
+    max-width: 900px;
     margin: 0 auto;
-    display: grid;
+}
+
+/* Lista de conciertos */
+.concerts-list {
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
 }
 
-.tour-item {
+/* Item de concierto */
+.concert-item {
     display: grid;
-    grid-template-columns: 180px 1fr auto;
+    grid-template-columns: 100px 1fr auto;
     align-items: center;
+    gap: 2rem;
     padding: 2rem;
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border);
     border-radius: 12px;
-    transition: var(--transition-fast);
-    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
 }
 
-.tour-item:hover {
+.concert-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--primary);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform var(--transition-fast);
+}
+
+.concert-item:hover {
     background: rgba(255, 255, 255, 0.05);
-    transform: translateX(10px);
-    border-color: var(--primary);
+    transform: translateX(8px);
 }
 
-.tour-date {
-    font-size: 1.75rem;
-    font-weight: 700;
+.concert-item:hover::before {
+    transform: scaleY(1);
+}
+
+/* Fecha del concierto */
+.concert-date {
+    text-align: center;
+}
+
+.concert-date .day {
+    display: block;
+    font-size: 2rem;
+    font-weight: 900;
     color: var(--primary);
+    line-height: 1;
+}
+
+.concert-date .month {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 0.25rem;
+}
+
+.concert-date .year {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--gray);
+    opacity: 0.6;
+    margin-top: 0.25rem;
+}
+
+/* Información del concierto */
+.concert-info {
+    flex: 1;
+}
+
+.concert-venue {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
     letter-spacing: -0.01em;
 }
 
-.tour-details h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-}
-
-.tour-location {
+.concert-location {
     color: var(--gray);
     font-size: 0.95rem;
 }
 
-.ticket-btn {
-    padding: 0.75rem 2rem;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: var(--dark);
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition-fast);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.875rem;
+/* Estado del concierto */
+.concert-status {
+    text-align: right;
 }
 
-.ticket-btn:hover {
+.ticket-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+/* Estados de los tickets */
+.ticket-link.available {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--dark);
+    border: 2px solid transparent;
+}
+
+.ticket-link.available:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+}
+
+.ticket-link.sold-out {
+    background: transparent;
+    color: var(--gray);
+    border: 2px solid var(--border);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.ticket-link.soon {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.ticket-link.soon:hover {
+    background: rgba(0, 212, 255, 0.1);
+}
+
+/* Mensaje cuando no hay conciertos */
+.no-concerts {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.no-concerts p {
+    font-size: 1.1rem;
+    color: var(--gray);
+    margin-bottom: 0.5rem;
+}
+
+.follow-text {
+    font-size: 0.95rem;
+    opacity: 0.7;
 }
 
 /* =============================================
@@ -925,6 +1021,27 @@ footer {
         margin-right: 2rem;
     }
     
+    /* Enlaces más grandes en móvil */
+    .video-links {
+        gap: 1rem;
+    }
+    
+    .video-link {
+        padding: 1rem 1.25rem;
+        font-size: 0.9rem;
+        -webkit-tap-highlight-color: rgba(0, 212, 255, 0.2);
+    }
+    
+    .video-link:active {
+        transform: scale(0.95);
+        background: rgba(255, 255, 255, 0.15);
+    }
+    
+    /* Prevenir que el drag interfiera con los enlaces */
+    .carousel-container.dragging .video-link {
+        pointer-events: none;
+    }
+    
     /* Indicadores más grandes */
     .indicator {
         width: 10px;
@@ -936,14 +1053,37 @@ footer {
         width: 36px;
     }
     
-    .tour-item {
+    /* Tour responsive */
+    .concert-item {
         grid-template-columns: 1fr;
         gap: 1rem;
         text-align: center;
     }
     
-    .tour-date {
+    .concert-date {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+    
+    .concert-date .day {
         font-size: 1.5rem;
+    }
+    
+    .concert-date .month,
+    .concert-date .year {
+        display: inline-block;
+        margin: 0;
+    }
+    
+    .concert-info {
+        text-align: center;
+    }
+    
+    .concert-status {
+        text-align: center;
+        margin-top: 1rem;
     }
 }
 
@@ -987,6 +1127,28 @@ footer {
     .social-link {
         width: 48px;
         height: 48px;
+    }
+}
+
+/* Mejorar contraste de hover en dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+    .video-link {
+        transition: all 0.1s ease;
+    }
+    
+    .video-link:active {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+    
+    .video-link.youtube:active {
+        background: rgba(255, 0, 0, 0.2);
+        border-color: #FF0000;
+    }
+    
+    .video-link.spotify:active {
+        background: rgba(29, 185, 84, 0.2);
+        border-color: #1DB954;
     }
 }
 
