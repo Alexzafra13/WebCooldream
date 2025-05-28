@@ -2,24 +2,27 @@
 // COOLDREAM - JavaScript Principal Optimizado
 // =============================================
 
+
 // =============================================
 // 1. LOADER
 // =============================================
 window.addEventListener('load', () => {
     const loader = document.getElementById('loader');
     
-    // Simular tiempo de carga con animación
+    // Tiempo de carga con animación
     setTimeout(() => {
         loader.classList.add('hidden');
         document.body.style.overflow = 'visible';
         
         // Iniciar animaciones después de que el loader desaparezca
-        document.querySelectorAll('.section-header, .video-card, .tour-item').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            observer.observe(el);
-        });
-    }, 2000); // 2 segundos para mostrar la animación completa
+        setTimeout(() => {
+            document.querySelectorAll('.section-header, .video-card, .tour-item').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                observer.observe(el);
+            });
+        }, 300);
+    }, 2500); // 2.5 segundos para mostrar la animación completa
 });
 
 // =============================================
