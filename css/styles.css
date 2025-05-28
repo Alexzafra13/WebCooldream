@@ -239,7 +239,14 @@ nav ul a:hover::after {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+    background: 
+        linear-gradient(to bottom,
+            transparent 0%,
+            transparent 50%,
+            rgba(0,0,0,0.2) 70%,
+            rgba(0,0,0,0.6) 85%,
+            rgba(0,0,0,0.9) 95%,
+            black 100%);
     pointer-events: none;
 }
 
@@ -302,11 +309,30 @@ nav ul a:hover::after {
     bottom: 0;
     left: 0;
     width: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    backdrop-filter: blur(10px);
+    height: auto;
     padding: 2.5rem 0;
     overflow: hidden;
     z-index: 10;
+}
+
+/* Gradiente extendido fuera del marquee */
+.bottom-marquee::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to top, 
+        rgba(0,0,0,0.95) 0%, 
+        rgba(0,0,0,0.8) 30%,
+        rgba(0,0,0,0.5) 60%,
+        rgba(0,0,0,0.2) 85%,
+        transparent 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    pointer-events: none;
+    z-index: -1;
 }
 
 /* MARQUEE INFINITO - NO USAR ANIMACIÓN CSS */
@@ -320,6 +346,24 @@ nav ul a:hover::after {
     will-change: transform;
     cursor: grab;
     gap: 0;
+    position: relative;
+}
+
+/* Efecto de niebla/desvanecimiento en los bordes del marquee */
+.bottom-marquee::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right,
+        rgba(0,0,0,0.8) 0%,
+        transparent 10%,
+        transparent 90%,
+        rgba(0,0,0,0.8) 100%);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .marquee-content {
@@ -981,7 +1025,12 @@ footer {
     }
     
     .bottom-marquee {
-        padding: 3rem 0;
+        padding: 2rem 0;
+        background: linear-gradient(to top, 
+            rgba(0,0,0,0.98) 0%, 
+            rgba(0,0,0,0.85) 30%,
+            rgba(0,0,0,0.5) 60%,
+            transparent 100%);
     }
     
     .section-title {
