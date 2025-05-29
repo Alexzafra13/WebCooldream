@@ -221,74 +221,16 @@ nav ul a:hover::after {
 
 .menu-toggle {
     display: none;
-    position: relative;
-    width: 30px;
-    height: 30px;
+    flex-direction: column;
     cursor: pointer;
-    z-index: 1001;
+    gap: 4px;
 }
 
 .menu-toggle span {
-    position: absolute;
-    width: 100%;
+    width: 25px;
     height: 2px;
     background: var(--white);
-    border-radius: 2px;
-    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    transform-origin: center;
-}
-
-.menu-toggle span:nth-child(1) {
-    top: 8px;
-}
-
-.menu-toggle span:nth-child(2) {
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.menu-toggle span:nth-child(3) {
-    bottom: 8px;
-}
-
-/* Hover effect */
-.menu-toggle:hover span {
-    background: var(--primary);
-}
-
-/* Animación cuando está activo */
-.menu-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(7px, 7px);
-    background: var(--primary);
-}
-
-.menu-toggle.active span:nth-child(2) {
-    opacity: 0;
-    transform: translateX(-20px);
-}
-
-.menu-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -7px);
-    background: var(--primary);
-}
-
-/* Efecto de brillo al hacer click */
-.menu-toggle::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(0, 212, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-}
-
-.menu-toggle:active::before {
-    width: 60px;
-    height: 60px;
+    transition: var(--transition-fast);
 }
 
 /* =============================================
@@ -1027,7 +969,7 @@ footer {
 }
 
 /* =============================================
-   9. RESPONSIVE DESIGN
+   9. RESPONSIVE DESIGN - MENÚ MÓVIL MEJORADO
    ============================================= */
 @media (max-width: 1024px) {
     .carousel-wrapper {
@@ -1058,245 +1000,124 @@ footer {
         }
     }
     
-    /* Navegación */
+    /* NAVEGACIÓN MÓVIL MINIMALISTA */
     nav {
-        padding: 1.5rem 2rem;
-    }
-    
-    nav.scrolled {
         padding: 1rem 2rem;
     }
     
-    /* Ocultar elementos móviles en desktop */
-    .mobile-menu-header,
-    .mobile-menu-footer {
-        display: none;
+    nav.scrolled {
+        padding: 0.75rem 2rem;
     }
     
+    .logo-img {
+        height: 45px;
+    }
+    
+    nav.scrolled .logo-img {
+        height: 35px;
+    }
+    
+    /* Menú móvil completamente rediseñado */
     nav ul {
-        position: fixed;
-        right: -100%;
-        top: 0;
-        height: 100vh;
-        width: 100%;
-        max-width: 320px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
         flex-direction: column;
-        justify-content: flex-start;
-        background: rgba(0, 0, 0, 0.98);
-        backdrop-filter: blur(30px);
-        -webkit-backdrop-filter: blur(30px);
-        padding: 5rem 2rem 2rem;
-        transition: right 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
-        box-shadow: -10px 0 50px rgba(0, 0, 0, 0.5);
-        overflow-y: auto;
-        z-index: 1000;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 0;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-bottom: 1px solid transparent;
     }
     
     nav ul.active {
-        right: 0;
-    }
-    
-    /* Mostrar elementos móviles solo en móvil */
-    @media (max-width: 768px) {
-        .mobile-menu-header,
-        .mobile-menu-footer {
-            display: flex;
-        }
-    }
-    
-    /* Logo en el menú móvil */
-    .mobile-menu-header {
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 3rem;
-        padding-bottom: 2rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .mobile-menu-logo {
-        height: 35px;
-        width: auto;
-        filter: brightness(1);
-        opacity: 0.9;
+        max-height: 300px;
+        opacity: 1;
+        padding: 1rem 0;
+        border-bottom-color: var(--border);
     }
     
     nav ul li {
+        width: 100%;
+        text-align: center;
         opacity: 0;
-        transform: translateX(50px);
-        transition: all 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
-        margin-bottom: 0.5rem;
-        list-style: none;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
     }
     
     nav ul.active li {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
     }
     
+    nav ul.active li:nth-child(1) { transition-delay: 0.05s; }
     nav ul.active li:nth-child(2) { transition-delay: 0.1s; }
     nav ul.active li:nth-child(3) { transition-delay: 0.15s; }
-    nav ul.active li:nth-child(4) { transition-delay: 0.2s; }
     
     nav ul a {
-        font-size: 1.1rem;
-        font-weight: 500;
-        letter-spacing: 0.02em;
-        padding: 1rem 1.5rem;
         display: block;
-        position: relative;
-        overflow: hidden;
-        border-radius: 8px;
-        transition: all 0.3s ease;
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        border-bottom: none;
     }
     
-    nav ul a::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: var(--primary);
-        transform: translateX(-100%);
-        transition: transform 0.3s ease;
-    }
-    
-    nav ul a:hover,
-    nav ul a.active {
-        background: rgba(0, 212, 255, 0.1);
-        padding-left: 2rem;
-    }
-    
-    nav ul a:hover::before,
-    nav ul a.active::before {
-        transform: translateX(0);
-    }
-    
-    /* Sección de redes sociales en el menú */
-    .mobile-menu-footer {
-        margin-top: auto;
-        padding-top: 3rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        flex-direction: column;
+    nav ul a::after {
         display: none;
     }
     
-    @media (max-width: 768px) {
-        .mobile-menu-footer {
-            display: flex;
-        }
-    }
-    
-    .mobile-menu-footer p {
-        text-align: center;
-        color: var(--gray);
-        font-size: 0.875rem;
-        margin-bottom: 1rem;
-    }
-    
-    .mobile-menu-social {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        margin-top: 1rem;
-    }
-    
-    .mobile-menu-social a {
-        width: 44px;
-        height: 44px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
+    nav ul a:active {
         background: rgba(255, 255, 255, 0.05);
     }
     
-    .mobile-menu-social a:hover {
-        background: var(--primary);
-        border-color: var(--primary);
-        transform: translateY(-2px);
-    }
-    
-    .mobile-menu-social svg {
-        width: 20px;
-        height: 20px;
-        fill: var(--white);
-        transition: fill 0.3s ease;
-    }
-    
-    .mobile-menu-social a:hover svg {
-        fill: var(--dark);
-    }
-    
-    /* Overlay para cerrar menú */
-    .menu-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.8);
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 998;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-    }
-    
-    .menu-overlay.active {
-        opacity: 1;
-        visibility: visible;
-    }
-    
+    /* Botón hamburguesa mejorado */
     .menu-toggle {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1002;
-    }
-    
-    /* X para cerrar dentro del menú */
-    .mobile-menu-close {
         width: 32px;
         height: 32px;
-        cursor: pointer;
-        position: relative;
-        transition: transform 0.3s ease;
-        display: flex;
+        padding: 4px;
         align-items: center;
         justify-content: center;
+        position: relative;
+        z-index: 1001;
     }
     
-    .mobile-menu-close:hover {
-        transform: rotate(90deg);
-    }
-    
-    .mobile-menu-close::before,
-    .mobile-menu-close::after {
-        content: '';
+    .menu-toggle span {
         position: absolute;
-        width: 24px;
+        width: 20px;
         height: 2px;
-        background: var(--primary);
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(45deg);
-        transition: all 0.3s ease;
-        border-radius: 2px;
-    }
-    
-    .mobile-menu-close::after {
-        transform: translate(-50%, -50%) rotate(-45deg);
-    }
-    
-    .mobile-menu-close:hover::before,
-    .mobile-menu-close:hover::after {
         background: var(--white);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-origin: center;
     }
     
+    .menu-toggle span:nth-child(1) {
+        transform: translateY(-6px);
+    }
+    
+    .menu-toggle span:nth-child(3) {
+        transform: translateY(6px);
+    }
+    
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(45deg);
+    }
+    
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+    
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg);
+    }
+    
+    /* Hero responsive */
     .hero-logo {
         font-size: 3.5rem;
     }
@@ -1426,6 +1247,28 @@ footer {
     
     .i {
         margin-inline: 3px;
+    }
+    
+    /* Navegación móvil pequeña */
+    nav {
+        padding: 0.75rem 1.5rem;
+    }
+    
+    nav.scrolled {
+        padding: 0.5rem 1.5rem;
+    }
+    
+    .logo-img {
+        height: 40px;
+    }
+    
+    nav.scrolled .logo-img {
+        height: 30px;
+    }
+    
+    nav ul a {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.95rem;
     }
     
     .hero-logo {

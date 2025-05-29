@@ -55,76 +55,56 @@ window.addEventListener('scroll', () => {
 
 // Mobile menu mejorado
 if (menuToggle) {
-    // Crear overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'menu-overlay';
-    document.body.appendChild(overlay);
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        navUl.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+    });
     
-    // Obtener el botón de cerrar dentro del menú
-    const closeBtn = document.querySelector('.mobile-menu-close');
-    
-    // Función para abrir/cerrar menú
-    function toggleMenu(state) {
-        if (state) {
-            navUl.classList.add('active');
-            menuToggle.classList.add('active');
-            overlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        } else {
+    // Cerrar menú al hacer click en un enlace
+    document.querySelectorAll('nav ul a').forEach(link => {
+        link.addEventListener('click', () => {
             navUl.classList.remove('active');
             menuToggle.classList.remove('active');
-            overlay.classList.remove('active');
+        });
+    });
+    
+    // Cerrar menú al hacer click fuera
+    document.addEventListener('click', (e) => {
+        if (!navbar.contains(e.target) && navUl.classList.contains('active')) {
+            navUl.classList.remove('active');
+            menuToggle.classList.remove('active');
+        }
+    });
+    
+    // Prevenir scroll cuando el menú está abierto
+    navUl.addEventListener('transitionend', () => {
+        if (navUl.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
             document.body.style.overflow = '';
         }
-    }
-    
-    // Abrir menú
-    menuToggle.addEventListener('click', () => {
-        toggleMenu(true);
     });
-    
-    // Cerrar con X
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            toggleMenu(false);
-        });
-    }
-    
-    // Cerrar menú al hacer click en overlay
-    overlay.addEventListener('click', () => {
-        toggleMenu(false);
-    });
-    
-  // Cerrar menú al hacer click en un enlace
-navUl.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-        // Solo cerrar si es un enlace del menú principal
-        if (link.closest('li') && !link.closest('.mobile-menu-social')) {
-            toggleMenu(false);
+}
+
+// Smooth scroll para enlaces
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        
+        if (target) {
+            const headerOffset = 80;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
         }
     });
 });
-    
-    // Agregar clase activa al enlace actual
-    function setActiveLink() {
-        const sections = document.querySelectorAll('section[id]');
-        const scrollY = window.pageYOffset;
-        
-        sections.forEach(section => {
-            const sectionHeight = section.offsetHeight;
-            const sectionTop = section.offsetTop - 100;
-            const sectionId = section.getAttribute('id');
-            const menuLink = navUl.querySelector(`a[href="#${sectionId}"]`);
-            
-            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                navUl.querySelectorAll('a').forEach(a => a.classList.remove('active'));
-                if (menuLink) menuLink.classList.add('active');
-            }
-        });
-    }
-    
-    window.addEventListener('scroll', setActiveLink);
-}
 
 // =============================================
 // 3. VIDEO BACKGROUND & MARQUEE INFINITO
@@ -873,5 +853,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     // Log de inicialización
-    console.log('CoolDream website initialized - Final version');
+    console.log('CoolDream website initialized - Mobile menu improved');
 });
