@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoolDream - Música Oficial</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -67,28 +69,22 @@
         </div>
     </nav>
     
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="video-background">
-            <video class="bg-video active" id="video-invierno" autoplay muted loop playsinline>
-                <source src="assets/videos/invierno.mp4" type="video/mp4">
-            </video>
-            <video class="bg-video" id="video-el-desayuno" muted loop playsinline>
-                <source src="assets/videos/El_Desayuno.mp4" type="video/mp4">
-            </video>
-            <video class="bg-video" id="video-loco-maravilloso" muted loop playsinline>
-                <source src="assets/videos/loco_maravilloso.mp4" type="video/mp4">
-            </video>
-            <video class="bg-video" id="video-orbita-lunar" muted loop playsinline>
-                <source src="assets/videos/orbita_lunar.mp4" type="video/mp4">
-            </video>
-            <video class="bg-video" id="video-momentos-dificiles" muted loop playsinline>
-                <source src="assets/videos/Momentos_Dificiles_De_Olvidar.mp4" type="video/mp4">
-            </video>
-            <video class="bg-video" id="video-huellas" muted loop playsinline>
-                <source src="assets/videos/huellas.mp4" type="video/mp4">
-            </video>
-        </div>
+   <!-- Hero Section -->
+<section class="hero">
+    <div class="video-background">
+        <video class="bg-video active" id="video-invierno" muted loop playsinline data-video-src="assets/videos/invierno.mp4">
+        </video>
+        <video class="bg-video" id="video-el-desayuno" muted loop playsinline data-video-src="assets/videos/El_Desayuno.mp4">
+        </video>
+        <video class="bg-video" id="video-loco-maravilloso" muted loop playsinline data-video-src="assets/videos/loco_maravilloso.mp4">
+        </video>
+        <video class="bg-video" id="video-orbita-lunar" muted loop playsinline data-video-src="assets/videos/orbita_lunar.mp4">
+        </video>
+        <video class="bg-video" id="video-momentos-dificiles" muted loop playsinline data-video-src="assets/videos/Momentos_Dificiles_De_Olvidar.mp4">
+        </video>
+        <video class="bg-video" id="video-huellas" muted loop playsinline data-video-src="assets/videos/huellas.mp4">
+        </video>
+    </div>
         
         <div class="hero-center">
            <!-- <h1 class="hero-logo">COOLDREAM</h1>
@@ -149,6 +145,7 @@
                     <div class="video-card" data-index="0">
                         <div class="video-thumbnail">
                             <iframe src="https://www.youtube.com/embed/_fxHpnvS2qg" 
+                                    loading="lazy"
                                     title="CoolDream - Invierno"
                                     frameborder="0" 
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -182,6 +179,7 @@
                     <div class="video-card" data-index="1">
                         <div class="video-thumbnail">
                             <iframe src="https://www.youtube.com/embed/2eP2GbRvLyc" 
+                                    loading="lazy"
                                     title="CoolDream - El Desayuno"
                                     frameborder="0" 
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -215,6 +213,7 @@
                     <div class="video-card" data-index="2">
                         <div class="video-thumbnail">
                             <iframe src="https://www.youtube.com/embed/4Zn_8pSV1fE" 
+                                    loading="lazy"
                                     title="CoolDream - Loco Maravilloso"
                                     frameborder="0" 
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -248,6 +247,7 @@
                     <div class="video-card" data-index="3">
                         <div class="video-thumbnail">
                             <iframe src="https://www.youtube.com/embed/QnDSg1P7I6o" 
+                                    loading="lazy"
                                     title="CoolDream - Órbita Lunar"
                                     frameborder="0" 
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -281,6 +281,7 @@
                     <div class="video-card" data-index="4">
                         <div class="video-thumbnail">
                             <iframe src="https://www.youtube.com/embed/IBPjoSCxC3w" 
+                                    loading="lazy"
                                     title="CoolDream - Momentos Difíciles de Olvidar"
                                     frameborder="0" 
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -314,6 +315,7 @@
                     <div class="video-card" data-index="5">
                         <div class="video-thumbnail">
                             <iframe src="https://www.youtube.com/embed/XJF7Br4HG4o" 
+                                    loading="lazy"
                                     title="CoolDream - Huellas"
                                     frameborder="0" 
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -474,6 +476,6 @@
         <p>&copy; 2025 CoolDream. Todos los derechos reservados.</p>
     </footer>
     
-    <script src="js/main.js"></script>
+  <script src="js/main.js" defer></script>
 </body>
 </html>
